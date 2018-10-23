@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view.FindUsersRecyclerViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.find_users.recycler_view.FindUsersRecyclerViewModel"/>
 
     </data>
 
@@ -38,14 +38,14 @@
             android:layout_margin="15dp"/>
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
         </LinearLayout>

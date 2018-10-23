@@ -12,12 +12,12 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_business.BusinessProfileViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_business.BusinessProfileViewModel"/>
 
 
         <variable
             name = "profile"
-            type = "com.team.mamba.atlas.data.model.api.fireStore.BusinessProfile"/>
+            type = "com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile"/>
 
     </data>
 

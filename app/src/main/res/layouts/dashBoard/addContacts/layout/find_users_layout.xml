@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersViewModel"/>
 
     </data>
 
@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="95dp"
                 android:layout_height="35dp"
                 android:layout_gravity="end"
@@ -64,7 +64,7 @@
                     android:onClick="@{()-> viewModel.onSearchButtonClicked()}"
                     />
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
 

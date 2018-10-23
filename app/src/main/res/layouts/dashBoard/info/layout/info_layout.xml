@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoViewModel"/>
 
     </data>
 
@@ -94,7 +94,7 @@
             </LinearLayout>
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
@@ -105,7 +105,7 @@
                 app:cardCornerRadius="7dp"
                 card_view:cardElevation="0dp">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -207,9 +207,9 @@
                     </LinearLayout>
 
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
             <com.github.mikephil.charting.charts.BarChart
@@ -273,14 +273,14 @@
                     </LinearLayout>
 
 
-                    <android.support.v4.widget.SwipeRefreshLayout
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                         android:id="@+id/swipeContainer_recent_activiy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/tv_recent_activity"
                         >
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_recent_activity"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -288,9 +288,9 @@
                         tools:paddingLeft="15dp">
 
 
-                    </android.support.v7.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                    </android.support.v4.widget.SwipeRefreshLayout>
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 </LinearLayout>
 
@@ -337,23 +337,23 @@
                     </LinearLayout>
 
 
-                    <android.support.v4.widget.SwipeRefreshLayout
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                         android:id="@+id/swipe_container_user_stats"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/tv_user_stats"
                         >
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_user_stats"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             tools:paddingLeft="15dp">
 
 
-                        </android.support.v7.widget.RecyclerView>
+                        </androidx.recyclerview.widget.RecyclerView>
 
-                    </android.support.v4.widget.SwipeRefreshLayout>
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 </LinearLayout>
 
@@ -377,7 +377,7 @@
                         android:layout_gravity="center"
                         />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_request_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -401,7 +401,7 @@
                             android:maxLength="2"
                             android:textColor="@color/white"/>
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
@@ -472,7 +472,7 @@
                         android:layout_gravity="center"
                         />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_notification_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -496,7 +496,7 @@
                             android:maxLength="2"
                             android:textColor="@color/white"/>
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
@@ -517,7 +517,7 @@
             android:onClick="@{()-> viewModel.hideRecentActivityInfoDialog()}"
             >
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -622,7 +622,7 @@
                 </LinearLayout>
 
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
         </FrameLayout>
@@ -639,7 +639,7 @@
             android:onClick="@{()-> viewModel.hideUserStatusInfoDialog()}"
             >
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -659,7 +659,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"/>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
         </FrameLayout>

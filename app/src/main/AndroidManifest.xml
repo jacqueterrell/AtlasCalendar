@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.team.mamba.atlas"
+    package="com.team.mamba.atlascalendar"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
@@ -33,7 +33,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
     <application
-        android:name=".userInterface.AtlasApplication"
+        android:name="com.team.mamba.atlascalendar.userInterface.AtlasApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -42,7 +42,7 @@
         android:theme="@style/AppTheme">
        <!-- android:largeHeap="true"-->
 
-        <activity android:name=".userInterface.welcome._container_activity.WelcomeActivity"
+        <activity android:name="com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -54,12 +54,12 @@
 
         </activity>
 
-        <activity android:name=".userInterface.dashBoard._container_activity.DashBoardActivity"
+        <activity android:name="com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity"
+        <activity android:name="com.team.mamba.atlascalendar.userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
@@ -71,7 +71,7 @@
 
         <!-- Make sure to use ' BuildConfig.APPLICATION_ID + ".provider" ' as the authority key -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true"
@@ -91,7 +91,7 @@
             android:value="AIzaSyChplMH3NIv0mEn7DL6aLnz_OJ5safyObU"/>
 
         <service
-            android:name=".service.MyFirebaseMessagingService">
+            android:name="com.team.mamba.atlascalendar.service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
