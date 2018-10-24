@@ -13,12 +13,12 @@
 
         <variable
             name="profile"
-            type="com.team.mamba.atlas.data.model.api.fireStore.UserProfile" />
+            type="com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile" />
 
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.contacts.ContactsViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsViewModel" />
 
     </data>
 
@@ -87,7 +87,7 @@
                 tools:visibility="visible">
 
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_gravity="center"
@@ -116,7 +116,7 @@
                         android:onClick="@{()-> viewModel.onProfileImageClicked()}" />
 
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
                 <TextView
@@ -169,7 +169,7 @@
                     android:layout_marginLeft="10dp">
 
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_gravity="center"
@@ -195,9 +195,9 @@
                             android:background="?attr/selectableItemBackgroundBorderless" />
 
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="end|bottom"
@@ -214,7 +214,7 @@
                             android:layout_gravity="center"
                             android:src="@drawable/ic_edit" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
@@ -275,7 +275,7 @@
 
                 >
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -286,7 +286,7 @@
                     app:cardCornerRadius="7dp"
                     card_view:cardElevation="0dp">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -297,7 +297,7 @@
                         app:cardCornerRadius="7dp"
                         card_view:cardElevation="0dp">
 
-                        <android.support.v7.widget.SearchView
+                        <androidx.appcompat.widget.SearchView
                             android:id="@+id/search_view"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -309,9 +309,9 @@
                             app:iconifiedByDefault="false" />
 
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
                 <FrameLayout
                     android:id="@+id/layout_group_filter"
@@ -330,7 +330,7 @@
                         android:src="@drawable/ic_users_solid"
                         android:tint="@color/black" />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_directory_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -355,7 +355,7 @@
                             android:textSize="12sp"
                             tools:text="15" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
@@ -380,19 +380,19 @@
                 android:layout_weight="1">
 
 
-                <android.support.v4.widget.SwipeRefreshLayout
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipeContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                    </android.support.v7.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                </android.support.v4.widget.SwipeRefreshLayout>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 <FrameLayout
                     android:layout_width="10dp"
@@ -431,10 +431,10 @@
                         android:layout_gravity="center"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:onClick="@{()-> viewModel.onInfoClicked()}"
-                        android:src="@drawable/ic_tachometer_solid"
+                        android:src="@drawable/ic_calendar_solid"
                         android:tint="@color/material_icon" />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_request_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -457,7 +457,7 @@
                             android:textSize="12sp"
                             tools:text="15" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
@@ -522,7 +522,7 @@
                         android:src="@drawable/ic_bell_solid"
                         android:tint="@color/material_icon" />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_notification_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -545,7 +545,7 @@
                             android:textSize="12sp"
                             tools:text="15" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 

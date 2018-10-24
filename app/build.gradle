@@ -44,7 +44,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
         javaCompileOptions {
@@ -119,10 +119,10 @@ android {
 
         developmentFlavor {
 
-            applicationId "com.team.mamba.atlas.dev"
-            resValue "string", "app_name", "Atlas-Dev"
-            versionCode 21010007
-            versionName "1.0.7"
+            applicationId "com.team.mamba.atlascalendar.dev"
+            resValue "string", "app_name", "Atlas Calendar-Dev"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
 
@@ -130,10 +130,10 @@ android {
 
         stagingFlavor {
 
-            applicationId "com.team.mamba.atlas.staging"
-            resValue "string", "app_name", "Atlas-Staging"
-            versionCode 21010007
-            versionName "1.0.7"
+            applicationId "com.team.mamba.atlascalendar.staging"
+            resValue "string", "app_name", "Atlas Calendar-Staging"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "f96b7678094340329695c6ee1427d195"]
 
@@ -141,10 +141,10 @@ android {
 
         productionFlavor {
 
-            applicationId "com.team.mamba.atlas"
-            resValue "string", "app_name", "Atlas"
-            versionCode 21010007
-            versionName "1.0.7"
+            applicationId "com.team.mamba.atlascalendar"
+            resValue "string", "app_name", "Atlas Calendar"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
 
@@ -184,39 +184,39 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     //all support dependencies
-    implementation "com.android.support:support-v4:$rootProject.support"
-    implementation "com.android.support:appcompat-v7:$rootProject.support"
-    implementation "com.android.support:design:$rootProject.support"
-    implementation "com.android.support:customtabs:$rootProject.support"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayout"
-    implementation "com.android.support:recyclerview-v7:$rootProject.support"
-    implementation "com.android.support:cardview-v7:$rootProject.support"
-    implementation "com.android.support:multidex:$rootProject.multidex"
-    implementation "com.android.support:preference-v7:$rootProject.support"
-    implementation "com.android.support:preference-v14:$rootProject.support"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
 
     //firebase libraries
-    implementation 'com.google.firebase:firebase-core:16.0.3'
-    implementation 'com.google.firebase:firebase-auth:16.0.3'
-    implementation 'com.google.firebase:firebase-firestore:17.1.0'
-    implementation 'com.google.android.gms:play-services-auth:16.0.0'
-    implementation 'com.google.firebase:firebase-storage:16.0.2'
-    implementation 'com.google.firebase:firebase-crash:16.2.0'
-    implementation 'com.google.firebase:firebase-messaging:17.3.1'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     //all testing dependencies
 
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoCore", {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-beta02', {
         exclude group: "com.android.support", module: "support-annotations"
     })
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoCore"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoCore"
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-beta02'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0-beta02'
     testImplementation "junit:junit:$rootProject.junit"
     testImplementation "org.mockito:mockito-core:$rootProject.mockito"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamCrest"
     androidTestImplementation "org.hamcrest:hamcrest-library:$rootProject.hamCrest"
-    androidTestImplementation "com.android.support.test.espresso.idling:idling-concurrent:$rootProject.espressoCore"
-    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoCore"
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0-beta02'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0-beta02'
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     testImplementation 'org.robolectric:robolectric:3.8'
@@ -260,15 +260,15 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
 
     //RxJava support for ROOM dependencies
-    implementation "android.arch.persistence.room:runtime:$rootProject.roomDatabase"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomDatabase"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
+    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
 
     //all ROOM dependencies
-    implementation "android.arch.persistence.room:runtime:$rootProject.roomDatabase"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomDatabase"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
-    kapt "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
+    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha01'
 
     //all dagger2 dependencies
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
@@ -279,17 +279,17 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     //for dagger testing
-    androidTestImplementation "com.android.support:support-annotations:$rootProject.support"
-    androidTestImplementation "com.android.support.test:rules:$rootProject.testRunner"
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0-beta02'
 
     // Databinding
     // kapt "com.android.databinding:compiler:$gradle_plugin_version"
 
     // all ViewModel and LiveData dependencies
-    implementation "android.arch.lifecycle:extensions:$rootProject.archictectureComponents"
-    annotationProcessor "android.arch.lifecycle:common-java8:$rootProject.archictectureComponents"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-common-java8:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    kapt "android.arch.lifecycle:compiler:$rootProject.archictectureComponents"
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     //our jar files

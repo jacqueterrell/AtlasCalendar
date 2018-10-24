@@ -13,11 +13,11 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.crm.selected_crm.SelectedCrmViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.dashBoard.crm.selected_crm.SelectedCrmViewModel" />
 
         <variable
             name = "crmNote"
-            type = "com.team.mamba.atlas.data.model.api.fireStore.CrmNotes"/>
+            type = "com.team.mamba.atlascalendar.data.model.api.fireStore.CrmNotes"/>
 
     </data>
 

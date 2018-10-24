@@ -9,7 +9,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.announcements.AnnouncementsViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsViewModel"/>
 
     </data>
 

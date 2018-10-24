@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.welcome.select_business_account.business_login.BusinessLoginViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.welcome.select_business_account.business_login.BusinessLoginViewModel" />
 
     </data>
 
@@ -81,7 +81,7 @@
                 android:orientation="horizontal">
 
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="125dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center_horizontal"
@@ -92,7 +92,7 @@
                     app:cardCornerRadius="7dp"
                     card_view:cardElevation="0dp">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -114,11 +114,11 @@
                             android:text="Learn More"
                             android:textAllCaps="false" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="125dp"
                     android:layout_height="55dp"
                     android:layout_gravity="center_horizontal"
@@ -140,7 +140,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white" />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 

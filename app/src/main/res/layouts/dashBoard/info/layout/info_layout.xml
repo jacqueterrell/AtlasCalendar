@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoViewModel"/>
 
     </data>
 
@@ -29,335 +29,22 @@
             android:orientation="vertical">
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <TextView
-                    style="@style/App_Text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="My ID: " />
-
-                <TextView
-                    android:id="@+id/tv_user_id"
-                    style="@style/App_Text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    tools:text="20" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iv_add"
-                    style="@style/IconImageView"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleX="1.3"
-                    android:scaleY="1.3"
-                    android:src="@drawable/ic_add"
-                    android:onClick="@{()-> viewModel.onAddButtonClicked()}"
-                    />
-
-                <ImageView
-                    android:id="@+id/iv_user"
-                    style="@style/IconImageView"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:src="@drawable/ic_person"
-                    android:onClick="@{()-> viewModel.onUserProfileClicked()}"
-                    />
-
-                <ImageView
-                    android:id="@+id/iv_settings"
-                    style="@style/IconImageView"
-                    android:layout_gravity="center_vertical"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:src="@drawable/ic_settings"
-                    android:onClick="@{()-> viewModel.onSettingsClicked()}"
-                    />
-
-            </LinearLayout>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="15dp"
-                android:innerRadius="0dp"
-                android:shape="ring"
-                app:cardBackgroundColor="@color/black"
-                app:cardCornerRadius="7dp"
-                card_view:cardElevation="0dp">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="1dp"
-                    android:innerRadius="0dp"
-                    android:shape="ring"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="7dp"
-                    card_view:cardElevation="0dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <!--Network Buttons -->
-
-                        <FrameLayout
-                            android:id="@+id/layout_network_selected"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/grey">
-
-                            <Button
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="?attr/selectableItemBackground"
-                                android:fontFamily="@font/lato"
-                                android:text="@string/network"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white" />
-
-
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:id="@+id/layout_network_not_selected"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/white"
-                            android:visibility="gone">
-
-                            <Button
-                                android:id="@+id/btn_network_not_selected"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="?attr/selectableItemBackground"
-                                android:fontFamily="@font/lato"
-                                android:onClick="@{()-> viewModel.onNetworkButtonClicked()}"
-                                android:text="@string/network"
-                                android:textAllCaps="false" />
-
-                        </FrameLayout>
-
-                        <!--Opportunity Buttons -->
-
-                        <FrameLayout
-                            android:id="@+id/layout_opportunity_selected"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/grey"
-                            android:visibility="gone">
-
-                            <Button
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="?attr/selectableItemBackground"
-                                android:fontFamily="@font/lato"
-                                android:text="@string/opportunities"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                />
-
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:id="@+id/layout_opportunity_not_selected"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/white">
-
-                            <Button
-                                android:id="@+id/btn__opportunity_not_selected"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="?attr/selectableItemBackground"
-                                android:fontFamily="@font/lato"
-                                android:onClick="@{()-> viewModel.onOpportunitiesButtonClicked()}"
-                                android:text="@string/opportunities"
-                                android:textAllCaps="false" />
-
-                        </FrameLayout>
-
-
-                    </LinearLayout>
-
-
-                </android.support.v7.widget.CardView>
-
-            </android.support.v7.widget.CardView>
-
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart_network"
-                android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="visible"
+            <ImageView
+                android:id="@+id/iv_settings"
+                style="@style/IconImageView"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:src="@drawable/ic_settings"
+                android:visibility="gone"
                 />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart_opportunities"
-                android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone" />
-
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal">
+                android:layout_weight="1"/>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="15dp"
-                        >
-
-                        <TextView
-                            android:id="@+id/tv_recent_activity"
-                            style="@style/App_Text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Recent Activity"
-                            android:layout_marginTop="10dp"
-
-                            />
-
-                        <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:src="@drawable/ic_info_circle_solid"
-                            android:tint="@color/grey"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="10dp"
-                            android:onClick="@{()-> viewModel.onRecentActivityInfoClicked()}"
-                            />
-
-
-                    </LinearLayout>
-
-
-                    <android.support.v4.widget.SwipeRefreshLayout
-                        android:id="@+id/swipeContainer_recent_activiy"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/tv_recent_activity"
-                        >
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_recent_activity"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        tools:paddingLeft="15dp">
-
-
-                    </android.support.v7.widget.RecyclerView>
-
-                    </android.support.v4.widget.SwipeRefreshLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="1dp"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="end">
-
-                        <TextView
-                            android:id="@+id/tv_user_stats"
-                            style="@style/App_Text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="User Stats"
-                            android:textSize="15sp"
-                            android:layout_gravity="center_vertical"
-                            />
-
-                        <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:src="@drawable/ic_info_circle_solid"
-                            android:tint="@color/grey"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="10dp"
-                            android:layout_marginRight="5dp"
-
-                            android:onClick="@{()-> viewModel.onUserStatsInfoClicked()}"
-                            />
-
-                    </LinearLayout>
-
-
-                    <android.support.v4.widget.SwipeRefreshLayout
-                        android:id="@+id/swipe_container_user_stats"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/tv_user_stats"
-                        >
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_user_stats"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            tools:paddingLeft="15dp">
-
-
-                        </android.support.v7.widget.RecyclerView>
-
-                    </android.support.v4.widget.SwipeRefreshLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -373,11 +60,11 @@
                     <ImageView
                         style="@style/IconImageView"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_tachometer_solid"
+                        android:src="@drawable/ic_calendar_solid"
                         android:layout_gravity="center"
                         />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_request_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -401,7 +88,7 @@
                             android:maxLength="2"
                             android:textColor="@color/white"/>
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
@@ -472,7 +159,7 @@
                         android:layout_gravity="center"
                         />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/card_notification_badge"
                         android:layout_width="26dp"
                         android:layout_height="26dp"
@@ -496,173 +183,13 @@
                             android:maxLength="2"
                             android:textColor="@color/white"/>
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </FrameLayout>
 
             </LinearLayout>
 
-
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/dialog_recent_activity_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent_black_dark"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            tools:visibility="gone"
-            android:onClick="@{()-> viewModel.hideRecentActivityInfoDialog()}"
-            >
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="55dp"
-                android:innerRadius="0dp"
-                android:shape="ring"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="15dp"
-                app:contentPadding="15dp"
-                card_view:cardElevation="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="35dp">
-
-
-                        <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="10dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_add"
-                            android:tint="@color/green"
-                            />
-
-                        <TextView
-                            style="@style/App_Text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:text="Appears when you have a new connection to approve"/>
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="35dp">
-
-
-                        <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:padding="8dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="10dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_refresh_solid"
-                            />
-
-                        <TextView
-                            style="@style/App_Text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:text="Your connection has recently updated his/her profile"/>
-
-
-                    </LinearLayout>
-
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-
-                        <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="10dp"
-                            android:padding="5dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_person"
-                            android:tint="@color/orange"
-                            />
-
-                        <TextView
-                            style="@style/App_Text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:text="You are now connected and can see his/her profile"/>
-
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/dialog_user_statistics_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent_black_dark"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            tools:visibility="gone"
-            android:onClick="@{()-> viewModel.hideUserStatusInfoDialog()}"
-            >
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="55dp"
-                android:innerRadius="0dp"
-                android:shape="ring"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="15dp"
-                app:contentPadding="15dp"
-                card_view:cardElevation="1dp">
-
-                <TextView
-                    style="@style/App_Text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/user_status_info"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"/>
-
-            </android.support.v7.widget.CardView>
-
-
-        </FrameLayout>
 
 
         <FrameLayout

@@ -12,11 +12,11 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesViewModel" />
 
         <variable
             name = "personalNotes"
-            type = "com.team.mamba.atlas.data.model.api.fireStore.PersonalNotes"/>
+            type = "com.team.mamba.atlascalendar.data.model.api.fireStore.PersonalNotes"/>
 
     </data>
 
@@ -68,7 +68,7 @@
                     android:layout_height="90dp">
 
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="90dp"
                         android:layout_height="90dp"
                         android:layout_gravity="end"
@@ -96,7 +96,7 @@
                             />
 
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
 
                 </FrameLayout>
@@ -132,7 +132,7 @@
                     android:layout_height="1dp"
                     android:layout_weight="1"/>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="end"
@@ -149,7 +149,7 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ic_edit" />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 

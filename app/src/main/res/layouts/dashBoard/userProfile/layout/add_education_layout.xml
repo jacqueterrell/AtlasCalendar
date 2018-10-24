@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_education_info.AddEducationViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_individual.edit_education_info.AddEducationViewModel"/>
 
     </data>
 
@@ -44,7 +44,7 @@
                 android:layout_gravity="center_horizontal"/>
 
 
-            <android.support.v7.widget.SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_view_school"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -59,7 +59,7 @@
                 android:background="@null"/>
 
 
-            <android.support.v7.widget.SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_view_degree"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -74,7 +74,7 @@
                 android:background="@null"/>
 
 
-            <android.support.v7.widget.SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_view_field_of_study"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -88,7 +88,7 @@
                 android:textSize="15sp"
                 android:background="@null"/>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="105dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
@@ -111,16 +111,16 @@
                     android:textColor="@color/white"
                     />
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp">
 
 
-            </android.support.v7.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
 
 
         </LinearLayout>

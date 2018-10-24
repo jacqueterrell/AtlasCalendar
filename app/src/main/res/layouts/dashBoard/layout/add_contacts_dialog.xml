@@ -13,7 +13,7 @@
 
         <variable
             name = "navigator"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.contacts.add_contacts.AddContactDialogFragment"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.AddContactDialogFragment"/>
 
     </data>
 
@@ -23,7 +23,7 @@
         android:background="@null"
         >
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -167,7 +167,7 @@
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </FrameLayout>
 

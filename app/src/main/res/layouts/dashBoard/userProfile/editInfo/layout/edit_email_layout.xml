@@ -14,7 +14,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_individual.edit_email_info.EditEmailViewModel"/>
 
     </data>
 
@@ -40,7 +40,7 @@
                 android:layout_marginBottom="20dp">
 
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="105dp"
                     android:layout_height="40dp"
                     android:layout_gravity="end"
@@ -64,11 +64,11 @@
                         android:onClick="@{()-> viewModel.onSaveAndCloseClicked()}"
                         />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="105dp"
                     android:layout_height="40dp"
                     android:layout_gravity="end"
@@ -92,7 +92,7 @@
                         android:onClick="@{()-> viewModel.onContinueClicked()}"
                         />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
             </LinearLayout>

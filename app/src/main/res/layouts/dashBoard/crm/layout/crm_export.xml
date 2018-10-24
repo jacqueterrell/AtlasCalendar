@@ -13,7 +13,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmViewModel"/>
 
     </data>
 
@@ -92,7 +92,7 @@
                     android:onClick="@{()-> viewModel.onExportContactsCheckboxClicked()}"
                     >
 
-                    <android.support.v7.widget.AppCompatCheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id = "@+id/chk_box_contacts"
                         android:layout_width = "wrap_content"
                         android:layout_height = "wrap_content"
@@ -123,7 +123,7 @@
                     android:onClick="@{()-> viewModel.onExportOpportunitiesCheckboxClicked()}"
                     >
 
-                    <android.support.v7.widget.AppCompatCheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id = "@+id/chk_box_opportunities"
                         android:layout_width = "wrap_content"
                         android:layout_height = "wrap_content"
@@ -155,7 +155,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="105dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
@@ -180,7 +180,7 @@
                     android:onClick="@{()-> viewModel.onExportButtonClicked()}"
                     />
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
         </LinearLayout>

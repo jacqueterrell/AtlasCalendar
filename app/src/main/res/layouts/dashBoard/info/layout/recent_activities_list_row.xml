@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.info.InfoViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoViewModel" />
 
     </data>
 

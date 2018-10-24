@@ -11,7 +11,7 @@
 
         <variable
             name = "viewModel"
-            type = "com.team.mamba.atlas.userInterface.dashBoard.crm.main.CrmViewModel"/>
+            type = "com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmViewModel"/>
 
     </data>
 

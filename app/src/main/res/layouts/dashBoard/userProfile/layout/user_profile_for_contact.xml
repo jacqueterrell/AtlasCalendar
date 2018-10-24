@@ -12,11 +12,11 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.profile.contacts_profile.ContactProfileViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.ContactProfileViewModel" />
 
         <variable
             name = "profile"
-            type = "com.team.mamba.atlas.data.model.api.fireStore.UserProfile"/>
+            type = "com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile"/>
 
     </data>
 
@@ -69,7 +69,7 @@
                     android:layout_height="90dp">
 
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="90dp"
                         android:layout_height="90dp"
                         android:layout_gravity="end"
@@ -99,7 +99,7 @@
                             />
 
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
 
                 </FrameLayout>

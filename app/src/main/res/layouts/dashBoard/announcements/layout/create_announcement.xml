@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.team.mamba.atlas.userInterface.dashBoard.announcements.create_announcement.CreateAnnouncementViewModel" />
+            type="com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.create_announcement.CreateAnnouncementViewModel" />
 
     </data>
 
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="85dp">
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_flip_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
