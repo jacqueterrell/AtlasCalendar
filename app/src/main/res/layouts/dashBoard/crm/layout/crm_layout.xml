@@ -158,7 +158,7 @@
                     <ImageView
                         style="@style/IconImageView"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_tachometer_solid"
+                        android:src="@drawable/ic_calendar_solid"
                         android:layout_gravity="center"
                         android:tint="@color/material_icon"
                         android:onClick="@{()-> viewModel.onInfoClicked()}"

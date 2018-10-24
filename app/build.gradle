@@ -121,8 +121,8 @@ android {
 
             applicationId "com.team.mamba.atlascalendar.dev"
             resValue "string", "app_name", "Atlas Calendar-Dev"
-            versionCode 21010100
-            versionName "1.1.0"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "ca0f3c6e94c847058ab7b90d0a520dfb"]
 
@@ -132,8 +132,8 @@ android {
 
             applicationId "com.team.mamba.atlascalendar.staging"
             resValue "string", "app_name", "Atlas Calendar-Staging"
-            versionCode 21010100
-            versionName "1.1.0"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "f96b7678094340329695c6ee1427d195"]
 
@@ -143,8 +143,8 @@ android {
 
             applicationId "com.team.mamba.atlascalendar"
             resValue "string", "app_name", "Atlas Calendar"
-            versionCode 21010100
-            versionName "1.1.0"
+            versionCode 21010000
+            versionName "1.0.0"
             setProperty("archivesBaseName", "atlas_" + versionName)
             manifestPlaceholders = [HOCKEYAPP_APP_ID: "d5b53a01d8b241bc80acfd015103afe7"]
 
@@ -196,13 +196,13 @@ dependencies {
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
 
     //firebase libraries
-    implementation 'com.google.firebase:firebase-core:16.0.3'
-    implementation 'com.google.firebase:firebase-auth:16.0.3'
-    implementation 'com.google.firebase:firebase-firestore:17.1.0'
-    implementation 'com.google.android.gms:play-services-auth:16.0.0'
-    implementation 'com.google.firebase:firebase-storage:16.0.2'
-    implementation 'com.google.firebase:firebase-crash:16.2.0'
-    implementation 'com.google.firebase:firebase-messaging:17.3.1'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     //all testing dependencies
 

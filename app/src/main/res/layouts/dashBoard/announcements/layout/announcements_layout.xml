@@ -84,7 +84,7 @@
                         android:layout_gravity="center"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:onClick="@{()-> viewModel.onInfoClicked()}"
-                        android:src="@drawable/ic_tachometer_solid"
+                        android:src="@drawable/ic_calendar_solid"
                         android:tint="@color/material_icon" />
 
                     <androidx.cardview.widget.CardView
