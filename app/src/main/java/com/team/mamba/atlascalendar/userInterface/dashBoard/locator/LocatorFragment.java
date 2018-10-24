@@ -1,33 +1,19 @@
-package com.team.mamba.atlascalendar.userInterface.dashBoard.info;
+package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.BR;
-import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
-import com.team.mamba.atlascalendar.data.model.api.fireStore.UserConnections;
-import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.InfoLayoutBinding;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
@@ -35,22 +21,13 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
-import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
-
-import java.util.Collections;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import com.team.mamba.atlascalendar.R;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -60,14 +37,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
-        implements InfoNavigator {
+public class LocatorFragment extends BaseFragment<InfoLayoutBinding, LocatorViewModel>
+        implements LocatorNavigator {
 
     @Inject
-    InfoViewModel viewModel;
+    LocatorViewModel viewModel;
 
     @Inject
-    InfoDataModel dataModel;
+    LocatorDataModel dataModel;
 
     @Inject
     Context appContext;
@@ -78,9 +55,9 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     private CompositeDisposable compositeDisposable;
 
 
-    public static InfoFragment newInstance() {
+    public static LocatorFragment newInstance() {
 
-        return new InfoFragment();
+        return new LocatorFragment();
     }
 
     @Override
@@ -94,7 +71,7 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     }
 
     @Override
-    public InfoViewModel getViewModel() {
+    public LocatorViewModel getViewModel() {
         return viewModel;
     }
 

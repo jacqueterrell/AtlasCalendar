@@ -175,7 +175,9 @@ android {
             res.srcDirs =
                     ['src/main/res', 'src/main/res/layouts', 'src/main/res/layouts/welcome',
                      'src/main/res/layouts/dashBoard', 'src/main/res/layouts/main', 'src/main/res/layouts/dashboard/info',
-                     'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile', 'src/main/res/layouts/dashBoard/crm', 'src/main/res/layouts/dashBoard/announcements', 'src/main/res/assets', 'src/main/res/layouts/dashBoard/userProfile/editInfo']
+                     'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile',
+                     'src/main/res/layouts/dashBoard/crm', 'src/main/res/layouts/dashBoard/announcements', 'src/main/res/assets',
+                     'src/main/res/layouts/dashBoard/userProfile/editInfo', 'src/main/res/layouts/dashboard/locator']
         }
     }
 }
