@@ -1,5 +1,8 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
+import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
+import java.util.List;
+
 public interface LocatorNavigator {
 
     void onSettingsClicked();
@@ -11,5 +14,11 @@ public interface LocatorNavigator {
     void onNotificationsClicked();
 
     void onContactsClicked();
+
+    void onEmployeeContactsReturned();
+
+    List<UserProfile> getPermProfileList();
+
+    List<UserProfile> getFavoriteProfileList();
 
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHolder> {
 
-    private List<UserConnections> userConnectionsList = new ArrayList<>();
+    private List<UserConnections> userConnectionsList;
     private ContactsViewModel viewModel;
     private List<String> letterTitleList = new ArrayList<>();
     private List<Integer> letterPositions = new ArrayList<>();
@@ -131,6 +131,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListViewHold
     public int getItemCount() {
         return userConnectionsList.size();
     }
+
+
 
     public void filter(String text){
 
