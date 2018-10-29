@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:835794396185:android:8c69cf64d878e2ed",
         "android_client_info": {
-          "package_name": "com.team.mamba.atlascalendar"
+          "package_name": "com.team.mamba.atlas"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "835794396185-2dsr0sndgmm1aud6118kr3o8hvgoviuv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.team.mamba.atlascalendar",
+            "package_name": "com.team.mamba.atlas",
             "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "835794396185-bj6k8j5vhialk2cl0t3jvvi32idgttpp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.team.mamba.atlascalendar",
+            "package_name": "com.team.mamba.atlas",
             "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
           }
         },
@@ -52,10 +52,10 @@
               "client_type": 3
             },
             {
-              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_id": "835794396185-s4ajh1n0rm4enek0ghgq3gtmr34odctc.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.apt.atlascalendar"
+                "bundle_id": "com.apt.atlas-for-business"
               }
             }
           ]
@@ -69,7 +69,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:835794396185:android:b4bcce416c59df98",
         "android_client_info": {
-          "package_name": "com.team.mamba.atlascalendar.dev"
+          "package_name": "com.team.mamba.atlas.dev"
         }
       },
       "oauth_client": [
@@ -77,7 +77,7 @@
           "client_id": "835794396185-vvu0nrad9n5bg91qnkjh32f64h9vv5b5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.team.mamba.atlascalendar.dev",
+            "package_name": "com.team.mamba.atlas.dev",
             "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
           }
         },
@@ -85,7 +85,7 @@
           "client_id": "835794396185-r64l1dn0pvptkom3611gqhse1a48mgvp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.team.mamba.atlascalendar.dev",
+            "package_name": "com.team.mamba.atlas.dev",
             "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
           }
         },
@@ -111,10 +111,10 @@
               "client_type": 3
             },
             {
-              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_id": "835794396185-s4ajh1n0rm4enek0ghgq3gtmr34odctc.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.apt.atlascalendar"
+                "bundle_id": "com.apt.atlas-for-business"
               }
             }
           ]
@@ -128,7 +128,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:835794396185:android:0c1d3fc496d1069a",
         "android_client_info": {
-          "package_name": "com.team.mamba.atlascalendar.staging"
+          "package_name": "com.team.mamba.atlas.staging"
         }
       },
       "oauth_client": [
@@ -136,7 +136,7 @@
           "client_id": "835794396185-s6c7o6kltlfrv8q6qo6lq62lug6r0fkp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.team.mamba.atlascalendar.staging",
+            "package_name": "com.team.mamba.atlas.staging",
             "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
           }
         },
@@ -144,7 +144,7 @@
           "client_id": "835794396185-2ecmvc09jm53gbth0oa2prndro4vdk13.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.team.mamba.atlascalendar.staging",
+            "package_name": "com.team.mamba.atlas.staging",
             "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
           }
         },
@@ -170,10 +170,187 @@
               "client_type": 3
             },
             {
-              "client_id": "835794396185-e04obccemlh0h6o69ovt4ttgf2t3693q.apps.googleusercontent.com",
+              "client_id": "835794396185-s4ajh1n0rm4enek0ghgq3gtmr34odctc.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.apt.atlascalendar"
+                "bundle_id": "com.apt.atlas-for-business"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835794396185:android:e43df422c528467a",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlascalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835794396185-6ql03jfrqdul869pcg4c1uchhauqcni1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlascalendar",
+            "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
+          }
+        },
+        {
+          "client_id": "835794396185-b3poudjkudtokocfemutln955s0k3jmn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlascalendar",
+            "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
+          }
+        },
+        {
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-s4ajh1n0rm4enek0ghgq3gtmr34odctc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas-for-business"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835794396185:android:01e511c5c080c2a9",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlascalendar.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835794396185-j96uv40kh3rjgjnusaqf2nunogi66nru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlascalendar.dev",
+            "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
+          }
+        },
+        {
+          "client_id": "835794396185-636sahknssj8sbcmueqns7ikcrkvcp4n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlascalendar.dev",
+            "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
+          }
+        },
+        {
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-s4ajh1n0rm4enek0ghgq3gtmr34odctc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas-for-business"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835794396185:android:7543449891ab2f25",
+        "android_client_info": {
+          "package_name": "com.team.mamba.atlascalendar.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835794396185-g8l6guhjhde6rsiqq4e5vgfcraqd89pm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlascalendar.staging",
+            "certificate_hash": "0e1147eb9b8ac160b0b6cedbb770487c9d6cfd1c"
+          }
+        },
+        {
+          "client_id": "835794396185-2pp85ribsl1se94q0rsrnbnr6n5heii7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team.mamba.atlascalendar.staging",
+            "certificate_hash": "8df5823167c70646f1e16b3020fe1ceb46f1aa7b"
+          }
+        },
+        {
+          "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkLu1e9NfBZb6eojcHYzF7jE4v8ns32Uc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835794396185-a0fkpcmaj893guuop5f1enht9at9tas0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "835794396185-s4ajh1n0rm4enek0ghgq3gtmr34odctc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apt.atlas-for-business"
               }
             }
           ]

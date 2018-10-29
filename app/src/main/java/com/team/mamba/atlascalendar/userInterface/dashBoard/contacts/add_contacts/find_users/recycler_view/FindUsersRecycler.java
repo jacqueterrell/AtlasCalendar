@@ -124,7 +124,7 @@ public class FindUsersRecycler extends BaseFragment<FindUsersRecyclerLayoutBindi
     }
 
     /**
-     * Removes all Fragments off the stack except for the InfoFragment
+     * Removes all Fragments off the stack except for the LocatorFragment
      *
      * @param first the selected first name
      * @param last the selected last name

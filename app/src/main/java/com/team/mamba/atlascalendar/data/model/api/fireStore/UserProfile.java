@@ -47,6 +47,8 @@ public class UserProfile {
 
     @Exclude private int connectionType = 3;
     @Exclude private String shareNeeds = "...";
+    @Exclude private boolean searchable = false;
+    @Exclude private boolean favorite = false;
 
 
 
@@ -173,6 +175,22 @@ public class UserProfile {
         return workHistory;
     }
 
+
+    @Exclude public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    @Exclude public boolean isFavorite() {
+        return favorite;
+    }
+
+    @Exclude public void setSearchable(boolean searchable) {
+        this.searchable = searchable;
+    }
+
+    @Exclude public boolean isSearchable() {
+        return searchable;
+    }
 
     @Exclude public void setShareNeeds(String shareNeeds) {
         this.shareNeeds = shareNeeds;

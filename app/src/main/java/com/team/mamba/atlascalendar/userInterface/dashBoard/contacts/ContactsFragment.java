@@ -41,7 +41,7 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.
 
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.LocatorFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
 
@@ -536,7 +536,7 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
     public void onInfoClicked() {
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceFromBackStack(InfoFragment.newInstance(), manager, "Info", null);
+        ChangeFragments.replaceFromBackStack(LocatorFragment.newInstance(), manager, "Info", null);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contact
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.LocatorFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.HowDidYouMeetFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.PersonalNoteRecyclerView;
@@ -18,7 +19,6 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_busines
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.DashBoardModule;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.ContactProfileFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_individual.edit_address_info.EditAddressFragment;
@@ -66,7 +66,7 @@ public abstract class FragmentBuilder {
     abstract ContactsFragment bindContactsFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
-    abstract InfoFragment bindDashBoardHomeFragment();
+    abstract LocatorFragment bindDashBoardHomeFragment();
 
     @ContributesAndroidInjector(modules = DashBoardModule.class)
     abstract AnnouncementsFragment bindNotificationsFragment();

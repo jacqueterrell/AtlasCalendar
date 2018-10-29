@@ -23,7 +23,7 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.edit_add_note.Ed
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.edit_add_note.EditPageOneNavigator;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmNavigator;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.LocatorFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_business.BusinessProfileFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.ContactProfilePager;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_individual.UserProfileFragment;
@@ -112,7 +112,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         } else {
 
             if (fragment == null) {
-                fragment = InfoFragment.newInstance();
+                fragment = LocatorFragment.newInstance();
                 fm.beginTransaction()
                         .add(R.id.fragment_container, fragment)
                         .commit();
@@ -261,7 +261,7 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
             }
 
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (currentFragment instanceof InfoFragment
+            if (currentFragment instanceof LocatorFragment
                     || currentFragment instanceof CrmFragment
                     || currentFragment instanceof AnnouncementsFragment
                     || currentFragment instanceof ContactsFragment) {

@@ -12,13 +12,13 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contact
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.find_users.FindUsersViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.suggested_contacts.SuggestedContactsViewModel;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.LocatorViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.ContactNotesViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.HowDidYouMeetViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.notes.edit_note.PersonalNotesViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_business.BusinessProfileViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivityViewModel;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.info.InfoViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.contacts_profile.ContactProfileViewModel;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.profile.user_individual.UserProfileViewModel;
@@ -59,9 +59,9 @@ public class DashBoardModule {
     }
 
     @Provides
-    InfoViewModel providesDashBoardHomeViewModel(){
+    LocatorViewModel providesDashBoardHomeViewModel(){
 
-        return new InfoViewModel();
+        return new LocatorViewModel();
     }
 
     @Provides

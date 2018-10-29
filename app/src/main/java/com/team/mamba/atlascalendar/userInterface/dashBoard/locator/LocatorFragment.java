@@ -1,56 +1,43 @@
-package com.team.mamba.atlascalendar.userInterface.dashBoard.info;
+package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+import android.widget.EditText;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.BR;
-import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
-import com.team.mamba.atlascalendar.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
-import com.team.mamba.atlascalendar.databinding.InfoLayoutBinding;
+import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
-import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
 
-import java.util.Collections;
-import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 import com.team.mamba.atlascalendar.R;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -60,27 +47,27 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
-        implements InfoNavigator {
+public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorViewModel>
+        implements LocatorNavigator, SearchView.OnQueryTextListener {
 
     @Inject
-    InfoViewModel viewModel;
+    LocatorViewModel viewModel;
 
     @Inject
-    InfoDataModel dataModel;
+    LocatorDataModel dataModel;
 
     @Inject
     Context appContext;
 
-    private InfoLayoutBinding binding;
+    private LocatorLayoutBinding binding;
      private DashBoardActivityNavigator parentNavigator;
-    private DashBoardActivity parentActivity;
     private CompositeDisposable compositeDisposable;
+    private LocatorAdapter locatorAdapter;
 
 
-    public static InfoFragment newInstance() {
+    public static LocatorFragment newInstance() {
 
-        return new InfoFragment();
+        return new LocatorFragment();
     }
 
     @Override
@@ -90,11 +77,11 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
 
     @Override
     public int getLayoutId() {
-        return R.layout.info_layout;
+        return R.layout.locator_layout;
     }
 
     @Override
-    public InfoViewModel getViewModel() {
+    public LocatorViewModel getViewModel() {
         return viewModel;
     }
 
@@ -108,13 +95,8 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
     public void onAttach(Context context) {
         super.onAttach(context);
         parentNavigator = (DashBoardActivityNavigator) context;
-        parentActivity = (DashBoardActivity) context;
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,7 +110,14 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         super.onCreateView(inflater, container, savedInstanceState);
         binding = getViewDataBinding();
 
+        locatorAdapter = new LocatorAdapter(this);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(locatorAdapter);
+        locatorAdapter.setProfileList();
 
+        setUpSearchView();
+        viewModel.requestContactsInfo(getViewModel());
         return binding.getRoot();
     }
 
@@ -160,13 +149,64 @@ public class InfoFragment extends BaseFragment<InfoLayoutBinding, InfoViewModel>
         ChangeFragments.replaceFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
     }
 
-
-
     @Override
     public void handleError(String msg) {
 
         showSnackbar(msg);
         hideSplashScreen();
+    }
+
+    @Override
+    public List<UserProfile> getPermProfileList() {
+        return viewModel.getEmployeeProfilesList();
+    }
+
+    @Override
+    public List<UserProfile> getFavoriteProfileList() {
+        return viewModel.getFavoritesProfileList();
+    }
+
+    @Override
+    public void onEmployeeContactsReturned() {
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+
+            binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+        }
+
+        locatorAdapter.setProfileList();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+         locatorAdapter.filter(newText);
+         return true;
+    }
+
+    private void setUpSearchView() {
+
+        binding.searchView.setOnQueryTextListener(this);
+        binding.searchView.setIconifiedByDefault(false);
+        binding.searchView.setFocusable(false);
+
+        //set the color for our search view edit text and text hint
+        EditText searchEditText = binding.searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.material_icons_light));
+        searchEditText.setHint("Search...");
+
+        //set the color for our search view icon
+        ImageView searchMagIcon = binding.searchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
+        searchMagIcon.setColorFilter(ContextCompat.getColor(appContext, R.color.white));
+        searchMagIcon.setVisibility(View.GONE);
+
+        //set the line color
+        View v = binding.searchView.findViewById(androidx.appcompat.R.id.search_plate);
+        v.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void hideSplashScreen() {

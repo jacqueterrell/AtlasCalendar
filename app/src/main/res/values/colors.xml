@@ -18,11 +18,14 @@
     <color name="material_icons_light">#d5d5d5</color>
     <color name="material_icon">#999999</color>
     <color name="grey">#7f7f7f</color>
+    <color name="white_smoke">#f3f3f3</color>
     <color name="chart_blue">#99a0d5</color>
+    <color name="light_blue">#007aff</color>
     <color name="chart_red">#700d08</color>
     <color name="orange">#fa7847</color>
     <color name="green">#638143</color>
     <color name="dessert_green">#6ab187</color>
+    <color name="dark_green">#618240</color>
 
     <color name="pastel_dark_red">#f05847</color>
 
