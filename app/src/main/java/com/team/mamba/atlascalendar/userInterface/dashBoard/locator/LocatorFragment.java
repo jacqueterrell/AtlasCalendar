@@ -6,17 +6,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
@@ -35,9 +38,12 @@ import com.team.mamba.atlascalendar.utils.ChangeFragments;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import com.team.mamba.atlascalendar.R;
+
+import net.hockeyapp.android.metrics.model.User;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -60,7 +66,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     Context appContext;
 
     private LocatorLayoutBinding binding;
-     private DashBoardActivityNavigator parentNavigator;
+    private DashBoardActivityNavigator parentNavigator;
     private CompositeDisposable compositeDisposable;
     private LocatorAdapter locatorAdapter;
 
@@ -87,7 +93,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
 
@@ -114,9 +120,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(locatorAdapter);
-        locatorAdapter.setProfileList();
 
         setUpSearchView();
+        showProgressSpinner();
         viewModel.requestContactsInfo(getViewModel());
         return binding.getRoot();
     }
@@ -152,8 +158,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void handleError(String msg) {
 
+        hideProgressSpinner();
         showSnackbar(msg);
-        hideSplashScreen();
     }
 
     @Override
@@ -161,20 +167,101 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         return viewModel.getEmployeeProfilesList();
     }
 
-    @Override
-    public List<UserProfile> getFavoriteProfileList() {
-        return viewModel.getFavoritesProfileList();
-    }
 
     @Override
     public void onEmployeeContactsReturned() {
 
-        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+        hideProgressSpinner();
+        if (!dataManager.getSharedPrefs().isBusinessAccount()) {
 
             binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
         }
 
-        locatorAdapter.setProfileList();
+        List<UserProfile> favUserProfiles = new ArrayList<>();
+        favUserProfiles.addAll(viewModel.getFavoritesProfileList());
+
+        locatorAdapter.setFavoriteProfiles(favUserProfiles);
+    }
+
+    @Override
+    public void addFavoriteUser(String profileId) {
+
+
+        if (viewModel.getFavoriteUsersEntityList().size() >= 10){
+
+            String title = "Max Reached";
+            String body = "You can only hve up to ten favorites.";
+            showAlert(title,body);
+
+        } else {
+
+            for (UserProfile profile : viewModel.getFavoritesProfileList()){
+
+                if (profile.getId().equals(profileId)){
+
+                    String title = "Already a Favorite";
+                    String body = "You already added this user as a favorite.";
+                    showAlert(title,body);
+                    return;
+                }
+            }
+
+            viewModel.addFavoriteUser(getViewModel(),profileId);
+            showSnackbar("User added to favorites");
+        }
+
+    }
+
+    @Override
+    public void removeFavoriteUser(String profileId) {
+
+        viewModel.removeFavorteUser(getViewModel(),profileId);
+        showSnackbar("User removed from favorites");
+
+    }
+
+    @Override
+    public void onFavoriteAddedSuccessfully(String profileId) {
+
+        List<UserProfile> favoriteProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
+        List<UserProfile> employeeProfiles = new ArrayList<>(viewModel.getEmployeeProfilesList());
+
+        for (UserProfile profile : employeeProfiles){
+
+            if (profile.getId().equals(profileId)){
+
+                profile.setFavorite(true);
+                profile.setSearchable(false);
+                favoriteProfiles.add(profile);
+                viewModel.setFavoritesProfileList(favoriteProfiles);
+                break;
+            }
+        }
+        locatorAdapter.setFavoriteProfiles(favoriteProfiles);
+    }
+
+    @Override
+    public void onFavoriteRemovedSuccessfully(String profileId) {
+
+        List<UserProfile> favoriteProfiles = new ArrayList<>();
+        for (UserProfile profile : viewModel.getFavoritesProfileList()){
+
+            if (!profile.getId().equals(profileId)){
+
+                profile.setFavorite(true);
+                profile.setSearchable(false);
+                favoriteProfiles.add(profile);
+            }
+        }
+
+        viewModel.setFavoritesProfileList(favoriteProfiles);
+        locatorAdapter.setFavoriteProfiles(viewModel.getFavoritesProfileList());
+    }
+
+    @Override
+    public void updateFavoritesList() {
+
+//        locatorAdapter.setFavoriteProfiles(viewModel.getFavoritesProfileList());
     }
 
     @Override
@@ -184,8 +271,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     @Override
     public boolean onQueryTextChange(String newText) {
-         locatorAdapter.filter(newText);
-         return true;
+        locatorAdapter.filter(newText);
+        return true;
     }
 
     private void setUpSearchView() {
@@ -209,14 +296,6 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private void hideSplashScreen() {
-
-        YoYo.with(Techniques.FadeOut)
-                .duration(500)
-                .onEnd(animator -> binding.layoutSplashScreen.setVisibility(View.GONE))
-                .playOn(binding.layoutSplashScreen);
-    }
-
 
 
     @Override
@@ -238,15 +317,15 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     /*Set up Notification Badges*/
 
-    private void resetNewConnectionRequestBadge(){
+    private void resetNewConnectionRequestBadge() {
 
         DashBoardActivity.newRequestCount = 0;
         binding.cardRequestBadge.setVisibility(View.GONE);
     }
 
-    private void setUpNewConnectionRequestBadge(){
+    private void setUpNewConnectionRequestBadge() {
 
-        if (DashBoardActivity.newRequestCount > 0){//show badge
+        if (DashBoardActivity.newRequestCount > 0) {//show badge
 
             binding.cardRequestBadge.setVisibility(View.VISIBLE);
             binding.tvRequestBadgeCount.setText(String.valueOf(DashBoardActivity.newRequestCount));
@@ -258,9 +337,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
 
-    private void setUpNewAnnouncementBadge(){
+    private void setUpNewAnnouncementBadge() {
 
-        if (DashBoardActivity.newAnnouncementCount > 0){//show badge
+        if (DashBoardActivity.newAnnouncementCount > 0) {//show badge
 
             binding.cardNotificationBadge.setVisibility(View.VISIBLE);
             binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
@@ -273,9 +352,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     /**
      * Subscribes to the Observable in {@link MyFirebaseMessagingService}
-     *
      */
-    private void setNotificationObservable(){
+    private void setNotificationObservable() {
 
         Observable<String> observable = MyFirebaseMessagingService.getObservable();
         Observer<String> observer = new Observer<String>() {
@@ -283,6 +361,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
             public void onSubscribe(Disposable d) {
                 compositeDisposable.add(d);
             }
+
             @Override
             public void onNext(String s) {
 
@@ -290,7 +369,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
                 if (s.equals(AppConstants.NOTIFICATION_NEW_CONNECTION)) {
 
-                  showNewConnectionRequestBadge();
+                    showNewConnectionRequestBadge();
 
                 } else if (s.equals(AppConstants.NOTIFICATION_NEW_ANNOUNCEMENT)) {
 
@@ -304,14 +383,15 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
             }
 
             @Override
-            public void onComplete() { }
+            public void onComplete() {
+            }
         };
 
         observable.subscribe(observer);
     }
 
     @SuppressLint("CheckResult")
-    private void showNewConnectionRequestBadge(){
+    private void showNewConnectionRequestBadge() {
 
         Completable.fromCallable(() -> {
 
@@ -327,14 +407,14 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @SuppressLint("CheckResult")
-    private void showNewAnnouncementBadge(){
+    private void showNewAnnouncementBadge() {
 
-        Completable.fromCallable(()->{
+        Completable.fromCallable(() -> {
 
             return false;
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(()->{
+                .subscribe(() -> {
                     binding.cardNotificationBadge.setVisibility(View.VISIBLE);
                     binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
                 });

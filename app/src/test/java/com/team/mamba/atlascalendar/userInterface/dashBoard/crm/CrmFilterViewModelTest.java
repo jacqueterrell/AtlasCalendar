@@ -17,7 +17,6 @@ import static org.mockito.Mockito.*;
 
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-@Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class CrmFilterViewModelTest {
 

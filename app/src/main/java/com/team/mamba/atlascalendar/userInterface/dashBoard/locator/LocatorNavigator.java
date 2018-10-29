@@ -17,8 +17,16 @@ public interface LocatorNavigator {
 
     void onEmployeeContactsReturned();
 
-    List<UserProfile> getPermProfileList();
+    void addFavoriteUser(String profileId);
 
-    List<UserProfile> getFavoriteProfileList();
+    void removeFavoriteUser(String profileId);
+
+    void onFavoriteAddedSuccessfully(String profileId);
+
+    void onFavoriteRemovedSuccessfully(String profileId);
+
+    void updateFavoritesList();
+
+    List<UserProfile> getPermProfileList();
 
 }

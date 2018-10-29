@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-@Config(constants = BuildConfig.class)
 public class AdminAccountsViewModelTest {
 
 

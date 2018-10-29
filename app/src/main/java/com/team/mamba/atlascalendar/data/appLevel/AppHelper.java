@@ -2,10 +2,18 @@ package com.team.mamba.atlascalendar.data.appLevel;
 
 import android.content.Context;
 
+import com.team.mamba.atlascalendar.data.local_database.favoriteUsers.FavoriteUsersDbHelper;
+import com.team.mamba.atlascalendar.data.local_database.favoriteUsers.FavoriteUsersEntity;
 import com.team.mamba.atlascalendar.data.remote.AtlasApiEndPoints;
 import com.team.mamba.atlascalendar.data.remote.GooglePlacesApiEndPoints;
 import com.team.mamba.atlascalendar.utils.AppSharedPrefs;
+
+import java.util.List;
+
 import javax.inject.Inject;
+
+import androidx.lifecycle.LiveData;
+import io.reactivex.Single;
 
 public class AppHelper implements DataHelper {
 
@@ -38,4 +46,5 @@ public class AppHelper implements DataHelper {
     public GooglePlacesApiEndPoints getGooglePlacesApiEndPoint() {
         return googlePlacesApiEndPoints;
     }
+
 }
