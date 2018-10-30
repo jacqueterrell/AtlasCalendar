@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -177,15 +178,15 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
             binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
         }
 
-        List<UserProfile> favUserProfiles = new ArrayList<>();
-        favUserProfiles.addAll(viewModel.getFavoritesProfileList());
-
+        List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
         locatorAdapter.setFavoriteProfiles(favUserProfiles);
     }
 
     @Override
-    public void addFavoriteUser(String profileId) {
+    public void addFavoriteUser(UserProfile userProfile) {
 
+        String profileId = userProfile.getId();
+        String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
 
         if (viewModel.getFavoriteUsersEntityList().size() >= 10){
 
@@ -206,62 +207,53 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                 }
             }
 
-            viewModel.addFavoriteUser(getViewModel(),profileId);
-            showSnackbar("User added to favorites");
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+            dialog.setTitle("Add to Favorites?")
+                    .setMessage("Do you want to add " + fullName + " as a favorite?")
+                    .setNegativeButton("No", (paramDialogInterface, paramInt) -> {
+                    })
+                    .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                        viewModel.addFavoriteUser(getViewModel(),profileId);
+                        showSnackbar( fullName + " added to favorites");
+                    })
+            ;
+
+            dialog.show();
         }
 
     }
 
     @Override
-    public void removeFavoriteUser(String profileId) {
+    public void removeFavoriteUser(UserProfile userProfile) {
 
-        viewModel.removeFavorteUser(getViewModel(),profileId);
-        showSnackbar("User removed from favorites");
+        String profileId = userProfile.getId();
+        String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
 
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle("Remove From Favorites?")
+                .setMessage("Do you want to remove " + fullName + " from your favorites list?")
+                .setNegativeButton("No", (paramDialogInterface, paramInt) -> {
+                })
+                .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
+
+                    viewModel.removeFavorteUser(getViewModel(),profileId);
+                    showSnackbar(fullName + " removed from favorites");
+                })
+        ;
+
+        dialog.show();
     }
 
-    @Override
-    public void onFavoriteAddedSuccessfully(String profileId) {
 
-        List<UserProfile> favoriteProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
-        List<UserProfile> employeeProfiles = new ArrayList<>(viewModel.getEmployeeProfilesList());
-
-        for (UserProfile profile : employeeProfiles){
-
-            if (profile.getId().equals(profileId)){
-
-                profile.setFavorite(true);
-                profile.setSearchable(false);
-                favoriteProfiles.add(profile);
-                viewModel.setFavoritesProfileList(favoriteProfiles);
-                break;
-            }
-        }
-        locatorAdapter.setFavoriteProfiles(favoriteProfiles);
-    }
-
-    @Override
-    public void onFavoriteRemovedSuccessfully(String profileId) {
-
-        List<UserProfile> favoriteProfiles = new ArrayList<>();
-        for (UserProfile profile : viewModel.getFavoritesProfileList()){
-
-            if (!profile.getId().equals(profileId)){
-
-                profile.setFavorite(true);
-                profile.setSearchable(false);
-                favoriteProfiles.add(profile);
-            }
-        }
-
-        viewModel.setFavoritesProfileList(favoriteProfiles);
-        locatorAdapter.setFavoriteProfiles(viewModel.getFavoritesProfileList());
-    }
 
     @Override
     public void updateFavoritesList() {
 
-//        locatorAdapter.setFavoriteProfiles(viewModel.getFavoritesProfileList());
+        List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
+        locatorAdapter.setFavoriteProfiles(favUserProfiles);
     }
 
     @Override

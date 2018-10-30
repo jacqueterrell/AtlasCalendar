@@ -46,15 +46,16 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
                 UserProfile profile = userProfileList.get(getAdapterPosition());
                 String profileId = profile.getId();
-                navigator.addFavoriteUser(profileId);
+                String fullName = profile.getFirstName() + " " + profile.getLastName();
+
+                navigator.addFavoriteUser(profile);
 
             });
 
             binding.ibFavoriteSelected.setOnClickListener(v -> {
 
                 UserProfile profile = userProfileList.get(getAdapterPosition());
-                String profileId = profile.getId();
-                navigator.removeFavoriteUser(profileId);
+                navigator.removeFavoriteUser(profile);
             });
         }
     }
@@ -164,11 +165,7 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
         searchHistoryProfiles.clear();
 
-        if (text.equals("")){
-
-            //searchHistoryProfiles.clear();
-
-        } else {
+        if (!text.isEmpty()) {
 
             text = text.toLowerCase();
 
@@ -229,16 +226,5 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
         }
 
         setUpProfileList();
-    }
-
-    private List<UserProfile> getFavoriteProfiles(){
-
-        for (UserProfile profile : favoriteProfiles){
-
-            profile.setSearchable(false);
-            profile.setFavorite(true);
-        }
-
-        return favoriteProfiles;
     }
 }

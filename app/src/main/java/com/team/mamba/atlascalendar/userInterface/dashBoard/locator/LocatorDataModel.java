@@ -9,6 +9,7 @@ import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ public class LocatorDataModel {
 
 
     private AppDataManager dataManager;
+    private static List<UserProfile> allUserProfiles = new ArrayList<>();
 
     @Inject
     public LocatorDataModel(AppDataManager dataManager) {
@@ -157,6 +159,7 @@ public class LocatorDataModel {
 
                         }
 
+                        allUserProfiles.addAll(adjustedProfileList);
                         requestFavoriteUsers(viewModel,adjustedProfileList);
 
                     } else {
@@ -225,7 +228,17 @@ public class LocatorDataModel {
             }
         }
 
-        viewModel.getNavigator().onFavoriteRemovedSuccessfully(profileId);
+        for (Iterator<UserProfile> iterator = viewModel.getFavoritesProfileList().iterator(); iterator.hasNext();){
+
+            UserProfile profile = iterator.next();
+
+            if (profile.getId().equals(profileId)){
+
+                iterator.remove();
+            }
+        }
+
+        viewModel.getNavigator().updateFavoritesList();
     }
 
 
@@ -237,7 +250,23 @@ public class LocatorDataModel {
 
         FavoriteUsersEntity favoriteUsersEntity = new FavoriteUsersEntity(profileId);
         dataManager.insertFavoriteUser(favoriteUsersEntity);
-        viewModel.getNavigator().onFavoriteAddedSuccessfully(profileId);
+
+        List<UserProfile> favoriteProfiles = new ArrayList<>();
+        favoriteProfiles.addAll(viewModel.getFavoritesProfileList());
+
+        for (UserProfile profile : allUserProfiles){
+
+            if (profile.getId().equals(profileId)){
+
+                profile.setFavorite(true);
+                profile.setSearchable(false);
+                favoriteProfiles.add(profile);
+                viewModel.setFavoritesProfileList(favoriteProfiles);
+                break;
+            }
+        }
+
+        viewModel.getNavigator().updateFavoritesList();
     }
 
     private void onPause(LocatorViewModel viewModel){
