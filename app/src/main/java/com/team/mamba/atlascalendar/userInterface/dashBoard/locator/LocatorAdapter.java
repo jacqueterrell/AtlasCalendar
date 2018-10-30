@@ -175,6 +175,7 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
                     if (searchHistoryProfiles.size() < 10){
 
+                        //todo if profile.codeLevel -1 is >=saved profileCode
                         profile.setSearchable(true);
                         profile.setFavorite(false);
                         searchHistoryProfiles.add(profile);
