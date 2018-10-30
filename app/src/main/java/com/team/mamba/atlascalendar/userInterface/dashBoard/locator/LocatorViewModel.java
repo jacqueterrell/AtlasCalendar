@@ -1,8 +1,10 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
+import com.team.mamba.atlascalendar.data.local_database.favoriteUsers.FavoriteUsersEntity;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.userInterface.base.BaseViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +14,8 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     private UserProfile selectedUserProfile;
     private BusinessProfile selectedBusinessProfile;
     private List<UserProfile> employeeProfilesList = new ArrayList<>();
-    private List<String> favoritesIdList = new ArrayList<>();
     private List<UserProfile> favoritesProfileList = new ArrayList<>();
+    private List<FavoriteUsersEntity> favoriteUsersEntityList = new ArrayList<>();
 
     /***************view logic************/
 
@@ -44,40 +46,42 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         return employeeProfilesList;
     }
 
-    public void setEmployeeProfilesList(
-            List<UserProfile> employeeProfilesList) {
+    public void setEmployeeProfilesList(List<UserProfile> employeeProfilesList) {
         this.employeeProfilesList = employeeProfilesList;
     }
 
-    public void setFavoritesIdList(List<String> favoritesIdList) {
-        this.favoritesIdList = favoritesIdList;
-    }
-
-    public List<String> getFavoritesIdList() {
-        return favoritesIdList;
-    }
 
     public void setFavoritesProfileList(List<UserProfile> favoritesProfileList) {
         this.favoritesProfileList = favoritesProfileList;
     }
 
     public List<UserProfile> getFavoritesProfileList() {
+
+
         return favoritesProfileList;
+    }
+
+    public void setFavoriteUsersEntityList(List<FavoriteUsersEntity> favoriteUsersEntityList) {
+        this.favoriteUsersEntityList = favoriteUsersEntityList;
+    }
+
+    public List<FavoriteUsersEntity> getFavoriteUsersEntityList() {
+        return favoriteUsersEntityList;
     }
 
     /***************onclick listeners************/
 
-    public void onContactsClicked(){
+    public void onContactsClicked() {
 
         getNavigator().onContactsClicked();
     }
 
-    public void onCrmClicked(){
+    public void onCrmClicked() {
 
         getNavigator().onCrmClicked();
     }
 
-    public void onNotificationsClicked(){
+    public void onNotificationsClicked() {
 
         getNavigator().onNotificationsClicked();
     }
@@ -85,8 +89,18 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
     /********* Datamodel Calls********/
 
-    public void requestContactsInfo(LocatorViewModel viewModel){
+    public void requestContactsInfo(LocatorViewModel viewModel) {
 
         dataModel.requestContactsInfo(viewModel);
+    }
+
+    public void removeFavorteUser(LocatorViewModel viewModel, String profileId) {
+
+        dataModel.removeFavoriteUser(viewModel, profileId);
+    }
+
+    public void addFavoriteUser(LocatorViewModel viewModel, String profileId) {
+
+        dataModel.addFavoriteUser(viewModel, profileId);
     }
 }

@@ -36,6 +36,27 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
         public LocatorViewHolder(@NonNull LocatorListRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            setUpOnClickListeners();
+        }
+
+        private void setUpOnClickListeners(){
+
+
+            binding.ibFavoriteNotSelected.setOnClickListener(v -> {
+
+                UserProfile profile = userProfileList.get(getAdapterPosition());
+                String profileId = profile.getId();
+                String fullName = profile.getFirstName() + " " + profile.getLastName();
+
+                navigator.addFavoriteUser(profile);
+
+            });
+
+            binding.ibFavoriteSelected.setOnClickListener(v -> {
+
+                UserProfile profile = userProfileList.get(getAdapterPosition());
+                navigator.removeFavoriteUser(profile);
+            });
         }
     }
 
@@ -59,7 +80,10 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
         String fullName = profile.getFirstName() + " " + profile.getLastName();
         holder.binding.tvFullName.setText(fullName);
 
-        if (profile.isSearchable()){
+        if (profile.isSearchable() && !profile.isFavorite()){
+
+            holder.binding.ibFavoriteSelected.setVisibility(View.GONE);
+            holder.binding.ibFavoriteNotSelected.setVisibility(View.VISIBLE);
 
             if (position == 0){
 
@@ -84,9 +108,8 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
                 holder.binding.viewEmptyRow.setVisibility(View.GONE);
 
             }
-        }
 
-        if (profile.isFavorite()){
+        } else if (profile.isFavorite() && !profile.isSearchable()){
 
             holder.binding.ibFavoriteSelected.setVisibility(View.VISIBLE);
             holder.binding.ibFavoriteNotSelected.setVisibility(View.GONE);
@@ -100,13 +123,16 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
             } else {
 
-                if (!favoriteTitleList.contains(profile.getId())){
+                if (favoriteTitleList.isEmpty()){
 
-                    holder.binding.tvCategory.setVisibility(View.VISIBLE);
-                    holder.binding.tvCategory.setText("Favorites");
+                    holder.binding.layoutRow.setVisibility(View.VISIBLE);
+                    holder.binding.viewEmptyRow.setVisibility(View.GONE);
 
-                    favoriteTitleList.add(profile.getId());
-                    favoritePositions.add(position);
+                        holder.binding.tvCategory.setVisibility(View.VISIBLE);
+                        holder.binding.tvCategory.setText("Favorites");
+
+                        favoriteTitleList.add(profile.getId());
+                        favoritePositions.add(position);
 
                 } else if (favoritePositions.contains(position)){
 
@@ -139,30 +165,26 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
         searchHistoryProfiles.clear();
 
-        if (text.equals("")){
-
-            searchHistoryProfiles.clear();
-
-        } else {
+        if (!text.isEmpty()) {
 
             text = text.toLowerCase();
 
             for (UserProfile profile : navigator.getPermProfileList()){
 
-                if (profile.getFirstName().toLowerCase().contains(text)
-                        || profile.getLastName().toLowerCase().contains(text)){
+                if (profile.getFirstName().toLowerCase().contains(text) || profile.getLastName().toLowerCase().contains(text)){
 
                     profile.setSearchable(true);
+                    profile.setFavorite(false);
                     searchHistoryProfiles.add(profile);
                 }
             }
 
         }
 
-        setProfileList();
+        setUpProfileList();
     }
 
-    public void setProfileList(){
+    public void setUpProfileList(){
 
         if (searchHistoryProfiles.isEmpty()){
 
@@ -183,9 +205,26 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
         Collections.sort(searchHistoryProfiles, (o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
         Collections.sort(favoriteProfiles, (o1, o2) -> o1.getLastName().compareTo(o2.getLastName()));
 
+        favoriteTitleList.clear();
+        favoritePositions.clear();
+
         userProfileList.clear();
         userProfileList.addAll(searchHistoryProfiles);
         userProfileList.addAll(favoriteProfiles);
         notifyDataSetChanged();
+    }
+
+    public void setFavoriteProfiles(List<UserProfile> profiles){
+
+        favoriteProfiles.clear();
+
+        for (UserProfile profile: profiles){
+
+            profile.setFavorite(true);
+            profile.setSearchable(false);
+            favoriteProfiles.add(profile);
+        }
+
+        setUpProfileList();
     }
 }

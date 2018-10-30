@@ -21,7 +21,6 @@ import static org.mockito.Mockito.*;
 
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-@Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class DashBoardActivityViewModelTest {
 
@@ -71,44 +70,4 @@ public class DashBoardActivityViewModelTest {
         assertEquals(profile,viewModel.getUserProfile());
     }
 
-
-    @Test
-    public void onContactsClicked() {
-
-        //action
-        spyViewModel.onContactsClicked();
-
-        //assert
-        verify(mockNavigator).onContactsClicked();
-    }
-
-    @Test
-    public void onCrmClicked() {
-
-        //action
-        spyViewModel.onCrmClicked();
-
-        //assert
-        verify(mockNavigator).onCrmClicked();
-    }
-
-    @Test
-    public void onNotificationsClicked() {
-
-        //action
-        spyViewModel.onNotificationsClicked();
-
-        //assert
-        verify(mockNavigator).onNotificationsClicked();
-    }
-
-    @Test
-    public void onInfoClicked() {
-
-        //action
-        spyViewModel.onInfoClicked();
-
-        //assert
-        verify(mockNavigator).onInfoClicked();
-    }
 }
