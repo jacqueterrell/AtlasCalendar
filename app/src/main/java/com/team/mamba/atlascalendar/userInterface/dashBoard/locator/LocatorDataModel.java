@@ -35,12 +35,13 @@ public class LocatorDataModel {
         requestUserProfiles(viewModel);
     }
 
+
+    /**
+     * Gets all User profiles from the database
+     */
     private void requestUserProfiles(LocatorViewModel viewModel){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<UserProfile> adjustedProfileList = new ArrayList<>();
-        List<UserProfile> tempProfileList = new ArrayList<>();
-        String savedUserId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.USERS_COLLECTION)
                 .get()
@@ -49,25 +50,7 @@ public class LocatorDataModel {
                     if (task.isSuccessful()){
 
                         List<UserProfile> userProfileList = task.getResult().toObjects(UserProfile.class);
-
-                        for (UserProfile profile : userProfileList){
-
-                            if (profile.getId() != null) {
-
-                                if (profile.getId().equals(savedUserId)) {
-
-                                    viewModel.setSelectedUserProfile(profile);
-                                }
-
-                                tempProfileList.add(profile);
-                                adjustedProfileList.add(profile);
-                            }
-                        }
-
-                        if (!dataManager.getSharedPrefs().isBusinessAccount()){
-
-                            requestBusinessProfiles(viewModel,adjustedProfileList);
-                        }
+                        setAllUserProfiles(viewModel,userProfileList);
 
                     } else {
 
@@ -77,10 +60,49 @@ public class LocatorDataModel {
                 });
     }
 
+
+    /**
+     * Saves the signed in user's profile and removes all profiles
+     * that do not have a userId
+     *
+     * @param userProfileList list of all profiles using Atlas
+     */
+    private void setAllUserProfiles(LocatorViewModel viewModel,List<UserProfile> userProfileList){
+
+        List<UserProfile> adjustedProfileList = new ArrayList<>();
+        String savedUserId = dataManager.getSharedPrefs().getUserId();
+
+        for (UserProfile profile : userProfileList){
+
+            if (profile.getId() != null) {
+
+                if (profile.getId().equals(savedUserId)) {
+
+                    viewModel.setSelectedUserProfile(profile);
+                }
+
+                adjustedProfileList.add(profile);
+            }
+        }
+
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+
+            if (LocatorViewModel.getCalendarCompanyId().isEmpty()){
+
+                viewModel.getNavigator().showAddCalendarMessage();
+
+            } else {
+
+                requestBusinessProfiles(viewModel,adjustedProfileList);
+            }
+
+        }
+    }
+
     private void requestBusinessProfiles(LocatorViewModel viewModel,List<UserProfile> userProfileList){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String employer = viewModel.getSelectedUserProfile().getCurrentEmployer();
+        String employerId = LocatorViewModel.getCalendarCompanyId();
         List<UserProfile> selectedProfilesList = new ArrayList<>();
 
         List<String> connectionsIdList = new ArrayList<>();
@@ -95,7 +117,7 @@ public class LocatorDataModel {
 
                         for (BusinessProfile profile : businessProfiles){
 
-                            if (profile.getName().equalsIgnoreCase(employer)){//retrieve the employers contacts
+                            if (profile.getId().equals(employerId)){//retrieve the employers contacts
 
                                 for (Map.Entry<String, String> entry : profile.getContacts().entrySet()){
 

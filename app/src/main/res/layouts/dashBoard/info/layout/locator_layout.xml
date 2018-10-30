@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text="Mamba Team"
+                    tools:text=""
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                     android:textSize="20sp" />
 
@@ -286,6 +286,79 @@
             app:gp_type="triangle"
             tools:visibility="visible" />
 
+        <LinearLayout
+            android:id="@+id/layout_empty_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="55dp"
+            android:layout_marginBottom="55dp">
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                tools:text="You have no connections"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="20sp"
+                android:layout_marginBottom="25dp"
+                />
+
+
+            <androidx.cardview.widget.CardView
+                android:id = "@+id/card_submit_selected"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_margin = "10dp"
+                android:innerRadius = "0dp"
+                android:shape = "ring"
+                app:cardCornerRadius = "10dp"
+                app:cardBackgroundColor = "@color/dessert_green"
+                app:cardElevation = "5dp"
+                android:layout_gravity="center_horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/white"
+                    android:layout_marginLeft="15dp"/>
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width = "200dp"
+                    android:layout_height = "50dp"
+                    android:textColor = "@color/white"
+                    android:background = "?attr/selectableItemBackgroundBorderless"
+                    android:text = "Add Connection"
+                    android:fontFamily="@font/lato"
+                    android:textAllCaps="false"
+                    android:paddingStart="15dp"
+                    android:onClick="@{()-> viewModel.onAddConnectionClicked()}"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
     </FrameLayout>
 
         <!--Start of our Drawer layout-->
@@ -372,35 +445,90 @@
 
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Account Management"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                android:textSize="15sp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="50dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
-                android:fontFamily="@font/lato"
-                android:onClick="@{()-> viewModel.onAccountManagementClicked()}"
+                android:onClick="@{()-> viewModel.onAddConnectionClicked()}"
+                >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_add"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="45dp"
+                    android:tint="@color/black"
                 />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Logout"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="Add Connection"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/lato"
+                    android:layout_gravity="end"
+                    />
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="?attr/selectableItemBackground"
-                android:textSize="15sp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="50dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/lato"
+                android:layout_gravity="center_horizontal"
+                android:onClick="@{()-> viewModel.onAccountManagementClicked()}"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="Account Management"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/lato"
+                    android:layout_gravity="end"
+                    />
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_gravity="center_horizontal"
                 android:onClick="@{()-> viewModel.onLogOutClicked()}"
-                />
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="Logout"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/lato"
+                    android:layout_gravity="end"
+                    />
+
+            </FrameLayout>
 
         </LinearLayout>
 

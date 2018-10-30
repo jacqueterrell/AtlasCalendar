@@ -17,6 +17,9 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     private List<UserProfile> favoritesProfileList = new ArrayList<>();
     private List<FavoriteUsersEntity> favoriteUsersEntityList = new ArrayList<>();
 
+    private static String calendarCompanyId = "";
+
+
     /***************view logic************/
 
     /***************getters and setters************/
@@ -69,6 +72,18 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         return favoriteUsersEntityList;
     }
 
+
+
+    //fixme remove in place of action Firebase field
+
+    public static void setCalendarCompanyId(String calendarCompanyId) {
+        LocatorViewModel.calendarCompanyId = calendarCompanyId;
+    }
+
+    public static String getCalendarCompanyId() {
+        return calendarCompanyId;
+    }
+
     /***************onclick listeners************/
 
     public void onContactsClicked() {
@@ -101,6 +116,11 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         getNavigator().onLogOutClicked();
     }
 
+    public void onAddConnectionClicked(){
+
+        getNavigator().onAddConnectionClicked();
+    }
+
 
     /********* Datamodel Calls********/
 
@@ -118,4 +138,11 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
         dataModel.addFavoriteUser(viewModel, profileId);
     }
+
+
+    //client id
+    //450285275359-7iqk4stuc54gbbkcbsqrdh78jhoaq8jq.apps.googleusercontent.com
+
+    //client secret
+    //jQKi8GXvmYF-jLPol7aeDqOy
 }

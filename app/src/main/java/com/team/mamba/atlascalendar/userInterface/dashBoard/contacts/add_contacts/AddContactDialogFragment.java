@@ -58,7 +58,7 @@ public class AddContactDialogFragment extends DialogFragment  {
 
         binding.btnAddBusiness.setOnClickListener(view -> {
 
-            ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(),parentActivity.getSupportFragmentManager(),"AddBusiness",null);
+            ChangeFragments.addFragmentVertically(AddBusinessFragment.newInstance(false),parentActivity.getSupportFragmentManager(),"AddBusiness",null);
             dialog.dismiss();
         });
 

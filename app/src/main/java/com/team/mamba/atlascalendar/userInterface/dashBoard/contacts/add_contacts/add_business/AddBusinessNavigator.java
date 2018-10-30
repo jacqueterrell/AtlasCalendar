@@ -9,4 +9,6 @@ public interface AddBusinessNavigator {
     void showAlreadyAContactAlert();
 
     void onRequestSent();
+
+    void onCalendarConnectionSaved();
 }

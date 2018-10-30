@@ -36,12 +36,15 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.add_business.AddBusinessFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlascalendar.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,6 +178,12 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void onAddConnectionClicked() {
+
+        ChangeFragments.replaceFragmentVertically(AddBusinessFragment.newInstance(true),getBaseActivity().getSupportFragmentManager(),"AddBusiness",null);
+    }
+
+    @Override
     public void onAccountManagementClicked() {
 
     }
@@ -206,6 +215,14 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void showAddCalendarMessage() {
+
+        binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+        binding.tvDrawerCompanyName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+        binding.layoutEmptyScreen.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public List<UserProfile> getPermProfileList() {
         return viewModel.getEmployeeProfilesList();
     }
@@ -218,6 +235,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         if (!dataManager.getSharedPrefs().isBusinessAccount()) {
 
             binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+            binding.tvDrawerCompanyName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
         }
 
         List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
@@ -370,6 +388,12 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         setUpNewAnnouncementBadge();
         setUpNewConnectionRequestBadge();
         setNotificationObservable();
+
+        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()){
+
+            binding.layoutEmptyScreen.setVisibility(View.GONE);
+
+        }
 
     }
 

@@ -13,7 +13,9 @@ public class AddBusinessViewModel extends BaseViewModel<AddBusinessNavigator> {
     private AddBusinessDataModel dataModel;
     private BusinessProfile requestingBusinessProfile;
     private UserProfile requestingUserProfile;
-    List<String> connectionIdList = new ArrayList<>();
+    private List<String> connectionIdList = new ArrayList<>();
+    private static boolean calendarConnection = false;
+
 
 
     /******Getters and Setters******/
@@ -44,6 +46,14 @@ public class AddBusinessViewModel extends BaseViewModel<AddBusinessNavigator> {
 
     public List<String> getConnectionIdList() {
         return connectionIdList;
+    }
+
+    public static void setCalendarConnection(boolean calendarConnection) {
+        AddBusinessViewModel.calendarConnection = calendarConnection;
+    }
+
+    public static boolean isCalendarConnection() {
+        return calendarConnection;
     }
 
     /****Onclick Listeners******/
