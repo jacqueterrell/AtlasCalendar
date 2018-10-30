@@ -16,6 +16,12 @@
 
     </data>
 
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id = "@+id/drawer_layout"
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        >
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -279,5 +285,123 @@
             tools:visibility="visible" />
 
     </FrameLayout>
+
+        <!--Start of our Drawer layout-->
+
+        <LinearLayout
+            android:layout_width="270dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_gravity = "start"
+            android:background="@color/white"
+            >
+
+
+
+            <TextView
+                android:id="@+id/tv_drawer_company_name"
+                style="@style/App_Text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                tools:text="Mamba Team"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="20sp"
+                android:layout_marginTop="60dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_marginEnd="40dp"
+                >
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Privacy Mode Off"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:textSize="17sp"
+                  />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_privacy_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:padding="15dp"
+                    app:switchMinWidth="60dp"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/dessert_green" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_marginEnd="40dp">
+
+                <TextView
+                    style="@style/App_Text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Vacation Mode Off"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:textSize="17sp"
+                    />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_vacation_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:padding="15dp"
+                    app:switchMinWidth="60dp"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/dessert_green" />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Account Management"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:background="?attr/selectableItemBackground"
+                android:textSize="15sp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/lato"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Logout"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:background="?attr/selectableItemBackground"
+                android:textSize="15sp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/lato"
+
+                />
+
+        </LinearLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>
