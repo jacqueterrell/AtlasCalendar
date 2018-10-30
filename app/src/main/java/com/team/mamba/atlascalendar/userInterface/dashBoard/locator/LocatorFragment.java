@@ -3,7 +3,9 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
@@ -34,6 +37,8 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
+import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
+import com.team.mamba.atlascalendar.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
 
@@ -124,6 +129,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
         setUpSearchView();
         showProgressSpinner();
+        setUpSwitchListeners();
         viewModel.requestContactsInfo(getViewModel());
         return binding.getRoot();
     }
@@ -154,6 +160,42 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
         FragmentManager manager = getBaseActivity().getSupportFragmentManager();
         ChangeFragments.replaceFromBackStack(new ContactsFragment(), manager, "ContactsFragment", null);
+    }
+
+    @Override
+    public void onHamburgerClicked() {
+
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+        } else {
+            binding.drawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
+    @Override
+    public void onAccountManagementClicked() {
+
+    }
+
+    @Override
+    public void onLogOutClicked() {
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle("Log Out")
+                .setMessage("Do you want to log out of this account?")
+                .setNegativeButton("no", (paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("yes", (paramDialogInterface, paramInt) -> {
+
+                    dataManager.getSharedPrefs().setUserLoggedIn(false);
+                    showToastShort("Logging out");
+                    resetApplication();
+                })
+                .show();
     }
 
     @Override
@@ -288,6 +330,37 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    private void setUpSwitchListeners(){
+
+        binding.switchPrivacyMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+
+            if (isChecked) {
+
+                binding.switchPrivacyMode.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.dessert_green), PorterDuff.Mode.MULTIPLY);
+
+            } else {
+
+                   binding.switchPrivacyMode.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+            }
+        });
+
+        binding.switchVacationMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+
+            if (isChecked) {
+
+                binding.switchVacationMode.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.dessert_green), PorterDuff.Mode.MULTIPLY);
+
+            } else {
+
+                binding.switchVacationMode.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+            }
+        });
+    }
+
 
 
     @Override
@@ -307,7 +380,17 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         resetNewConnectionRequestBadge();
     }
 
-    /*Set up Notification Badges*/
+    /**
+     * Removes all Activities from the back stack and opens up
+     * {@link ViewPagerFragment}
+     */
+    private void resetApplication(){
+
+        getBaseActivity().finishAffinity();
+        startActivity(WelcomeActivity.newIntent(getBaseActivity()));
+    }
+
+    /**Set up Notification Badges*/
 
     private void resetNewConnectionRequestBadge() {
 

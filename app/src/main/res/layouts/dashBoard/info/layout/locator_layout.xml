@@ -49,12 +49,14 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <ImageView
+                <ImageButton
                     style="@style/IconImageView"
                     android:layout_gravity="center"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_hamburger_solid"
-                    android:tint="@color/light_blue" />
+                    android:tint="@color/light_blue"
+                    android:onClick="@{()-> viewModel.onHamburgerClicked()}"
+                    />
 
                 <View
                     android:layout_width="0dp"
@@ -316,8 +318,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="end"
-                android:layout_marginEnd="40dp"
+                android:layout_gravity="center_horizontal"
                 >
 
                 <TextView
@@ -346,8 +347,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="end"
-                android:layout_marginEnd="40dp">
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     style="@style/App_Text_view"
@@ -367,7 +367,8 @@
                     android:padding="15dp"
                     app:switchMinWidth="60dp"
                     app:thumbTint="@color/white"
-                    app:trackTint="@color/dessert_green" />
+                    app:trackTint="@color/dessert_green"
+                    android:layout_marginEnd="10dp"/>
 
             </LinearLayout>
 
@@ -383,6 +384,7 @@
                 android:layout_marginEnd="50dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/lato"
+                android:onClick="@{()-> viewModel.onAccountManagementClicked()}"
                 />
 
             <Button
@@ -397,7 +399,7 @@
                 android:layout_marginEnd="50dp"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/lato"
-
+                android:onClick="@{()-> viewModel.onLogOutClicked()}"
                 />
 
         </LinearLayout>

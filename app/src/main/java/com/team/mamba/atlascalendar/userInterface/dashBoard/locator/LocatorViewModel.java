@@ -86,6 +86,21 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         getNavigator().onNotificationsClicked();
     }
 
+    public void onHamburgerClicked(){
+
+        getNavigator().onHamburgerClicked();
+    }
+
+    public void onAccountManagementClicked(){
+
+        getNavigator().onAccountManagementClicked();
+    }
+
+    public void onLogOutClicked(){
+
+        getNavigator().onLogOutClicked();
+    }
+
 
     /********* Datamodel Calls********/
 

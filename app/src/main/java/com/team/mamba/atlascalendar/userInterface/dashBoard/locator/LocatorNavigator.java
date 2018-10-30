@@ -17,6 +17,12 @@ public interface LocatorNavigator {
 
     void onEmployeeContactsReturned();
 
+    void onHamburgerClicked();
+
+    void onAccountManagementClicked();
+
+    void onLogOutClicked();
+
     void addFavoriteUser(UserProfile userProfile);
 
     void removeFavoriteUser(UserProfile userProfile);
