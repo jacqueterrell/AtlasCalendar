@@ -211,12 +211,17 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onUsersCalendarClicked() {
 
-        long startMillis = System.currentTimeMillis();
-        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-        builder.appendPath("time");
-        ContentUris.appendId(builder, startMillis);
-        Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
-        startActivity(intent);
+        UserProfile profile = viewModel.getSelectedUserProfile();
+        String fullName = profile.getFirstName() + " " + profile.getLastName();
+        ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName),getBaseActivity().getSupportFragmentManager(),"CalendarMonth",null);
+
+
+//        long startMillis = System.currentTimeMillis();
+//        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+//        builder.appendPath("time");
+//        ContentUris.appendId(builder, startMillis);
+//        Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
+//        startActivity(intent);
     }
 
     @Override

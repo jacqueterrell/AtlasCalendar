@@ -359,6 +359,7 @@
 
         </LinearLayout>
 
+
     </FrameLayout>
 
 
@@ -373,8 +374,6 @@
             android:layout_gravity = "start"
             android:background="@color/white"
             >
-
-
 
             <TextView
                 android:id="@+id/tv_drawer_company_name"
@@ -463,8 +462,9 @@
                     android:layout_height="24dp"
                     android:src="@drawable/ic_calendar_solid"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="45dp"
+                    android:layout_marginLeft="65dp"
                     android:tint="@color/black"
+                    android:padding="3dp"
                     />
 
                 <TextView
