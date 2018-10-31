@@ -74,7 +74,7 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
 
 
-    //fixme remove in place of action Firebase field
+    //fixme remove in place of actual Firebase field
 
     public static void setCalendarCompanyId(String calendarCompanyId) {
         LocatorViewModel.calendarCompanyId = calendarCompanyId;
@@ -119,6 +119,11 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     public void onAddConnectionClicked(){
 
         getNavigator().onAddConnectionClicked();
+    }
+
+    public void onUsersCalendarClicked(){
+
+        getNavigator().onUsersCalendarClicked();
     }
 
 

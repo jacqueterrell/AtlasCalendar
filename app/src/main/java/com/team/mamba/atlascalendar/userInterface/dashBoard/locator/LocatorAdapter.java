@@ -44,7 +44,7 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
             binding.ibCalendar.setOnClickListener(view -> {
 
                 UserProfile profile = userProfileList.get(getAdapterPosition());
-                navigator.onCalendarClicked(profile);
+                navigator.onCalendarRowClicked(profile);
             });
 
 

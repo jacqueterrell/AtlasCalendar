@@ -447,7 +447,6 @@
             </LinearLayout>
 
 
-
             <FrameLayout
                 android:layout_width="200dp"
                 android:layout_height="50dp"
@@ -456,6 +455,38 @@
                 android:background="?attr/selectableItemBackground"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
+                android:onClick="@{()-> viewModel.onUsersCalendarClicked()}"
+                >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_calendar_solid"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="45dp"
+                    android:tint="@color/black"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="My Calendar"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/lato"
+                    android:layout_gravity="end"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_gravity="center_horizontal"
                 android:onClick="@{()-> viewModel.onAddConnectionClicked()}"
                 >
 

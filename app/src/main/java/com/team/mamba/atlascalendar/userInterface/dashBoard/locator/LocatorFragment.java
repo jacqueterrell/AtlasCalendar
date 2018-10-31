@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -66,6 +67,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Inject
     Context appContext;
 
+    private static final String GOOGLE_CALENDAR_PACKAGE_NAME = "com.google.android.calendar";
+    private static final String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=";
     private LocatorLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
     private CompositeDisposable compositeDisposable;
@@ -194,9 +197,19 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
-    public void onCalendarClicked(UserProfile userProfile) {
+    public void onCalendarRowClicked(UserProfile userProfile) {
 
-      //  datePickerDialog.show();
+        Intent launchIntent = getBaseActivity().getPackageManager().getLaunchIntentForPackage(GOOGLE_CALENDAR_PACKAGE_NAME);
+
+        if (launchIntent != null){
+            startActivity(launchIntent);
+        } else {
+            showInstallGoogleCalendarAlert();
+        }
+    }
+
+    @Override
+    public void onUsersCalendarClicked() {
 
         long startMillis = System.currentTimeMillis();
         Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
@@ -435,6 +448,45 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
         getBaseActivity().finishAffinity();
         startActivity(WelcomeActivity.newIntent(getBaseActivity()));
+    }
+
+    private void showInstallGoogleCalendarAlert(){
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle("Google Calendar Not Found")
+                .setMessage("You need the Google Calendar app to use this feature")
+                .setNegativeButton("cancel", (paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("install", (paramDialogInterface, paramInt) -> {
+
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + GOOGLE_CALENDAR_PACKAGE_NAME)));
+                    }
+                    catch (android.content.ActivityNotFoundException anfe) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(GOOGLE_PLAY_URL + GOOGLE_CALENDAR_PACKAGE_NAME));
+//                    intent.setPackage("com.android.vending");
+                        startActivity(intent);
+                    }
+                })
+                .show();
+    }
+
+
+    private boolean isGoogleCalendarAppInstalled() {
+
+        String packageName = GOOGLE_CALENDAR_PACKAGE_NAME;
+        PackageManager pm = getBaseActivity().getPackageManager();
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return pm.getApplicationInfo(packageName, 0).enabled;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**Set up Notification Badges*/

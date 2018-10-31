@@ -29,7 +29,9 @@ public interface LocatorNavigator {
 
     void removeFavoriteUser(UserProfile userProfile);
 
-    void onCalendarClicked(UserProfile userProfile);
+    void onCalendarRowClicked(UserProfile userProfile);
+
+    void onUsersCalendarClicked();
 
     void updateFavoritesList();
 
