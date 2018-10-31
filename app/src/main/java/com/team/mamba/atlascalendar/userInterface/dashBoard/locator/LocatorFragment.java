@@ -218,6 +218,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         if (!dataManager.getSharedPrefs().isBusinessAccount()) {
 
             binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+            binding.tvDrawerCompanyName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
         }
 
         List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
@@ -305,6 +306,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        //todo query the Firebase DB for results
         locatorAdapter.filter(newText);
         return true;
     }

@@ -173,9 +173,13 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
                 if (profile.getFirstName().toLowerCase().contains(text) || profile.getLastName().toLowerCase().contains(text)){
 
-                    profile.setSearchable(true);
-                    profile.setFavorite(false);
-                    searchHistoryProfiles.add(profile);
+                    if (searchHistoryProfiles.size() < 10){
+
+                        //todo if profile.codeLevel -1 is >=saved profileCode
+                        profile.setSearchable(true);
+                        profile.setFavorite(false);
+                        searchHistoryProfiles.add(profile);
+                    }
                 }
             }
 
