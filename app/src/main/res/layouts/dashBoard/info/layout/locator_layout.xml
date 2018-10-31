@@ -309,7 +309,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                tools:text="You have no connections"
+                android:text="You have no connections"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                 android:textSize="20sp"
                 android:layout_marginBottom="25dp"
@@ -360,6 +360,7 @@
         </LinearLayout>
 
     </FrameLayout>
+
 
         <!--Start of our Drawer layout-->
 

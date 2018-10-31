@@ -1,14 +1,21 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.provider.CalendarContract;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,18 +23,11 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.BR;
+import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
@@ -42,18 +42,6 @@ import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.We
 import com.team.mamba.atlascalendar.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import com.team.mamba.atlascalendar.R;
-
-import net.hockeyapp.android.metrics.model.User;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -61,9 +49,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import javax.inject.Inject;
 
 public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorViewModel>
-        implements LocatorNavigator, SearchView.OnQueryTextListener {
+        implements LocatorNavigator, SearchView.OnQueryTextListener,DatePickerDialog.OnDateSetListener {
 
     @Inject
     LocatorViewModel viewModel;
@@ -78,6 +70,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     private DashBoardActivityNavigator parentNavigator;
     private CompositeDisposable compositeDisposable;
     private LocatorAdapter locatorAdapter;
+    private static DatePickerDialog datePickerDialog;
+    private static final String DATE_PICKER = "datePickerDialog";
+
 
 
     public static LocatorFragment newInstance() {
@@ -129,6 +124,16 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(locatorAdapter);
+
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        final Calendar minimumYear = Calendar.getInstance();
+        minimumYear.add(Calendar.YEAR,-3);
+
+        datePickerDialog = new DatePickerDialog(getBaseActivity(),this,year,month,day);
+        datePickerDialog.getDatePicker().setMinDate(minimumYear.getTimeInMillis());
 
         setUpSearchView();
         showProgressSpinner();
@@ -186,6 +191,19 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onAccountManagementClicked() {
 
+    }
+
+    @Override
+    public void onCalendarClicked(UserProfile userProfile) {
+
+      //  datePickerDialog.show();
+
+        long startMillis = System.currentTimeMillis();
+        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+        builder.appendPath("time");
+        ContentUris.appendId(builder, startMillis);
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
+        startActivity(intent);
     }
 
     @Override
@@ -325,6 +343,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     public boolean onQueryTextChange(String newText) {
         locatorAdapter.filter(newText);
         return true;
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
     }
 
     private void setUpSearchView() {
@@ -518,4 +541,5 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                     binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
                 });
     }
+
 }

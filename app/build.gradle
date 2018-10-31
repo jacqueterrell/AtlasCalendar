@@ -206,7 +206,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
-    //calendar libraries
+//    //calendar libraries
 //    compile 'com.google.api-client:google-api-client:1.23.0'
 //    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 //    compile 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
