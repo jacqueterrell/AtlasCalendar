@@ -1,5 +1,6 @@
 package com.team.mamba.atlascalendar.data.model.local;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.team.mamba.atlascalendar.utils.formatData.RegEx;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class CalendarEvents {
     private long startTime;
     private long endTime;
     private boolean allDayEvent;
+    private CalendarDay calendarDay;
 
 
     public CalendarEvents(Builder builder){
@@ -23,6 +25,7 @@ public class CalendarEvents {
         this.startTime = builder.getStartTime();
         this.endTime = builder.getEndTime();
         this.allDayEvent = builder.isAllDayEvent();
+        this.calendarDay = builder.getCalendarDay();
     }
 
 
@@ -38,32 +41,20 @@ public class CalendarEvents {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public long getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
     }
 
     public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setAllDayEvent(boolean allDayEvent) {
-        this.allDayEvent = allDayEvent;
-    }
-
     public boolean isAllDayEvent() {
         return allDayEvent;
+    }
+
+    public CalendarDay getCalendarDay() {
+        return calendarDay;
     }
 
     public String getStartDateToString(){
@@ -118,6 +109,8 @@ public class CalendarEvents {
         private long startTime;
         private long endTime;
         private boolean allDayEvent;
+        private CalendarDay calendarDay;
+
 
         public String getTitle() {
             return title;
@@ -152,6 +145,15 @@ public class CalendarEvents {
 
         public Builder setEndTime(long endTime) {
             this.endTime = endTime;
+            return this;
+        }
+
+        public CalendarDay getCalendarDay() {
+            return calendarDay;
+        }
+
+        public Builder setCalendarDay(CalendarDay calendarDay) {
+            this.calendarDay = calendarDay;
             return this;
         }
 

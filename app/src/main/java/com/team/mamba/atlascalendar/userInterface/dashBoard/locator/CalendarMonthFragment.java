@@ -265,6 +265,7 @@ public class CalendarMonthFragment extends Fragment {
                     .setEndTime(end)
                     .setLocation(location)
                     .setAllDayEvent(allDayEvent)
+                    .setCalendarDay(calendarDay)
                     .build();
 
             calendarDayList.add(calendarDay);
@@ -286,6 +287,7 @@ public class CalendarMonthFragment extends Fragment {
                         .setEndTime(dateTimestamp)
                         .setLocation(location)
                         .setAllDayEvent(allDayEvent)
+                        .setCalendarDay(calendarDay)
                         .build();
 
                 calendarDayList.add(calendarDay);
@@ -297,25 +299,6 @@ public class CalendarMonthFragment extends Fragment {
         }
 
         Logger.i(title);
-    }
-
-
-    private void addCalendarEvents(){
-
-        calendarDayList.clear();
-        int dayTest = Integer.parseInt("25");
-        int monthTest = Integer.parseInt("10");
-        int yearTest = Integer.parseInt("2018");
-
-        CalendarDay calendarDay = CalendarDay.from(yearTest, monthTest, dayTest);
-        calendarDayList.add(calendarDay);
-
-
-        for (CalendarEvents events : calendarEventsArrayList){
-
-
-        }
-
     }
 
 
