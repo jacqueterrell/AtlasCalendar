@@ -114,7 +114,7 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayViewHold
         holidays.add("Halloween");
         holidays.add("Veterans' Day");
         holidays.add("Columbus Day");
-        holidays.add("Thanksgiving");
+        holidays.add("Thanksgiving Day");
         holidays.add("Christmas Day");
 
 

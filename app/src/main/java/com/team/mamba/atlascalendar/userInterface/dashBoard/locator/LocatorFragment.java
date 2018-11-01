@@ -218,12 +218,13 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         Handler handler = new Handler();
         handler.postDelayed(() -> {
 
+            FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+
             UserProfile profile = viewModel.getSelectedUserProfile();
             String fullName = profile.getFirstName() + " " + profile.getLastName();
-            ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName),
-                    getBaseActivity().getSupportFragmentManager(), "CalendarMonth", null);
+            ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName), manager, "CalendarMonth", null);
 
-        }, 1000);
+        }, 400);
 
     }
 
