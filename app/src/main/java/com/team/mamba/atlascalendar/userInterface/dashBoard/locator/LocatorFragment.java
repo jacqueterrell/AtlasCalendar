@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorViewModel>
-        implements LocatorNavigator, SearchView.OnQueryTextListener,DatePickerDialog.OnDateSetListener {
+        implements LocatorNavigator, SearchView.OnQueryTextListener, DatePickerDialog.OnDateSetListener {
 
     @Inject
     LocatorViewModel viewModel;
@@ -75,7 +76,6 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     private LocatorAdapter locatorAdapter;
     private static DatePickerDialog datePickerDialog;
     private static final String DATE_PICKER = "datePickerDialog";
-
 
 
     public static LocatorFragment newInstance() {
@@ -133,9 +133,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         final Calendar minimumYear = Calendar.getInstance();
-        minimumYear.add(Calendar.YEAR,-3);
+        minimumYear.add(Calendar.YEAR, -3);
 
-        datePickerDialog = new DatePickerDialog(getBaseActivity(),this,year,month,day);
+        datePickerDialog = new DatePickerDialog(getBaseActivity(), this, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(minimumYear.getTimeInMillis());
 
         setUpSearchView();
@@ -176,7 +176,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onHamburgerClicked() {
 
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
 
             binding.drawerLayout.closeDrawer(GravityCompat.START);
 
@@ -188,7 +188,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onAddConnectionClicked() {
 
-        ChangeFragments.replaceFragmentVertically(AddBusinessFragment.newInstance(true),getBaseActivity().getSupportFragmentManager(),"AddBusiness",null);
+        ChangeFragments.replaceFragmentVertically(AddBusinessFragment.newInstance(true),
+                getBaseActivity().getSupportFragmentManager(), "AddBusiness", null);
     }
 
     @Override
@@ -199,9 +200,10 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onCalendarRowClicked(UserProfile userProfile) {
 
-        Intent launchIntent = getBaseActivity().getPackageManager().getLaunchIntentForPackage(GOOGLE_CALENDAR_PACKAGE_NAME);
+        Intent launchIntent = getBaseActivity().getPackageManager()
+                .getLaunchIntentForPackage(GOOGLE_CALENDAR_PACKAGE_NAME);
 
-        if (launchIntent != null){
+        if (launchIntent != null) {
             startActivity(launchIntent);
         } else {
             showInstallGoogleCalendarAlert();
@@ -211,17 +213,18 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onUsersCalendarClicked() {
 
-        UserProfile profile = viewModel.getSelectedUserProfile();
-        String fullName = profile.getFirstName() + " " + profile.getLastName();
-        ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName),getBaseActivity().getSupportFragmentManager(),"CalendarMonth",null);
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
 
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
 
-//        long startMillis = System.currentTimeMillis();
-//        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-//        builder.appendPath("time");
-//        ContentUris.appendId(builder, startMillis);
-//        Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
-//        startActivity(intent);
+            UserProfile profile = viewModel.getSelectedUserProfile();
+            String fullName = profile.getFirstName() + " " + profile.getLastName();
+            ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName),
+                    getBaseActivity().getSupportFragmentManager(), "CalendarMonth", null);
+
+        }, 1000);
+
     }
 
     @Override
@@ -284,21 +287,21 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         String profileId = userProfile.getId();
         String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
 
-        if (viewModel.getFavoriteUsersEntityList().size() >= 10){
+        if (viewModel.getFavoriteUsersEntityList().size() >= 10) {
 
             String title = "Max Reached";
             String body = "You can only hve up to ten favorites.";
-            showAlert(title,body);
+            showAlert(title, body);
 
         } else {
 
-            for (UserProfile profile : viewModel.getFavoritesProfileList()){
+            for (UserProfile profile : viewModel.getFavoritesProfileList()) {
 
-                if (profile.getId().equals(profileId)){
+                if (profile.getId().equals(profileId)) {
 
                     String title = "Already a Favorite";
                     String body = "You already added this user as a favorite.";
-                    showAlert(title,body);
+                    showAlert(title, body);
                     return;
                 }
             }
@@ -311,8 +314,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                     })
                     .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
-                        viewModel.addFavoriteUser(getViewModel(),profileId);
-                        showSnackbar( fullName + " added to favorites");
+                        viewModel.addFavoriteUser(getViewModel(), profileId);
+                        showSnackbar(fullName + " added to favorites");
                     })
             ;
 
@@ -335,14 +338,13 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
-                    viewModel.removeFavorteUser(getViewModel(),profileId);
+                    viewModel.removeFavorteUser(getViewModel(), profileId);
                     showSnackbar(fullName + " removed from favorites");
                 })
         ;
 
         dialog.show();
     }
-
 
 
     @Override
@@ -389,7 +391,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private void setUpSwitchListeners(){
+    private void setUpSwitchListeners() {
 
         binding.switchPrivacyMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
 
@@ -400,8 +402,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
             } else {
 
-                   binding.switchPrivacyMode.getTrackDrawable()
-                        .setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+                binding.switchPrivacyMode.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light),
+                                PorterDuff.Mode.MULTIPLY);
             }
         });
 
@@ -415,11 +418,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
             } else {
 
                 binding.switchVacationMode.getTrackDrawable()
-                        .setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light),
+                                PorterDuff.Mode.MULTIPLY);
             }
         });
     }
-
 
 
     @Override
@@ -430,7 +433,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         setUpNewConnectionRequestBadge();
         setNotificationObservable();
 
-        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()){
+        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()) {
 
             binding.layoutEmptyScreen.setVisibility(View.GONE);
 
@@ -449,13 +452,13 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
      * Removes all Activities from the back stack and opens up
      * {@link ViewPagerFragment}
      */
-    private void resetApplication(){
+    private void resetApplication() {
 
         getBaseActivity().finishAffinity();
         startActivity(WelcomeActivity.newIntent(getBaseActivity()));
     }
 
-    private void showInstallGoogleCalendarAlert(){
+    private void showInstallGoogleCalendarAlert() {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
 
@@ -467,9 +470,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                 .setPositiveButton("install", (paramDialogInterface, paramInt) -> {
 
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + GOOGLE_CALENDAR_PACKAGE_NAME)));
-                    }
-                    catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=" + GOOGLE_CALENDAR_PACKAGE_NAME)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(GOOGLE_PLAY_URL + GOOGLE_CALENDAR_PACKAGE_NAME));
 //                    intent.setPackage("com.android.vending");
@@ -487,14 +490,15 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             return pm.getApplicationInfo(packageName, 0).enabled;
-        }
-        catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    /**Set up Notification Badges*/
+    /**
+     * Set up Notification Badges
+     */
 
     private void resetNewConnectionRequestBadge() {
 

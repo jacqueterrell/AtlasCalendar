@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,11 +54,12 @@ public class CalendarMonthFragment extends Fragment {
 
     private CalendarMonthLayoutBinding binding;
     private List<CalendarDay> calendarDayList = new ArrayList<>();
+    private List<CalendarEvents> returnedCalEvents = new ArrayList<>();
     private static String fullName = "";
     private int sdk = Build.VERSION.SDK_INT;
     private int marshMallow = Build.VERSION_CODES.M;
     private List<CalendarEvents> calendarEventsArrayList = new ArrayList<>();
-
+    private boolean allDayEvent = false;
 
     public static CalendarMonthFragment newInstance(String name) {
 
@@ -77,9 +79,6 @@ public class CalendarMonthFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.calendar_month_layout, container, false);
 
 
-        int dayTest = Integer.parseInt("25");
-        int monthTest = Integer.parseInt("10");
-        int yearTest = Integer.parseInt("2018");
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -88,9 +87,6 @@ public class CalendarMonthFragment extends Fragment {
         String date = getMonth(month) + " " + year;
         binding.tvDate.setText(date);
         binding.tvUser.setText(fullName);
-
-        CalendarDay calendarDay = CalendarDay.from(yearTest, monthTest, dayTest);
-        calendarDayList.add(calendarDay);
 
         binding.calendarView.setDateSelected(CalendarDay.today(), true);
         binding.calendarView.setTopbarVisible(false);
@@ -169,46 +165,44 @@ public class CalendarMonthFragment extends Fragment {
     }
 
 
+    /**
+     * Uses a content provider to get all calendar events
+     * from the user's device
+     */
     @SuppressLint({"MissingPermission", "CheckResult"})
     private void getUserCalendarInfo(){
 
+        returnedCalEvents.clear();
+
         Observable.fromCallable(() -> {
 
-            List<CalendarEvents> calendarEventsList = new ArrayList<>();
             Cursor cursor;
             ContentResolver cr = getActivity().getContentResolver();
 
             String[] mProjection =
                     {
                             "_id",
-                            CalendarContract.Events.TITLE,
-                            CalendarContract.Events.EVENT_LOCATION,
-                            CalendarContract.Events.DTSTART,
-                            CalendarContract.Events.DTEND,
+                            Events.TITLE,
+                            Events.EVENT_LOCATION,
+                            Events.DTSTART,
+                            Events.DTEND,
                     };
 
-            Uri uri = CalendarContract.Events.CONTENT_URI;
+            Uri uri = Events.CONTENT_URI;
 
-            String selection = CalendarContract.Events.EVENT_LOCATION + " = ? ";
+            String selection = Events.EVENT_LOCATION + " = ? ";
             String[] selectionArgs = new String[]{"London"};// equals 'where location == London'
 
-            cursor = cr.query(uri, mProjection, null, null, CalendarContract.Events.DTSTART + " ASC");
+            cursor = cr.query(uri, mProjection, null, null, Events.DTSTART + " ASC");
 
             while (cursor.moveToNext()) {
-                int size = cursor.getCount();
-                int index = cursor.getPosition();
-                String title = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE));
-                String location = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION));
-                String startTime = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.DTSTART));
-                String endTime = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.DTEND));
 
-                CalendarEvents calendarEvents = new CalendarEvents(title,location,Long.parseLong(startTime),Long.parseLong(endTime));
-                calendarEventsList.add(calendarEvents);
-
-               Logger.i(title);
+                if (cursor.getString(cursor.getColumnIndex(Events.DTSTART)) != null){//invalid start date
+                    queryCursor(cursor);
+                }
             }
 
-            return calendarEventsList;
+            return returnedCalEvents;
 
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -222,6 +216,91 @@ public class CalendarMonthFragment extends Fragment {
 
                     Logger.e(throwable.getLocalizedMessage());
                 });
+    }
+
+
+    private void queryCursor(Cursor cursor){
+
+        String title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
+        String location = cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION));
+        String startTime = cursor.getString(cursor.getColumnIndex(Events.DTSTART)).substring(0,10);
+        String endTime = cursor.getString(cursor.getColumnIndex(Events.DTEND));
+
+        if (endTime == null){//one day event
+            endTime = startTime;
+            allDayEvent = true;
+        } else {
+            allDayEvent = false;
+            endTime = cursor.getString(cursor.getColumnIndex(Events.DTEND)).substring(0,10);
+        }
+
+        long start = Long.parseLong(startTime);
+        Date startDate = new Date();
+        startDate.setTime(start * 1000);
+
+        long end = Long.parseLong(endTime);
+        Date endDate = new Date();
+        endDate.setTime(end * 1000);
+
+        int diff = (int) (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+
+        if (diff == 0){//one day event
+
+            CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                    .setTitle(title)
+                    .setStartTime(start)
+                    .setEndTime(end)
+                    .setLocation(location)
+                    .setAllDayEvent(allDayEvent)
+                    .build();
+
+            returnedCalEvents.add(calendarEvents);
+
+        } else {//multiple day event
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(start * 1000);
+            allDayEvent = true;
+
+            for (int i = 0; i <= diff; i++){
+
+                long dateTimestamp = calendar.getTimeInMillis() / 1000;
+
+                CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                        .setTitle(title)
+                        .setStartTime(dateTimestamp)
+                        .setEndTime(dateTimestamp)
+                        .setLocation(location)
+                        .setAllDayEvent(allDayEvent)
+                        .build();
+
+                returnedCalEvents.add(calendarEvents);
+
+                calendar.add(Calendar.DAY_OF_MONTH,1);
+            }
+
+        }
+
+        Logger.i(title);
+    }
+
+
+    private void addCalendarEvents(){
+
+        calendarDayList.clear();
+        int dayTest = Integer.parseInt("25");
+        int monthTest = Integer.parseInt("10");
+        int yearTest = Integer.parseInt("2018");
+
+        CalendarDay calendarDay = CalendarDay.from(yearTest, monthTest, dayTest);
+        calendarDayList.add(calendarDay);
+
+
+        for (CalendarEvents events : calendarEventsArrayList){
+
+
+        }
+
     }
 
 

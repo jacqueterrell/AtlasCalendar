@@ -9,18 +9,20 @@ import java.util.concurrent.TimeUnit;
 
 public class CalendarEvents {
 
-    private String title = "";
-    private String location = "";
+    private String title;
+    private String location;
     private long startTime;
     private long endTime;
+    private boolean allDayEvent;
 
 
-    public CalendarEvents(String title, String location, long startTime,long endTime){
+    public CalendarEvents(Builder builder){
 
-        this.title = title;
-        this.location = location;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.title = builder.getTitle();
+        this.location = builder.getLocation();
+        this.startTime = builder.getStartTime();
+        this.endTime = builder.getEndTime();
+        this.allDayEvent = builder.isAllDayEvent();
     }
 
 
@@ -56,6 +58,14 @@ public class CalendarEvents {
         this.endTime = endTime;
     }
 
+    public void setAllDayEvent(boolean allDayEvent) {
+        this.allDayEvent = allDayEvent;
+    }
+
+    public boolean isAllDayEvent() {
+        return allDayEvent;
+    }
+
     public String getStartDateToString(){
 
         Calendar calendar = Calendar.getInstance();
@@ -79,16 +89,6 @@ public class CalendarEvents {
 
     }
 
-    public long getDuration(){
-
-        long end = getEndTime() * 1000;
-        long start = getStartTime() * 1000;
-        long diff = end - start;
-
-        return TimeUnit.MILLISECONDS.toDays(diff);
-    }
-
-
     private String getMonth(int index) {
 
         List<String> monthsList = new ArrayList<>();
@@ -108,5 +108,65 @@ public class CalendarEvents {
         monthsList.add("December");
 
         return monthsList.get(index);
+    }
+
+
+    public static class Builder{
+
+        private String title;
+        private String location;
+        private long startTime;
+        private long endTime;
+        private boolean allDayEvent;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public long getStartTime() {
+            return startTime;
+        }
+
+        public Builder setStartTime(long startTime) {
+            this.startTime = startTime;
+            return this;
+        }
+
+        public long getEndTime() {
+            return endTime;
+        }
+
+        public Builder setEndTime(long endTime) {
+            this.endTime = endTime;
+            return this;
+        }
+
+        public boolean isAllDayEvent() {
+            return allDayEvent;
+        }
+
+        public Builder setAllDayEvent(boolean allDayEvent) {
+            this.allDayEvent = allDayEvent;
+            return this;
+        }
+
+        public CalendarEvents build(){
+
+            return new CalendarEvents(this);
+        }
     }
 }
