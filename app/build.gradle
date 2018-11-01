@@ -200,25 +200,30 @@ dependencies {
     //firebase libraries
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.firebase:firebase-firestore:17.1.2'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-storage:16.0.4'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
+//    //calendar libraries
+//    compile 'com.google.api-client:google-api-client:1.23.0'
+//    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+//    compile 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
 
     //all testing dependencies
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-beta02', {
         exclude group: "com.android.support", module: "support-annotations"
     })
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-beta02'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0-beta02'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
     testImplementation "junit:junit:$rootProject.junit"
     testImplementation "org.mockito:mockito-core:$rootProject.mockito"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamCrest"
     androidTestImplementation "org.hamcrest:hamcrest-library:$rootProject.hamCrest"
-    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0-beta02'
-    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0-beta02'
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger"
     testImplementation 'org.robolectric:robolectric:4.0-beta-1'
@@ -252,8 +257,10 @@ dependencies {
     implementation "com.orhanobut:logger:$rootProject.orhanobutLogger"
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpAndroidChart"
     implementation "com.googlecode.libphonenumber:libphonenumber:8.2.0"
-    implementation "com.google.android.gms:play-services-places:15.0.1"
+    implementation "com.google.android.gms:play-services-places:16.0.0"
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+
 
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
@@ -282,7 +289,7 @@ dependencies {
 
     //for dagger testing
     androidTestImplementation 'androidx.annotation:annotation:1.0.0'
-    androidTestImplementation 'androidx.test:rules:1.1.0-beta02'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
 
     // Databinding
     // kapt "com.android.databinding:compiler:$gradle_plugin_version"

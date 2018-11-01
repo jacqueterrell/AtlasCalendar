@@ -30,9 +30,12 @@ implements AddBusinessNavigator {
 
     private AddBusinessLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
+    private static boolean calendarConnection = false;
 
-    public static AddBusinessFragment newInstance(){
 
+    public static AddBusinessFragment newInstance(boolean isCalendarConnection){
+
+        calendarConnection = isCalendarConnection;
         return new AddBusinessFragment();
     }
 
@@ -67,6 +70,7 @@ implements AddBusinessNavigator {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         viewModel.setDataModel(dataModel);
+        AddBusinessViewModel.setCalendarConnection(calendarConnection);
     }
 
     @Override
@@ -134,6 +138,26 @@ implements AddBusinessNavigator {
 
         hideProgressSpinner();
         String title = "Contact Added";
+        parentNavigator.setContactRecentlyAdded(true);
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle(title)
+                .setCancelable(false)
+                .setPositiveButton("Ok", (paramDialogInterface, paramInt) -> {
+
+                    parentNavigator.refreshInfoFragment();
+                });
+
+        dialog.show();
+    }
+
+    @Override
+    public void onCalendarConnectionSaved() {
+
+
+        hideProgressSpinner();
+        String title = "Calendar Contact Saved";
         parentNavigator.setContactRecentlyAdded(true);
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());

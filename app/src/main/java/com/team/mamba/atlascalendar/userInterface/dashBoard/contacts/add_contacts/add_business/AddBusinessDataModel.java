@@ -8,6 +8,7 @@ import com.team.mamba.atlascalendar.data.AppDataManager;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.LocatorViewModel;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 
 import java.util.ArrayList;
@@ -164,13 +165,20 @@ public class AddBusinessDataModel {
 
         BusinessProfile selectedProfile = selectedProfileList.get(0);
 
-        if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
+        if (AddBusinessViewModel.isCalendarConnection()){
+
+            //todo add the business to the user's calendar contact
+            LocatorViewModel.setCalendarCompanyId(selectedProfile.getId());
+            viewModel.getNavigator().onCalendarConnectionSaved();
+
+        } else if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
 
             viewModel.getNavigator().showAlreadyAContactAlert();
 
         } else {
 
-            checkBusinessCode(viewModel,selectedProfileList,code);
+                checkBusinessCode(viewModel,selectedProfileList,code);
+
         }
     }
 

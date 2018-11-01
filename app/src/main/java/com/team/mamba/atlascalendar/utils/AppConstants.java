@@ -18,6 +18,7 @@ public class AppConstants {
     public static String TEST_USER_ID = "S0URPfcKiVanC5NhHd4n9ejcEWZ2";
     public static final String BASE_PLAY_STORE_LINK = "https://play.google.com/store/apps/details?id=";
 
+    public static final int REQUEST_READ_CALENDAR_PERMISSIONS = 7;
     public static final int REQUEST_WRITE_CONTACTS_PERMISSIONS = 6;
     public static final int REQUEST_PHONE_PERMISSIONS = 5;
     public static final int REQUEST_EXTERNAL_STORAGE_PERMISSIONS = 4;

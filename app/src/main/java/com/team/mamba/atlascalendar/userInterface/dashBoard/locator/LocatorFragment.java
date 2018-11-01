@@ -1,14 +1,23 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.os.Handler;
+import android.provider.CalendarContract;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,18 +25,11 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.BR;
+import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
@@ -36,21 +38,12 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.add_business.AddBusinessFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
 import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlascalendar.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import com.team.mamba.atlascalendar.R;
-
-import net.hockeyapp.android.metrics.model.User;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -58,9 +51,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import javax.inject.Inject;
 
 public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorViewModel>
-        implements LocatorNavigator, SearchView.OnQueryTextListener {
+        implements LocatorNavigator, SearchView.OnQueryTextListener, DatePickerDialog.OnDateSetListener {
 
     @Inject
     LocatorViewModel viewModel;
@@ -71,10 +68,14 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Inject
     Context appContext;
 
+    private static final String GOOGLE_CALENDAR_PACKAGE_NAME = "com.google.android.calendar";
+    private static final String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=";
     private LocatorLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
     private CompositeDisposable compositeDisposable;
     private LocatorAdapter locatorAdapter;
+    private static DatePickerDialog datePickerDialog;
+    private static final String DATE_PICKER = "datePickerDialog";
 
 
     public static LocatorFragment newInstance() {
@@ -127,6 +128,16 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(locatorAdapter);
 
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        final Calendar minimumYear = Calendar.getInstance();
+        minimumYear.add(Calendar.YEAR, -3);
+
+        datePickerDialog = new DatePickerDialog(getBaseActivity(), this, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(minimumYear.getTimeInMillis());
+
         setUpSearchView();
         showProgressSpinner();
         setUpSwitchListeners();
@@ -165,7 +176,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onHamburgerClicked() {
 
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
 
             binding.drawerLayout.closeDrawer(GravityCompat.START);
 
@@ -175,7 +186,44 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void onAddConnectionClicked() {
+
+        ChangeFragments.replaceFragmentVertically(AddBusinessFragment.newInstance(true),
+                getBaseActivity().getSupportFragmentManager(), "AddBusiness", null);
+    }
+
+    @Override
     public void onAccountManagementClicked() {
+
+    }
+
+    @Override
+    public void onCalendarRowClicked(UserProfile userProfile) {
+
+        Intent launchIntent = getBaseActivity().getPackageManager()
+                .getLaunchIntentForPackage(GOOGLE_CALENDAR_PACKAGE_NAME);
+
+        if (launchIntent != null) {
+            startActivity(launchIntent);
+        } else {
+            showInstallGoogleCalendarAlert();
+        }
+    }
+
+    @Override
+    public void onUsersCalendarClicked() {
+
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+
+            UserProfile profile = viewModel.getSelectedUserProfile();
+            String fullName = profile.getFirstName() + " " + profile.getLastName();
+            ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName),
+                    getBaseActivity().getSupportFragmentManager(), "CalendarMonth", null);
+
+        }, 1000);
 
     }
 
@@ -206,6 +254,14 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void showAddCalendarMessage() {
+
+        binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+        binding.tvDrawerCompanyName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+        binding.layoutEmptyScreen.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public List<UserProfile> getPermProfileList() {
         return viewModel.getEmployeeProfilesList();
     }
@@ -231,21 +287,21 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         String profileId = userProfile.getId();
         String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
 
-        if (viewModel.getFavoriteUsersEntityList().size() >= 10){
+        if (viewModel.getFavoriteUsersEntityList().size() >= 10) {
 
             String title = "Max Reached";
             String body = "You can only hve up to ten favorites.";
-            showAlert(title,body);
+            showAlert(title, body);
 
         } else {
 
-            for (UserProfile profile : viewModel.getFavoritesProfileList()){
+            for (UserProfile profile : viewModel.getFavoritesProfileList()) {
 
-                if (profile.getId().equals(profileId)){
+                if (profile.getId().equals(profileId)) {
 
                     String title = "Already a Favorite";
                     String body = "You already added this user as a favorite.";
-                    showAlert(title,body);
+                    showAlert(title, body);
                     return;
                 }
             }
@@ -258,8 +314,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                     })
                     .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
-                        viewModel.addFavoriteUser(getViewModel(),profileId);
-                        showSnackbar( fullName + " added to favorites");
+                        viewModel.addFavoriteUser(getViewModel(), profileId);
+                        showSnackbar(fullName + " added to favorites");
                     })
             ;
 
@@ -282,14 +338,13 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                 })
                 .setPositiveButton("Yes", (paramDialogInterface, paramInt) -> {
 
-                    viewModel.removeFavorteUser(getViewModel(),profileId);
+                    viewModel.removeFavorteUser(getViewModel(), profileId);
                     showSnackbar(fullName + " removed from favorites");
                 })
         ;
 
         dialog.show();
     }
-
 
 
     @Override
@@ -310,6 +365,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         //todo query the Firebase DB for results
         locatorAdapter.filter(newText);
         return true;
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
     }
 
     private void setUpSearchView() {
@@ -333,7 +393,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         v.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private void setUpSwitchListeners(){
+    private void setUpSwitchListeners() {
 
         binding.switchPrivacyMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
 
@@ -344,8 +404,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
             } else {
 
-                   binding.switchPrivacyMode.getTrackDrawable()
-                        .setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+                binding.switchPrivacyMode.getTrackDrawable()
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light),
+                                PorterDuff.Mode.MULTIPLY);
             }
         });
 
@@ -359,11 +420,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
             } else {
 
                 binding.switchVacationMode.getTrackDrawable()
-                        .setColorFilter(getResources().getColor(R.color.material_icons_light), PorterDuff.Mode.MULTIPLY);
+                        .setColorFilter(getResources().getColor(R.color.material_icons_light),
+                                PorterDuff.Mode.MULTIPLY);
             }
         });
     }
-
 
 
     @Override
@@ -373,6 +434,12 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         setUpNewAnnouncementBadge();
         setUpNewConnectionRequestBadge();
         setNotificationObservable();
+
+        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()) {
+
+            binding.layoutEmptyScreen.setVisibility(View.GONE);
+
+        }
 
     }
 
@@ -387,13 +454,53 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
      * Removes all Activities from the back stack and opens up
      * {@link ViewPagerFragment}
      */
-    private void resetApplication(){
+    private void resetApplication() {
 
         getBaseActivity().finishAffinity();
         startActivity(WelcomeActivity.newIntent(getBaseActivity()));
     }
 
-    /**Set up Notification Badges*/
+    private void showInstallGoogleCalendarAlert() {
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getBaseActivity());
+
+        dialog.setTitle("Google Calendar Not Found")
+                .setMessage("You need the Google Calendar app to use this feature")
+                .setNegativeButton("cancel", (paramDialogInterface, paramInt) -> {
+
+                })
+                .setPositiveButton("install", (paramDialogInterface, paramInt) -> {
+
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=" + GOOGLE_CALENDAR_PACKAGE_NAME)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(GOOGLE_PLAY_URL + GOOGLE_CALENDAR_PACKAGE_NAME));
+//                    intent.setPackage("com.android.vending");
+                        startActivity(intent);
+                    }
+                })
+                .show();
+    }
+
+
+    private boolean isGoogleCalendarAppInstalled() {
+
+        String packageName = GOOGLE_CALENDAR_PACKAGE_NAME;
+        PackageManager pm = getBaseActivity().getPackageManager();
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return pm.getApplicationInfo(packageName, 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Set up Notification Badges
+     */
 
     private void resetNewConnectionRequestBadge() {
 
@@ -497,4 +604,5 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                     binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
                 });
     }
+
 }

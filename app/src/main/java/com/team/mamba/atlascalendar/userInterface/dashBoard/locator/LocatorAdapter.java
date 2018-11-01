@@ -41,13 +41,16 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
 
         private void setUpOnClickListeners(){
 
+            binding.ibCalendar.setOnClickListener(view -> {
+
+                UserProfile profile = userProfileList.get(getAdapterPosition());
+                navigator.onCalendarRowClicked(profile);
+            });
+
 
             binding.ibFavoriteNotSelected.setOnClickListener(v -> {
 
                 UserProfile profile = userProfileList.get(getAdapterPosition());
-                String profileId = profile.getId();
-                String fullName = profile.getFirstName() + " " + profile.getLastName();
-
                 navigator.addFavoriteUser(profile);
 
             });

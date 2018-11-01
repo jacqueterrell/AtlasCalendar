@@ -23,11 +23,19 @@ public interface LocatorNavigator {
 
     void onLogOutClicked();
 
+    void onAddConnectionClicked();
+
     void addFavoriteUser(UserProfile userProfile);
 
     void removeFavoriteUser(UserProfile userProfile);
 
+    void onCalendarRowClicked(UserProfile userProfile);
+
+    void onUsersCalendarClicked();
+
     void updateFavoritesList();
+
+    void showAddCalendarMessage();
 
     List<UserProfile> getPermProfileList();
 
