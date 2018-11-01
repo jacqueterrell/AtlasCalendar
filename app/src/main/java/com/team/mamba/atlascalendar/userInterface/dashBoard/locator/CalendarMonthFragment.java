@@ -187,6 +187,7 @@ public class CalendarMonthFragment extends Fragment {
                             Events.EVENT_LOCATION,
                             Events.DTSTART,
                             Events.DTEND,
+                            Events.DESCRIPTION
                     };
 
             Calendar calendar = Calendar.getInstance();
@@ -229,6 +230,7 @@ public class CalendarMonthFragment extends Fragment {
     private void queryCursor(Cursor cursor){
 
         String title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
+        String description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
         String location = cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION));
         String startTime = cursor.getString(cursor.getColumnIndex(Events.DTSTART)).substring(0,10);
         String endTime = cursor.getString(cursor.getColumnIndex(Events.DTEND));
