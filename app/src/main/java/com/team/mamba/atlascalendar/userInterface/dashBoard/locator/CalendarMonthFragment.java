@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -188,12 +189,17 @@ public class CalendarMonthFragment extends Fragment {
                             Events.DTEND,
                     };
 
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            calendar.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+            long startDay = calendar.getTimeInMillis();
+
             Uri uri = Events.CONTENT_URI;
 
-            String selection = Events.EVENT_LOCATION + " = ? ";
-            String[] selectionArgs = new String[]{"London"};// equals 'where location == London'
+            String selection = Events.DTSTART + " >= ? ";
+            String[] selectionArgs = new String[]{Long.toString(startDay)};// equals 'where startTime >= Jan[current year]'
 
-            cursor = cr.query(uri, mProjection, null, null, Events.DTSTART + " ASC");
+            cursor = cr.query(uri, mProjection, selection, selectionArgs, Events.DTSTART + " ASC");
 
             while (cursor.moveToNext()) {
 
@@ -211,6 +217,7 @@ public class CalendarMonthFragment extends Fragment {
                     Logger.i("response successful");
                     calendarEventsArrayList.clear();
                     calendarEventsArrayList.addAll(calendarEvents);
+                    binding.calendarView.invalidateDecorators();
 
                 }, throwable -> {
 
@@ -242,6 +249,12 @@ public class CalendarMonthFragment extends Fragment {
         Date endDate = new Date();
         endDate.setTime(end * 1000);
 
+        String day          = (String) DateFormat.format("dd",   startDate); // 20
+        String monthString  = (String) DateFormat.format("MMM",  startDate); // Jun
+        String monthNumber  = (String) DateFormat.format("MM",   startDate); // 06
+        String year         = (String) DateFormat.format("yyyy", startDate); // 2013
+        CalendarDay calendarDay =  CalendarDay.from(Integer.parseInt(year),Integer.parseInt(monthNumber),Integer.parseInt(day));
+
         int diff = (int) (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
         if (diff == 0){//one day event
@@ -254,6 +267,7 @@ public class CalendarMonthFragment extends Fragment {
                     .setAllDayEvent(allDayEvent)
                     .build();
 
+            calendarDayList.add(calendarDay);
             returnedCalEvents.add(calendarEvents);
 
         } else {//multiple day event
@@ -274,6 +288,7 @@ public class CalendarMonthFragment extends Fragment {
                         .setAllDayEvent(allDayEvent)
                         .build();
 
+                calendarDayList.add(calendarDay);
                 returnedCalEvents.add(calendarEvents);
 
                 calendar.add(Calendar.DAY_OF_MONTH,1);
