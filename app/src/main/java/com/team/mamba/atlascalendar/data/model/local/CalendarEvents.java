@@ -12,6 +12,7 @@ public class CalendarEvents {
 
     private String title;
     private String location;
+    private String description;
     private long startTime;
     private long endTime;
     private boolean allDayEvent;
@@ -21,6 +22,7 @@ public class CalendarEvents {
     public CalendarEvents(Builder builder){
 
         this.title = builder.getTitle();
+        this.description = builder.getDescription();
         this.location = builder.getLocation();
         this.startTime = builder.getStartTime();
         this.endTime = builder.getEndTime();
@@ -31,10 +33,6 @@ public class CalendarEvents {
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getLocation() {
@@ -55,6 +53,10 @@ public class CalendarEvents {
 
     public CalendarDay getCalendarDay() {
         return calendarDay;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getStartDateToString(){
@@ -104,8 +106,9 @@ public class CalendarEvents {
 
     public static class Builder{
 
-        private String title;
-        private String location;
+        private String title = "";
+        private String location = "";
+        private String description = "";
         private long startTime;
         private long endTime;
         private boolean allDayEvent;
@@ -163,6 +166,15 @@ public class CalendarEvents {
 
         public Builder setAllDayEvent(boolean allDayEvent) {
             this.allDayEvent = allDayEvent;
+            return this;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
             return this;
         }
 

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<FrameLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mcv_showOtherDates="all"
+        app:mcv_calendarMode="month"
+        app:mcv_selectionColor="@color/colorPrimary"
+        app:mcv_selectionMode="single"
+        app:mcv_tileSize="match_parent"
+        app:mcv_arrowColor="@color/white"
+        android:layout_marginTop="50dp"
+        />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/layout_blue_grey_gradient"
+        >
+
+
+
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/App_Text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            tools:text="October 2018"
+            android:layout_marginLeft="15dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_user"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAlignment="textEnd"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginRight="15dp"
+            tools:text="Jacque' Terrell"/>
+
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="100dp"
+        >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:text="S"
+            android:paddingTop="10dp"
+            android:textAlignment="center"/>
+
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_icon"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:text="M"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textSize="17sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_icon"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:text="T"
+            android:paddingTop="10dp"
+            android:textAlignment="center"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_icon"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:text="W"
+            android:paddingTop="10dp"
+            android:textAlignment="center"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_icon"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:text="T"
+            android:paddingTop="10dp"
+            android:textAlignment="center"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_icon"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:text="F"
+            android:paddingTop="10dp"
+            android:textAlignment="center"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/material_icon"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            style="@style/App_Text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:text="S"
+            android:paddingTop="10dp"
+            android:textAlignment="center"/>
+
+
+    </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/material_icon"
+            android:layout_gravity="bottom"/>
+
+    </FrameLayout>
+
+
+</FrameLayout>
+
+</layout>

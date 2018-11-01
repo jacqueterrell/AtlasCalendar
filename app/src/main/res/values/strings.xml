@@ -44,6 +44,17 @@
         <item>Doctor of Dental Surgery (DDS)</item>
     </string-array>
 
+    <string-array name="week_day_labels">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+
+    </string-array>
+
     <string name="send_announcement_alert_body">All of your business or organization\'s contacts will receive a notification informing
     them of the new announcement.</string>
 

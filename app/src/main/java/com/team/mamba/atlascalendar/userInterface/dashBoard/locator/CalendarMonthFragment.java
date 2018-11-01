@@ -28,6 +28,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.calendarDayView.CalendarDayFragment;
+import com.team.mamba.atlascalendar.utils.ChangeFragments;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -59,8 +61,9 @@ public class CalendarMonthFragment extends Fragment {
     private static String fullName = "";
     private int sdk = Build.VERSION.SDK_INT;
     private int marshMallow = Build.VERSION_CODES.M;
-    private List<CalendarEvents> calendarEventsArrayList = new ArrayList<>();
     private boolean allDayEvent = false;
+    private List<String> calendarDescriptions = new ArrayList<>();
+
 
     public static CalendarMonthFragment newInstance(String name) {
 
@@ -80,7 +83,6 @@ public class CalendarMonthFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.calendar_month_layout, container, false);
 
 
-
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -91,7 +93,7 @@ public class CalendarMonthFragment extends Fragment {
 
         binding.calendarView.setDateSelected(CalendarDay.today(), true);
         binding.calendarView.setTopbarVisible(false);
-        binding.calendarView.setSelectionColor(getActivity().getResources().getColor(R.color.dark_blue));
+        binding.calendarView.setSelectionColor(getActivity().getResources().getColor(R.color.midnight_blue));
 
         setDecorator();
         setOnClickListeners();
@@ -139,10 +141,11 @@ public class CalendarMonthFragment extends Fragment {
             binding.calendarView.setDateSelected(calendarDay, false);
             binding.calendarView.setDateSelected(CalendarDay.today(), true);
 
-
             if (calendarDayList.contains(calendarDay)) {
 
-                showSnackBar("Schedule already set");
+                ChangeFragments.addFragmentVertically(CalendarDayFragment.newInstance(returnedCalEvents,calendarDay),
+                        getActivity().getSupportFragmentManager(), "CalendarDay", null);
+
             }
         });
     }
@@ -174,6 +177,7 @@ public class CalendarMonthFragment extends Fragment {
     private void getUserCalendarInfo(){
 
         returnedCalEvents.clear();
+        calendarDescriptions.clear();
 
         Observable.fromCallable(() -> {
 
@@ -216,8 +220,6 @@ public class CalendarMonthFragment extends Fragment {
                 .subscribe(calendarEvents -> {
 
                     Logger.i("response successful");
-                    calendarEventsArrayList.clear();
-                    calendarEventsArrayList.addAll(calendarEvents);
                     binding.calendarView.invalidateDecorators();
 
                 }, throwable -> {
@@ -255,23 +257,29 @@ public class CalendarMonthFragment extends Fragment {
         String monthString  = (String) DateFormat.format("MMM",  startDate); // Jun
         String monthNumber  = (String) DateFormat.format("MM",   startDate); // 06
         String year         = (String) DateFormat.format("yyyy", startDate); // 2013
+        String calDescription = title + year + "/" + monthNumber + "/" + day;
         CalendarDay calendarDay =  CalendarDay.from(Integer.parseInt(year),Integer.parseInt(monthNumber),Integer.parseInt(day));
 
         int diff = (int) (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
         if (diff == 0){//one day event
 
-            CalendarEvents calendarEvents = new CalendarEvents.Builder()
-                    .setTitle(title)
-                    .setStartTime(start)
-                    .setEndTime(end)
-                    .setLocation(location)
-                    .setAllDayEvent(allDayEvent)
-                    .setCalendarDay(calendarDay)
-                    .build();
+            if (!calendarDescriptions.contains(calDescription)){
 
-            calendarDayList.add(calendarDay);
-            returnedCalEvents.add(calendarEvents);
+                CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                        .setTitle(title)
+                        .setStartTime(start)
+                        .setEndTime(end)
+                        .setLocation(location)
+                        .setAllDayEvent(allDayEvent)
+                        .setCalendarDay(calendarDay)
+                        .setDescription(description)
+                        .build();
+
+                calendarDayList.add(calendarDay);
+                returnedCalEvents.add(calendarEvents);
+                calendarDescriptions.add(calDescription);
+            }
 
         } else {//multiple day event
 
@@ -283,17 +291,23 @@ public class CalendarMonthFragment extends Fragment {
 
                 long dateTimestamp = calendar.getTimeInMillis() / 1000;
 
-                CalendarEvents calendarEvents = new CalendarEvents.Builder()
-                        .setTitle(title)
-                        .setStartTime(dateTimestamp)
-                        .setEndTime(dateTimestamp)
-                        .setLocation(location)
-                        .setAllDayEvent(allDayEvent)
-                        .setCalendarDay(calendarDay)
-                        .build();
+                if (!calendarDescriptions.contains(calDescription)){
 
-                calendarDayList.add(calendarDay);
-                returnedCalEvents.add(calendarEvents);
+                    CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                            .setTitle(title)
+                            .setStartTime(dateTimestamp)
+                            .setEndTime(dateTimestamp)
+                            .setLocation(location)
+                            .setAllDayEvent(allDayEvent)
+                            .setCalendarDay(calendarDay)
+                            .setDescription(description)
+                            .build();
+
+                    calendarDayList.add(calendarDay);
+                    returnedCalEvents.add(calendarEvents);
+                    calendarDescriptions.add(calDescription);
+
+                }
 
                 calendar.add(Calendar.DAY_OF_MONTH,1);
             }
