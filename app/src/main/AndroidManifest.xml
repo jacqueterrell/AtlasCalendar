@@ -41,7 +41,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
        <!-- android:largeHeap="true"-->
 
         <activity android:name="com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity"
@@ -58,13 +59,22 @@
 
         <activity android:name="com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="stateHidden"/>
+            />
 
         <activity android:name="com.team.mamba.atlascalendar.userInterface.welcome.select_business_account.business_accounts_recycler.BusinessAccountsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity android:name=".userInterface.dashBoard.locator.CalendarMonthActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".userInterface.dashBoard.locator.calendarDayView.CalendarDayActivity"
+            android:screenOrientation="portrait"
+            />
 
         <meta-data
             android:name="preloaded_fonts"

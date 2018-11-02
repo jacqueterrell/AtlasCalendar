@@ -2,7 +2,6 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -218,12 +216,13 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         Handler handler = new Handler();
         handler.postDelayed(() -> {
 
+            FragmentManager manager = getBaseActivity().getSupportFragmentManager();
             UserProfile profile = viewModel.getSelectedUserProfile();
             String fullName = profile.getFirstName() + " " + profile.getLastName();
-            ChangeFragments.addFragmentVertically(CalendarMonthFragment.newInstance(fullName),
-                    getBaseActivity().getSupportFragmentManager(), "CalendarMonth", null);
+            //ChangeFragments.addFragmentVertically(CalendarMonthActivity.newInstance(fullName), manager, "CalendarMonth", null);
+            startActivity(CalendarMonthActivity.newIntent(getBaseActivity(),fullName));
 
-        }, 1000);
+        }, 200);
 
     }
 

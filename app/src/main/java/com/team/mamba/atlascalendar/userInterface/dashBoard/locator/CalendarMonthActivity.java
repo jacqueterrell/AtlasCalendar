@@ -3,23 +3,17 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
-import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.calendarDayView.CalendarDayActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -37,10 +31,6 @@ import com.orhanobut.logger.Logger;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.local.CalendarEvents;
 import com.team.mamba.atlascalendar.databinding.CalendarMonthLayoutBinding;
@@ -51,7 +41,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarMonthFragment extends Fragment {
+public class CalendarMonthActivity extends AppCompatActivity {
 
     private CalendarMonthLayoutBinding binding;
     private List<CalendarDay> calendarDayList = new ArrayList<>();
@@ -59,26 +49,27 @@ public class CalendarMonthFragment extends Fragment {
     private static String fullName = "";
     private int sdk = Build.VERSION.SDK_INT;
     private int marshMallow = Build.VERSION_CODES.M;
-    private List<CalendarEvents> calendarEventsArrayList = new ArrayList<>();
     private boolean allDayEvent = false;
+    private List<String> calendarDescriptions = new ArrayList<>();
 
-    public static CalendarMonthFragment newInstance(String name) {
+
+//    public static CalendarMonthActivity newInstance(String name) {
+//
+//        fullName = name;
+//        return new CalendarMonthActivity();
+//    }
+
+
+    public static Intent newIntent(Context context,String name){
 
         fullName = name;
-        return new CalendarMonthFragment();
+        return new Intent(context,CalendarMonthActivity.class);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.calendar_month_layout, container, false);
-
+        binding = DataBindingUtil.setContentView(this,R.layout.calendar_month_layout);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -91,14 +82,15 @@ public class CalendarMonthFragment extends Fragment {
 
         binding.calendarView.setDateSelected(CalendarDay.today(), true);
         binding.calendarView.setTopbarVisible(false);
-        binding.calendarView.setSelectionColor(getActivity().getResources().getColor(R.color.dark_blue));
+        binding.calendarView.setSelectionColor(getResources().getColor(R.color.midnight_blue));
 
         setDecorator();
         setOnClickListeners();
 
         getCurrentCalendarInfo();
-        return binding.getRoot();
     }
+
+
 
 
     private void setDecorator() {
@@ -114,7 +106,7 @@ public class CalendarMonthFragment extends Fragment {
             public void decorate(DayViewFacade dayViewFacade) {
 
                 dayViewFacade.addSpan(new ForegroundColorSpan(Color.WHITE));
-                dayViewFacade.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.calendar_decorator));
+                dayViewFacade.setBackgroundDrawable(getResources().getDrawable(R.drawable.calendar_decorator));
             }
         });
     }
@@ -139,10 +131,13 @@ public class CalendarMonthFragment extends Fragment {
             binding.calendarView.setDateSelected(calendarDay, false);
             binding.calendarView.setDateSelected(CalendarDay.today(), true);
 
-
             if (calendarDayList.contains(calendarDay)) {
 
-                showSnackBar("Schedule already set");
+//                ChangeFragments.addFragmentVertically(CalendarDayActivity.newInstance(returnedCalEvents,calendarDay),
+//                    getSupportFragmentManager(), "CalendarDay", null);
+
+                startActivity(CalendarDayActivity.newIntent(this,returnedCalEvents,calendarDay));
+
             }
         });
     }
@@ -174,20 +169,23 @@ public class CalendarMonthFragment extends Fragment {
     private void getUserCalendarInfo(){
 
         returnedCalEvents.clear();
+        calendarDescriptions.clear();
 
         Observable.fromCallable(() -> {
 
             Cursor cursor;
-            ContentResolver cr = getActivity().getContentResolver();
+            ContentResolver cr = getContentResolver();
 
             String[] mProjection =
                     {
-                            "_id",
+                            Events.CALENDAR_DISPLAY_NAME,
                             Events.TITLE,
                             Events.EVENT_LOCATION,
                             Events.DTSTART,
                             Events.DTEND,
-                            Events.DESCRIPTION
+                            Events.DESCRIPTION,
+                            Events.ALL_DAY,
+                            Events.DURATION
                     };
 
             Calendar calendar = Calendar.getInstance();
@@ -216,8 +214,6 @@ public class CalendarMonthFragment extends Fragment {
                 .subscribe(calendarEvents -> {
 
                     Logger.i("response successful");
-                    calendarEventsArrayList.clear();
-                    calendarEventsArrayList.addAll(calendarEvents);
                     binding.calendarView.invalidateDecorators();
 
                 }, throwable -> {
@@ -234,6 +230,11 @@ public class CalendarMonthFragment extends Fragment {
         String location = cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION));
         String startTime = cursor.getString(cursor.getColumnIndex(Events.DTSTART)).substring(0,10);
         String endTime = cursor.getString(cursor.getColumnIndex(Events.DTEND));
+
+        String duration = cursor.getString(cursor.getColumnIndex(Events.DURATION));
+        String allDay = cursor.getString(cursor.getColumnIndex(Events.ALL_DAY));
+        String calendarName = cursor.getString(cursor.getColumnIndex(Events.CALENDAR_DISPLAY_NAME));
+
 
         if (endTime == null){//one day event
             endTime = startTime;
@@ -252,36 +253,115 @@ public class CalendarMonthFragment extends Fragment {
         endDate.setTime(end * 1000);
 
         String day          = (String) DateFormat.format("dd",   startDate); // 20
-        String monthString  = (String) DateFormat.format("MMM",  startDate); // Jun
         String monthNumber  = (String) DateFormat.format("MM",   startDate); // 06
         String year         = (String) DateFormat.format("yyyy", startDate); // 2013
-        CalendarDay calendarDay =  CalendarDay.from(Integer.parseInt(year),Integer.parseInt(monthNumber),Integer.parseInt(day));
+        String startHour = (String) DateFormat.format("h:mm a",startDate);
+        String endHour = (String) DateFormat.format("h:mm a",startDate);
 
         int diff = (int) (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
         if (diff == 0){//one day event
 
+            String calDescription = title + year + "/" + monthNumber + "/" + day;
+            CalendarDay calendarDay =  CalendarDay.from(Integer.parseInt(year),Integer.parseInt(monthNumber),Integer.parseInt(day));
+
+            if (!calendarDescriptions.contains(calDescription)){
+
+                CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                        .setTitle(title)
+                        .setStartTime(start)
+                        .setEndTime(end)
+                        .setLocation(location)
+                        .setAllDayEvent(allDayEvent)
+                        .setCalendarDay(calendarDay)
+                        .setDescription(description)
+                        .build();
+
+                calendarDayList.add(calendarDay);
+                returnedCalEvents.add(calendarEvents);
+                calendarDescriptions.add(calDescription);
+            }
+
+        } else if (calendarName.toLowerCase().contains("holidays in")){
+
+            addHolidaysToCalendar(cursor,end);
+
+        } else if (calendarName.toLowerCase().contains("contacts")){//multiple day event
+
+            addContactsToCalendar(cursor,diff,end,Integer.parseInt(allDay));
+
+        } else {
+
+            addEventsToCalendar(cursor,diff);
+        }
+
+        Logger.i(title);
+    }
+
+
+    private void addHolidaysToCalendar(Cursor cursor,long end){
+
+        String title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
+        String description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
+        String location = cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(end * 1000);
+        calendar.set(Calendar.HOUR,1);
+        calendar.set(Calendar.AM_PM,Calendar.AM);
+        int calYear = calendar.get(Calendar.YEAR);
+        int calMonth = calendar.get(Calendar.MONTH);
+        int calDay = calendar.get(Calendar.DAY_OF_MONTH);
+        String calDescription = title + calYear + "/" + calMonth + "/" + calDay;
+        long dateTimestamp = calendar.getTimeInMillis() / 1000;
+        allDayEvent = true;
+
+        CalendarDay calendarDay =  CalendarDay.from(calYear,calMonth + 1,calDay);
+
+        if (!calendarDescriptions.contains(calDescription)){
+
             CalendarEvents calendarEvents = new CalendarEvents.Builder()
                     .setTitle(title)
-                    .setStartTime(start)
-                    .setEndTime(end)
+                    .setStartTime(dateTimestamp)
+                    .setEndTime(dateTimestamp)
                     .setLocation(location)
                     .setAllDayEvent(allDayEvent)
                     .setCalendarDay(calendarDay)
+                    .setDescription(description)
+                    .setHoliday(true)
                     .build();
 
             calendarDayList.add(calendarDay);
             returnedCalEvents.add(calendarEvents);
+            calendarDescriptions.add(calDescription);
+        }
 
-        } else {//multiple day event
+    }
+
+    private void addContactsToCalendar(Cursor cursor,int diff,long end,int allDay){
+
+        String title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
+        String description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
+        String location = cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION));
+        String startTime = cursor.getString(cursor.getColumnIndex(Events.DTSTART)).substring(0,10);
+        long start = Long.parseLong(startTime);
+
+
+        if (allDay == 1){
 
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(start * 1000);
+            calendar.setTimeInMillis(end * 1000);
+            int calYear = calendar.get(Calendar.YEAR);
+            int calMonth = calendar.get(Calendar.MONTH);
+            int calDay = calendar.get(Calendar.DAY_OF_MONTH);
+            String calDescription = title + calYear + "/" + calMonth + "/" + calDay;
+            long dateTimestamp = calendar.getTimeInMillis() / 1000;
             allDayEvent = true;
 
-            for (int i = 0; i <= diff; i++){
+            CalendarDay calendarDay =  CalendarDay.from(calYear,calMonth + 1,calDay);
 
-                long dateTimestamp = calendar.getTimeInMillis() / 1000;
+
+            if (!calendarDescriptions.contains(calDescription)){
 
                 CalendarEvents calendarEvents = new CalendarEvents.Builder()
                         .setTitle(title)
@@ -290,17 +370,94 @@ public class CalendarMonthFragment extends Fragment {
                         .setLocation(location)
                         .setAllDayEvent(allDayEvent)
                         .setCalendarDay(calendarDay)
+                        .setDescription(description)
                         .build();
 
                 calendarDayList.add(calendarDay);
                 returnedCalEvents.add(calendarEvents);
+                calendarDescriptions.add(calDescription);
+            }
 
+        } else {
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(start * 1000);
+            allDayEvent = true;
+
+            for (int i = 0; i <= diff; i++){
+
+                int calYear = calendar.get(Calendar.YEAR);
+                int calMonth = calendar.get(Calendar.MONTH);
+                int calDay = calendar.get(Calendar.DAY_OF_MONTH);
+                String calDescription = title + calYear + "/" + calMonth + "/" + calDay;
+                long dateTimestamp = calendar.getTimeInMillis() / 1000;
                 calendar.add(Calendar.DAY_OF_MONTH,1);
+
+                CalendarDay calendarDay =  CalendarDay.from(calYear,calMonth + 1,calDay);
+
+                if (!calendarDescriptions.contains(calDescription)){
+
+                    CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                            .setTitle(title)
+                            .setStartTime(dateTimestamp)
+                            .setEndTime(dateTimestamp)
+                            .setLocation(location)
+                            .setAllDayEvent(allDayEvent)
+                            .setCalendarDay(calendarDay)
+                            .setDescription(description)
+                            .build();
+
+                    calendarDayList.add(calendarDay);
+                    returnedCalEvents.add(calendarEvents);
+                    calendarDescriptions.add(calDescription);
+                }
+
+            }
+        }
+
+    }
+
+    private void addEventsToCalendar(Cursor cursor,int diff){
+
+        String title = cursor.getString(cursor.getColumnIndex(Events.TITLE));
+        String description = cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION));
+        String location = cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION));
+        String startTime = cursor.getString(cursor.getColumnIndex(Events.DTSTART)).substring(0,10);
+        long start = Long.parseLong(startTime);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(start * 1000);
+        allDayEvent = true;
+
+        for (int i = 0; i <= diff; i++){
+
+            int calYear = calendar.get(Calendar.YEAR);
+            int calMonth = calendar.get(Calendar.MONTH);
+            int calDay = calendar.get(Calendar.DAY_OF_MONTH);
+            String calDescription = title + calYear + "/" + calMonth + "/" + calDay;
+            long dateTimestamp = calendar.getTimeInMillis() / 1000;
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+
+            CalendarDay calendarDay =  CalendarDay.from(calYear,calMonth + 1,calDay);
+
+            if (!calendarDescriptions.contains(calDescription)){
+
+                CalendarEvents calendarEvents = new CalendarEvents.Builder()
+                        .setTitle(title)
+                        .setStartTime(dateTimestamp)
+                        .setEndTime(dateTimestamp)
+                        .setLocation(location)
+                        .setAllDayEvent(allDayEvent)
+                        .setCalendarDay(calendarDay)
+                        .setDescription(description)
+                        .build();
+
+                calendarDayList.add(calendarDay);
+                returnedCalEvents.add(calendarEvents);
+                calendarDescriptions.add(calDescription);
             }
 
         }
-
-        Logger.i(title);
     }
 
 
@@ -308,10 +465,10 @@ public class CalendarMonthFragment extends Fragment {
 
         if (sdk >= marshMallow) {
 
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                requestPermissions(new String[]{Manifest.permission.READ_CALENDAR},
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CALENDAR},
                         AppConstants.REQUEST_READ_CALENDAR_PERMISSIONS);
 
                 return false;
