@@ -307,6 +307,8 @@ public class CalendarMonthActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(end * 1000);
+        calendar.set(Calendar.HOUR,1);
+        calendar.set(Calendar.AM_PM,Calendar.AM);
         int calYear = calendar.get(Calendar.YEAR);
         int calMonth = calendar.get(Calendar.MONTH);
         int calDay = calendar.get(Calendar.DAY_OF_MONTH);

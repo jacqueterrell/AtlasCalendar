@@ -84,6 +84,7 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayViewHold
             holder.binding.ivEvent.setVisibility(View.GONE);
             holder.binding.ivHoliday.setVisibility(View.VISIBLE);
             holder.binding.tvDescription.setText("U.S. Holiday");
+            holder.binding.tvDate.setText("All Day");
 
         } else {
 
