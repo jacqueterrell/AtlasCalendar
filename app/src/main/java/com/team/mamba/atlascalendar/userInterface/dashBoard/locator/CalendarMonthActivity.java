@@ -3,23 +3,17 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
-import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,9 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.calendarDayView.CalendarDayFragment;
-import com.team.mamba.atlascalendar.utils.ChangeFragments;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.calendarDayView.CalendarDayActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -39,10 +31,6 @@ import com.orhanobut.logger.Logger;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.local.CalendarEvents;
 import com.team.mamba.atlascalendar.databinding.CalendarMonthLayoutBinding;
@@ -53,7 +41,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarMonthFragment extends Fragment {
+public class CalendarMonthActivity extends AppCompatActivity {
 
     private CalendarMonthLayoutBinding binding;
     private List<CalendarDay> calendarDayList = new ArrayList<>();
@@ -65,22 +53,23 @@ public class CalendarMonthFragment extends Fragment {
     private List<String> calendarDescriptions = new ArrayList<>();
 
 
-    public static CalendarMonthFragment newInstance(String name) {
+//    public static CalendarMonthActivity newInstance(String name) {
+//
+//        fullName = name;
+//        return new CalendarMonthActivity();
+//    }
+
+
+    public static Intent newIntent(Context context,String name){
 
         fullName = name;
-        return new CalendarMonthFragment();
+        return new Intent(context,CalendarMonthActivity.class);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.calendar_month_layout, container, false);
+        binding = DataBindingUtil.setContentView(this,R.layout.calendar_month_layout);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -93,14 +82,15 @@ public class CalendarMonthFragment extends Fragment {
 
         binding.calendarView.setDateSelected(CalendarDay.today(), true);
         binding.calendarView.setTopbarVisible(false);
-        binding.calendarView.setSelectionColor(getActivity().getResources().getColor(R.color.midnight_blue));
+        binding.calendarView.setSelectionColor(getResources().getColor(R.color.midnight_blue));
 
         setDecorator();
         setOnClickListeners();
 
         getCurrentCalendarInfo();
-        return binding.getRoot();
     }
+
+
 
 
     private void setDecorator() {
@@ -116,7 +106,7 @@ public class CalendarMonthFragment extends Fragment {
             public void decorate(DayViewFacade dayViewFacade) {
 
                 dayViewFacade.addSpan(new ForegroundColorSpan(Color.WHITE));
-                dayViewFacade.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.calendar_decorator));
+                dayViewFacade.setBackgroundDrawable(getResources().getDrawable(R.drawable.calendar_decorator));
             }
         });
     }
@@ -143,8 +133,10 @@ public class CalendarMonthFragment extends Fragment {
 
             if (calendarDayList.contains(calendarDay)) {
 
-                ChangeFragments.addFragmentVertically(CalendarDayFragment.newInstance(returnedCalEvents,calendarDay),
-                        getActivity().getSupportFragmentManager(), "CalendarDay", null);
+//                ChangeFragments.addFragmentVertically(CalendarDayActivity.newInstance(returnedCalEvents,calendarDay),
+//                    getSupportFragmentManager(), "CalendarDay", null);
+
+                startActivity(CalendarDayActivity.newIntent(this,returnedCalEvents,calendarDay));
 
             }
         });
@@ -182,7 +174,7 @@ public class CalendarMonthFragment extends Fragment {
         Observable.fromCallable(() -> {
 
             Cursor cursor;
-            ContentResolver cr = getActivity().getContentResolver();
+            ContentResolver cr = getContentResolver();
 
             String[] mProjection =
                     {
@@ -322,10 +314,10 @@ public class CalendarMonthFragment extends Fragment {
 
         if (sdk >= marshMallow) {
 
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                requestPermissions(new String[]{Manifest.permission.READ_CALENDAR},
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CALENDAR},
                         AppConstants.REQUEST_READ_CALENDAR_PERMISSIONS);
 
                 return false;

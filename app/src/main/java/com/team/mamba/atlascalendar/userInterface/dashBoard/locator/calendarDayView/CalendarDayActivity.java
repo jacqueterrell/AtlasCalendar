@@ -1,28 +1,25 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator.calendarDayView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.local.CalendarEvents;
 import com.team.mamba.atlascalendar.databinding.CalendarDayRecyclerBinding;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarDayFragment extends Fragment {
+public class CalendarDayActivity extends AppCompatActivity {
 
 
     private static List<CalendarEvents> allCalendarEventsList;
@@ -33,35 +30,28 @@ public class CalendarDayFragment extends Fragment {
     private static CalendarDay selectedCalDay;
 
 
-    public static CalendarDayFragment newInstance(List<CalendarEvents> calendarEvents,CalendarDay calendarDay) {
+    public static Intent newIntent(Context context,List<CalendarEvents> calendarEvents,CalendarDay calendarDay){
 
         allCalendarEventsList = calendarEvents;
         selectedCalDay = calendarDay;
-        return new CalendarDayFragment();
+        return new Intent(context,CalendarDayActivity.class);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.calendar_day_recycler, container, false);
+        binding = DataBindingUtil.setContentView(this,R.layout.calendar_day_recycler);
 
         calendarDayAdapter = new CalendarDayAdapter(filteredEventsList);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(calendarDayAdapter);
 
         setDate();
         sortCalendarEvents();
-
-        return binding.getRoot();
     }
+
+
 
     private void sortCalendarEvents(){
 

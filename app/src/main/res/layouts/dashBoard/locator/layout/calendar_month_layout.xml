@@ -11,19 +11,19 @@
     android:background="@color/white">
 
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:mcv_showOtherDates="all"
-        app:mcv_calendarMode="month"
-        app:mcv_selectionColor="@color/colorPrimary"
-        app:mcv_selectionMode="single"
-        app:mcv_tileSize="match_parent"
-        app:mcv_arrowColor="@color/white"
-        android:layout_marginTop="50dp"
-        />
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:mcv_showOtherDates="all"
+            app:mcv_calendarMode="month"
+            app:mcv_selectionColor="@color/colorPrimary"
+            app:mcv_selectionMode="single"
+            app:mcv_tileSize="match_parent"
+            app:mcv_arrowColor="@color/white"
+            android:layout_marginTop="50dp"
 
+            />
 
     <FrameLayout
         android:layout_width="match_parent"
