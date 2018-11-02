@@ -79,7 +79,7 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayViewHold
             holder.binding.tvDate.setText(startHour);
         }
 
-        if (getHolidayList().toString().trim().toLowerCase().contains(events.getTitle().trim().toLowerCase())){
+        if (events.isHoliday()){
 
             holder.binding.ivEvent.setVisibility(View.GONE);
             holder.binding.ivHoliday.setVisibility(View.VISIBLE);
@@ -97,27 +97,4 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayViewHold
         return calendarEventsList.size();
     }
 
-
-    private List<String> getHolidayList(){
-
-        List<String> holidays = new ArrayList<>();
-        holidays.add("New Year's Day");
-        holidays.add("Martin Luther King Jr. Day");
-        holidays.add("Valentine's Day");
-        holidays.add("Presidents' Day");
-        holidays.add("St. Patrick's Day");
-        holidays.add("Easter");
-        holidays.add("April Fool's Day");
-        holidays.add("Mother's Day:");
-        holidays.add("Father's Day");
-        holidays.add("Memorial Day");
-        holidays.add("Halloween");
-        holidays.add("Veterans' Day");
-        holidays.add("Columbus Day");
-        holidays.add("Thanksgiving Day");
-        holidays.add("Christmas Day");
-
-
-        return holidays;
-    }
 }

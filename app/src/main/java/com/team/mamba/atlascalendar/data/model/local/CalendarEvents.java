@@ -16,6 +16,7 @@ public class CalendarEvents {
     private long startTime;
     private long endTime;
     private boolean allDayEvent;
+    private boolean holiday;
     private CalendarDay calendarDay;
 
 
@@ -28,6 +29,7 @@ public class CalendarEvents {
         this.endTime = builder.getEndTime();
         this.allDayEvent = builder.isAllDayEvent();
         this.calendarDay = builder.getCalendarDay();
+        this.holiday = builder.isHoliday();
     }
 
 
@@ -49,6 +51,10 @@ public class CalendarEvents {
 
     public boolean isAllDayEvent() {
         return allDayEvent;
+    }
+
+    public boolean isHoliday() {
+        return holiday;
     }
 
     public CalendarDay getCalendarDay() {
@@ -112,6 +118,7 @@ public class CalendarEvents {
         private long startTime;
         private long endTime;
         private boolean allDayEvent;
+        private boolean holiday = false;
         private CalendarDay calendarDay;
 
 
@@ -176,6 +183,15 @@ public class CalendarEvents {
         public Builder setDescription(String description) {
             this.description = description;
             return this;
+        }
+
+        public Builder setHoliday(boolean holiday) {
+            this.holiday = holiday;
+            return this;
+        }
+
+        public boolean isHoliday() {
+            return holiday;
         }
 
         public CalendarEvents build(){
