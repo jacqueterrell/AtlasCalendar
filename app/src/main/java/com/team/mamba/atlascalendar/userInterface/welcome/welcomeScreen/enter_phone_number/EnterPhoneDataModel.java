@@ -156,7 +156,8 @@ public class EnterPhoneDataModel {
 
                             Logger.e(task.getException().getMessage());
                             viewModel.getNavigator().handleError(task.getException().getMessage());
-                        }                    }
+                        }
+                    }
 
     });
 }

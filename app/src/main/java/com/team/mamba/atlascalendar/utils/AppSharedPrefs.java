@@ -7,7 +7,7 @@ import javax.inject.Inject;
 public class AppSharedPrefs {
 
 
-    private static final String USER_ID = "userId";
+    public static final String USER_ID = "userId";
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String PHONE_NUMBER = "phoneNumber";
