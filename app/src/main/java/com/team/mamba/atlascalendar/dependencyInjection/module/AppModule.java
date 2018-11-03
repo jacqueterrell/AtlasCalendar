@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.team.mamba.atlascalendar.dependencyInjection.builder.ActivityBuilder;
 import com.team.mamba.atlascalendar.dependencyInjection.builder.FragmentBuilder;
+import com.team.mamba.atlascalendar.dependencyInjection.builder.ServiceBuilder;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;
@@ -16,7 +17,7 @@ import javax.inject.Singleton;
 
 @Module(includes = {AndroidInjectionModule.class,AndroidSupportInjectionModule.class,
         DatabaseModule.class, NetworkModule.class, ActivityBuilder.class, FragmentBuilder.class,
-        } )
+        ServiceBuilder.class} )
 public class AppModule {
 
     @Provides

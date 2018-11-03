@@ -30,6 +30,7 @@ import com.team.mamba.atlascalendar.BR;
 import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
+import com.team.mamba.atlascalendar.service.CurrentLocationService;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity;
@@ -42,6 +43,7 @@ import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.We
 import com.team.mamba.atlascalendar.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import com.team.mamba.atlascalendar.utils.ChangeFragments;
+import com.team.mamba.atlascalendar.utils.CommonUtils;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -49,10 +51,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
+import okhttp3.HttpUrl;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorViewModel>
         implements LocatorNavigator, SearchView.OnQueryTextListener, DatePickerDialog.OnDateSetListener {
@@ -74,6 +80,33 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     private LocatorAdapter locatorAdapter;
     private static DatePickerDialog datePickerDialog;
     private static final String DATE_PICKER = "datePickerDialog";
+
+
+    /**
+     * You client id, you have it from the google console when you register your project
+     * https://console.developers.google.com/a
+     */
+    private static final String CLIENT_ID = "450285275359-7iqk4stuc54gbbkcbsqrdh78jhoaq8jq.apps.googleusercontent.com";
+    /**
+     * The redirect uri you have define in your google console for your project
+     */
+    private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
+    /**
+     * The redirect root uri you have define in your google console for your project
+     * It is also the scheme your Main Activity will react
+     */
+    public static final String REDIRECT_URI_ROOT = "urn:ietf:wg:oauth:2.0:oob";
+
+    private static final String CLIENT_SECRET = "jQKi8GXvmYF-jLPol7aeDqOy";
+    /**
+     * You are asking to use a code when autorizing
+     */
+    private static final String CODE = "code";
+    /**
+     * The scope: what do we want to use
+     * Here we want to be able to do anything on the user's GDrive
+     */
+    public static final String API_SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
 
 
     public static LocatorFragment newInstance() {
@@ -153,8 +186,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onCrmClicked() {
 
-        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
+        setUpOAuth();
+//        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+//        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
     }
 
     @Override
@@ -602,6 +636,47 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                     binding.cardNotificationBadge.setVisibility(View.VISIBLE);
                     binding.tvNotificationBadgeCount.setText(String.valueOf(DashBoardActivity.newAnnouncementCount));
                 });
+    }
+
+
+    private void setUpOAuth(){
+
+
+        HttpUrl authorizeUrl =
+                HttpUrl.parse("https://accounts.google.com/o/oauth2/v2/auth")
+                        .newBuilder()
+                        .addQueryParameter("client_id", CLIENT_ID)
+                        .addQueryParameter("redirect_uri", REDIRECT_URI)
+                        .addQueryParameter("scope", API_SCOPE)
+                        .addQueryParameter("response_type", CODE)
+                        .build();
+
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(String.valueOf(authorizeUrl.url())));
+        startActivity(i);
+
+//        try{
+//
+//            JSONObject jsonObject = new JSONObject(
+//                    CommonUtils.loadJSONFromAsset(getBaseActivity(), "json/credentials.json"));
+//
+//            String CLIENT_ID = jsonObject.getString("client_id");
+//            String REDIRECT_URI = jsonObject.getString("redirect_uris");
+//            String CLIENT_SECRET = jsonObject.getString("client_secret");
+//
+//
+//        } catch (JSONException | IOException e){
+//
+//            showAlert("Error",e.getLocalizedMessage());
+//        }
+
+    }
+
+
+    private void startLocationsService(){
+
+        Intent intent = new Intent(getBaseActivity(),CurrentLocationService.class);
+        getBaseActivity().startService(intent);
     }
 
 }

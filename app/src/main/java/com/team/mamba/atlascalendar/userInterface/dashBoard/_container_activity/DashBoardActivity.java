@@ -2,7 +2,9 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -83,10 +85,25 @@ public class DashBoardActivity extends BaseActivity<FragmentContainerBinding, Da
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         binding = getViewDataBinding();
-
         dataManager.getSharedPrefs().setUserLoggedIn(true);
 
-        //Load the fragment into our container
+        Uri data = getIntent().getData();
+
+        if (data != null && !TextUtils.isEmpty(data.getScheme())) {
+
+            if (LocatorFragment.REDIRECT_URI_ROOT.equals(data.getScheme())){
+
+                String code = data.getQueryParameter("code");
+
+                if (!TextUtils.isEmpty(code)){
+
+                    showToastLong("Saved value " + code);
+                }
+            }
+        }
+
+
+            //Load the fragment into our container
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 

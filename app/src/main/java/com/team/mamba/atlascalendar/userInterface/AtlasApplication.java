@@ -2,6 +2,7 @@ package com.team.mamba.atlascalendar.userInterface;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Service;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -19,20 +20,23 @@ import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.dependencyInjection.component.DaggerApplicationComponent;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 
+import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import dagger.android.HasServiceInjector;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
-public class AtlasApplication extends Application implements HasActivityInjector,LifecycleObserver{
+public class AtlasApplication extends Application implements HasActivityInjector,LifecycleObserver,HasServiceInjector {
 
     public static boolean isAppInBackGround = false;
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
-//
-//    @Inject
-//    DispatchingAndroidInjector<Service> dispatchingServiceInjector;
+
+
+    @Inject
+    DispatchingAndroidInjector<Service> dispatchingServiceInjector;
 
     @Override
     public void onCreate() {
@@ -66,6 +70,8 @@ public class AtlasApplication extends Application implements HasActivityInjector
         Logger.d("App in foreground");
     }
 
+
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -75,6 +81,11 @@ public class AtlasApplication extends Application implements HasActivityInjector
     @Override
     public DispatchingAndroidInjector<Activity> activityInjector() {
         return activityDispatchingAndroidInjector;
+    }
+
+    @Override
+    public AndroidInjector<Service> serviceInjector() {
+        return dispatchingServiceInjector;
     }
 
     private void initializeLogger() {
@@ -94,9 +105,4 @@ public class AtlasApplication extends Application implements HasActivityInjector
                 .build();
         firestore.setFirestoreSettings(settings);
     }
-
-//    @Override
-//    public AndroidInjector<Service> serviceInjector() {
-//        return dispatchingServiceInjector;
-//    }
 }
