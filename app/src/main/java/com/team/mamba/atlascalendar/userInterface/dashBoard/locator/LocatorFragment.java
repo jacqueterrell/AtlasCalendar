@@ -1,9 +1,15 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
+import android.Manifest;
+import android.Manifest.permission;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -20,9 +26,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.orhanobut.logger.Logger;
@@ -31,6 +39,7 @@ import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.CurrentLocationService;
+import com.team.mamba.atlascalendar.service.LocationReceiver;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity;
@@ -173,6 +182,12 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         showProgressSpinner();
         setUpSwitchListeners();
         viewModel.requestContactsInfo(getViewModel());
+
+        if (isAccessLocationPermissonGranted()){
+
+            startLocationsService();
+        }
+
         return binding.getRoot();
     }
 
@@ -186,9 +201,9 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onCrmClicked() {
 
-        setUpOAuth();
-//        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
-//        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
+        //setUpOAuth();
+        FragmentManager manager = getBaseActivity().getSupportFragmentManager();
+        ChangeFragments.replaceFromBackStack(new CrmFragment(), manager, "CrmFragment", null);
     }
 
     @Override
@@ -405,6 +420,32 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     }
 
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        compositeDisposable = new CompositeDisposable();
+        setUpNewAnnouncementBadge();
+        setUpNewConnectionRequestBadge();
+        setNotificationObservable();
+
+        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()) {
+
+            binding.layoutEmptyScreen.setVisibility(View.GONE);
+
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        compositeDisposable.dispose();
+        resetNewConnectionRequestBadge();
+    }
+
     private void setUpSearchView() {
 
         binding.searchView.setOnQueryTextListener(this);
@@ -457,30 +498,6 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                                 PorterDuff.Mode.MULTIPLY);
             }
         });
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        compositeDisposable = new CompositeDisposable();
-        setUpNewAnnouncementBadge();
-        setUpNewConnectionRequestBadge();
-        setNotificationObservable();
-
-        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()) {
-
-            binding.layoutEmptyScreen.setVisibility(View.GONE);
-
-        }
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        compositeDisposable.dispose();
-        resetNewConnectionRequestBadge();
     }
 
     /**
@@ -673,9 +690,53 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
 
+    private boolean isAccessLocationPermissonGranted() {
+
+        if (sdk >= marshMallow) {
+
+            if (ActivityCompat.checkSelfPermission(getBaseActivity(), permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        AppConstants.REQUEST_ACCESS_FINE_LOCATION);
+
+                return false;
+
+            } else {
+
+                return true;
+            }
+
+        } else {
+
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == AppConstants.REQUEST_ACCESS_FINE_LOCATION){
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                startLocationsService();
+
+            } else {
+
+                Intent intent = new Intent(getBaseActivity(),CurrentLocationService.class);
+                getBaseActivity().stopService(intent);
+            }
+
+        }
+    }
+
+
     private void startLocationsService(){
 
-        Intent intent = new Intent(getBaseActivity(),CurrentLocationService.class);
+        Intent intent = new Intent(appContext,CurrentLocationService.class);
         getBaseActivity().startService(intent);
     }
 

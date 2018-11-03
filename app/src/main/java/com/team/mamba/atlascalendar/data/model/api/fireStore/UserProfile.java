@@ -39,6 +39,7 @@ public class UserProfile {
     private String workStreet= "";
     private String workCityStateZip= "";
     private String imageUrl= "";
+    private Map<String,String> lastLocation = new LinkedHashMap<>();
     private Map<String,String> connections = new LinkedHashMap<>();
     private int connectionsCount;
     private double timestamp;
@@ -334,6 +335,14 @@ public class UserProfile {
 
     public void setConnections(Map<String,String> connections) {
         this.connections = connections;
+    }
+
+    public Map<String, String> getLastLocation() {
+        return lastLocation;
+    }
+
+    public void setLastLocation(Map<String, String> lastLocation) {
+        this.lastLocation = lastLocation;
     }
 
     public int getConnectionsCount() {

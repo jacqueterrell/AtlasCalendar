@@ -17,6 +17,7 @@ import com.team.mamba.atlascalendar.BR;
 import com.team.mamba.atlascalendar.BuildConfig;
 import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.databinding.SettingsLayoutBinding;
+import com.team.mamba.atlascalendar.service.CurrentLocationService;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.settings.network_management.NetworkManagementFragment;
 import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
@@ -172,6 +173,8 @@ public class SettingsFragment extends BaseFragment<SettingsLayoutBinding,Setting
                     showToastShort("Logging out");
                     resetApplication();
 
+                    Intent intent = new Intent(getBaseActivity(),CurrentLocationService.class);
+                    getBaseActivity().stopService(intent);
                 })
                 .show();
 
