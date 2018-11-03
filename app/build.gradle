@@ -177,7 +177,7 @@ android {
                      'src/main/res/layouts/dashBoard', 'src/main/res/layouts/main', 'src/main/res/layouts/dashboard/info',
                      'src/main/res/layouts/dashBoard/addContacts', 'src/main/res/layouts/dashBoard/userProfile',
                      'src/main/res/layouts/dashBoard/crm', 'src/main/res/layouts/dashBoard/announcements', 'src/main/res/assets',
-                     'src/main/res/layouts/dashBoard/userProfile/editInfo', 'src/main/res/layouts/dashboard/locator']
+                     'src/main/res/layouts/dashBoard/userProfile/editInfo', 'src/main/res/layouts/dashboard/locator', 'src/main/assets']
         }
     }
 }
@@ -261,7 +261,6 @@ dependencies {
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
 
-
     //all RxJava dependencies
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
@@ -269,15 +268,15 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$rootProject.rxjavaForRetrofit"
 
     //RxJava support for ROOM dependencies
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha02'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha02'
 
     //all ROOM dependencies
-    implementation 'androidx.room:room-runtime:2.1.0-alpha01'
-    implementation 'androidx.room:room-rxjava2:2.1.0-alpha01'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha01'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha01'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha02'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha02'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha02'
 
     //all dagger2 dependencies
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
