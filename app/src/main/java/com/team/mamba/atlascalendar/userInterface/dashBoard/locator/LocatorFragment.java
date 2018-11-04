@@ -3,13 +3,9 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 import android.Manifest;
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -19,7 +15,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -30,7 +25,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.orhanobut.logger.Logger;
@@ -39,7 +33,6 @@ import com.team.mamba.atlascalendar.R;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.CurrentLocationService;
-import com.team.mamba.atlascalendar.service.LocationReceiver;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity;
@@ -70,7 +63,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorViewModel>
-        implements LocatorNavigator, SearchView.OnQueryTextListener, DatePickerDialog.OnDateSetListener {
+        implements LocatorNavigator, SearchView.OnQueryTextListener {
 
     @Inject
     LocatorViewModel viewModel;
@@ -83,39 +76,26 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     private static final String GOOGLE_CALENDAR_PACKAGE_NAME = "com.google.android.calendar";
     private static final String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=";
+    private static final String GOOGLE_MARKET_URL = "market://details?id=";
+    private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private LocatorLayoutBinding binding;
     private DashBoardActivityNavigator parentNavigator;
     private CompositeDisposable compositeDisposable;
     private LocatorAdapter locatorAdapter;
     private static DatePickerDialog datePickerDialog;
-    private static final String DATE_PICKER = "datePickerDialog";
 
 
-    /**
-     * You client id, you have it from the google console when you register your project
-     * https://console.developers.google.com/a
-     */
-    private static final String CLIENT_ID = "450285275359-7iqk4stuc54gbbkcbsqrdh78jhoaq8jq.apps.googleusercontent.com";
-    /**
-     * The redirect uri you have define in your google console for your project
-     */
-    private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
     /**
      * The redirect root uri you have define in your google console for your project
      * It is also the scheme your Main Activity will react
      */
     public static final String REDIRECT_URI_ROOT = "urn:ietf:wg:oauth:2.0:oob";
 
-    private static final String CLIENT_SECRET = "jQKi8GXvmYF-jLPol7aeDqOy";
-    /**
-     * You are asking to use a code when autorizing
-     */
-    private static final String CODE = "code";
     /**
      * The scope: what do we want to use
      * Here we want to be able to do anything on the user's GDrive
      */
-    public static final String API_SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
+    private static final String API_SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
 
 
     public static LocatorFragment newInstance() {
@@ -175,18 +155,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         final Calendar minimumYear = Calendar.getInstance();
         minimumYear.add(Calendar.YEAR, -3);
 
-        datePickerDialog = new DatePickerDialog(getBaseActivity(), this, year, month, day);
-        datePickerDialog.getDatePicker().setMinDate(minimumYear.getTimeInMillis());
-
         setUpSearchView();
         showProgressSpinner();
         setUpSwitchListeners();
         viewModel.requestContactsInfo(getViewModel());
-
-        if (isAccessLocationPermissonGranted()){
-
-            startLocationsService();
-        }
+        viewModel.setIsLoading(true);
 
         return binding.getRoot();
     }
@@ -247,14 +220,17 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onCalendarRowClicked(UserProfile userProfile) {
 
-        Intent launchIntent = getBaseActivity().getPackageManager()
-                .getLaunchIntentForPackage(GOOGLE_CALENDAR_PACKAGE_NAME);
+        //todo pull the selected contact's google calendar info and show
+        //it in the user's calendar.
 
-        if (launchIntent != null) {
-            startActivity(launchIntent);
-        } else {
-            showInstallGoogleCalendarAlert();
-        }
+//        Intent launchIntent = getBaseActivity().getPackageManager()
+//                .getLaunchIntentForPackage(GOOGLE_CALENDAR_PACKAGE_NAME);
+//
+//        if (launchIntent != null) {
+//            startActivity(launchIntent);
+//        } else {
+//            showInstallGoogleCalendarAlert();
+//        }
     }
 
     @Override
@@ -298,6 +274,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     public void handleError(String msg) {
 
         hideProgressSpinner();
+        viewModel.setIsLoading(false);
         showSnackbar(msg);
     }
 
@@ -327,6 +304,22 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
         List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
         locatorAdapter.setFavoriteProfiles(favUserProfiles);
+    }
+
+    @Override
+    public void onSelectedUserProfileSaved() {
+
+        UserProfile profile = viewModel.getSelectedUserProfile();
+
+        binding.switchPrivacyMode.setChecked(profile.isIsPrivacyMode());
+        binding.switchVacationMode.setChecked(profile.isIsVacationMode());
+
+        if (isAccessLocationPermissonGranted()){
+
+            startLocationService();
+        }
+
+        viewModel.setIsLoading(false);
     }
 
     @Override
@@ -415,13 +408,6 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         return true;
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
-    }
-
-
-
 
     @Override
     public void onResume() {
@@ -482,6 +468,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                         .setColorFilter(getResources().getColor(R.color.material_icons_light),
                                 PorterDuff.Mode.MULTIPLY);
             }
+
+            if (!viewModel.isLoading()){
+
+                viewModel.setPrivacyMode(getViewModel(),isChecked);
+            }
         });
 
         binding.switchVacationMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
@@ -496,6 +487,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
                 binding.switchVacationMode.getTrackDrawable()
                         .setColorFilter(getResources().getColor(R.color.material_icons_light),
                                 PorterDuff.Mode.MULTIPLY);
+            }
+
+            if (!viewModel.isLoading()){
+
+                viewModel.setVacationMode(getViewModel(),isChecked);
             }
         });
     }
@@ -523,7 +519,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=" + GOOGLE_CALENDAR_PACKAGE_NAME)));
+                                Uri.parse(GOOGLE_MARKET_URL + GOOGLE_CALENDAR_PACKAGE_NAME)));
                     } catch (android.content.ActivityNotFoundException anfe) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(GOOGLE_PLAY_URL + GOOGLE_CALENDAR_PACKAGE_NAME));
@@ -658,34 +654,33 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
     private void setUpOAuth(){
 
+        try{
 
-        HttpUrl authorizeUrl =
-                HttpUrl.parse("https://accounts.google.com/o/oauth2/v2/auth")
-                        .newBuilder()
-                        .addQueryParameter("client_id", CLIENT_ID)
-                        .addQueryParameter("redirect_uri", REDIRECT_URI)
-                        .addQueryParameter("scope", API_SCOPE)
-                        .addQueryParameter("response_type", CODE)
-                        .build();
+            JSONObject jsonObject = new JSONObject(CommonUtils.loadJSONFromAsset(getBaseActivity(), "json/credentials.json"));
 
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(String.valueOf(authorizeUrl.url())));
-        startActivity(i);
+            String CLIENT_ID = jsonObject.getString("client_id");
+            String REDIRECT_URI = jsonObject.getString("redirect_uris");
+            String CODE = "code";
 
-//        try{
-//
-//            JSONObject jsonObject = new JSONObject(
-//                    CommonUtils.loadJSONFromAsset(getBaseActivity(), "json/credentials.json"));
-//
-//            String CLIENT_ID = jsonObject.getString("client_id");
-//            String REDIRECT_URI = jsonObject.getString("redirect_uris");
-//            String CLIENT_SECRET = jsonObject.getString("client_secret");
-//
-//
-//        } catch (JSONException | IOException e){
-//
-//            showAlert("Error",e.getLocalizedMessage());
-//        }
+
+            HttpUrl authorizeUrl =
+                    HttpUrl.parse(GOOGLE_AUTH_URL)
+                            .newBuilder()
+                            .addQueryParameter("client_id", CLIENT_ID)
+                            .addQueryParameter("redirect_uri", REDIRECT_URI)
+                            .addQueryParameter("scope", API_SCOPE)
+                            .addQueryParameter("response_type", CODE)
+                            .build();
+
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(String.valueOf(authorizeUrl.url())));
+            startActivity(i);
+
+
+        } catch (JSONException | IOException e){
+
+            showAlert("Error",e.getLocalizedMessage());
+        }
 
     }
 
@@ -722,22 +717,44 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
-                startLocationsService();
+                startLocationService();
 
             } else {
 
-                Intent intent = new Intent(getBaseActivity(),CurrentLocationService.class);
-                getBaseActivity().stopService(intent);
+                stopLocationService();
             }
 
         }
     }
 
+    @Override
+    public void startLocationService() {
 
-    private void startLocationsService(){
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){
 
-        Intent intent = new Intent(appContext,CurrentLocationService.class);
-        getBaseActivity().startService(intent);
+            UserProfile profile = viewModel.getSelectedUserProfile();
+
+            if (!profile.isIsPrivacyMode() && !profile.isIsVacationMode()){
+
+                Intent intent = new Intent(appContext,CurrentLocationService.class);
+                getBaseActivity().startService(intent);
+
+            } else {
+
+                stopLocationService();
+            }
+        }
+    }
+
+
+    /**
+     * Cancels the location service, resulting in the alarm manager also
+     * being cancelled
+     */
+    private void stopLocationService(){
+
+        Intent intent = new Intent(getBaseActivity(),CurrentLocationService.class);
+        getBaseActivity().stopService(intent);
     }
 
 }

@@ -19,7 +19,6 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
     private static String calendarCompanyId = "";
 
-
     /***************view logic************/
 
     /***************getters and setters************/
@@ -60,7 +59,6 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
     public List<UserProfile> getFavoritesProfileList() {
 
-
         return favoritesProfileList;
     }
 
@@ -71,8 +69,6 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     public List<FavoriteUsersEntity> getFavoriteUsersEntityList() {
         return favoriteUsersEntityList;
     }
-
-
 
     //fixme remove in place of actual Firebase field
 
@@ -101,27 +97,27 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         getNavigator().onNotificationsClicked();
     }
 
-    public void onHamburgerClicked(){
+    public void onHamburgerClicked() {
 
         getNavigator().onHamburgerClicked();
     }
 
-    public void onAccountManagementClicked(){
+    public void onAccountManagementClicked() {
 
         getNavigator().onAccountManagementClicked();
     }
 
-    public void onLogOutClicked(){
+    public void onLogOutClicked() {
 
         getNavigator().onLogOutClicked();
     }
 
-    public void onAddConnectionClicked(){
+    public void onAddConnectionClicked() {
 
         getNavigator().onAddConnectionClicked();
     }
 
-    public void onUsersCalendarClicked(){
+    public void onUsersCalendarClicked() {
 
         getNavigator().onUsersCalendarClicked();
     }
@@ -144,10 +140,13 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         dataModel.addFavoriteUser(viewModel, profileId);
     }
 
+    public void setPrivacyMode(LocatorViewModel viewModel,boolean privacyMode) {
 
-    //client id
-    //450285275359-7iqk4stuc54gbbkcbsqrdh78jhoaq8jq.apps.googleusercontent.com
+        dataModel.setPrivacyMode(viewModel,privacyMode);
+    }
 
-    //client secret
-    //jQKi8GXvmYF-jLPol7aeDqOy
+    public void setVacationMode(LocatorViewModel viewModel,boolean vacationMode) {
+
+        dataModel.setVacationMode(viewModel,vacationMode);
+    }
 }
