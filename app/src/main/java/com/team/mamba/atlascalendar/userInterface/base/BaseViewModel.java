@@ -7,7 +7,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseViewModel<N> extends ViewModel {
 
-    private final ObservableBoolean mIsLoading = new ObservableBoolean(false);
+    private boolean mIsLoading = false;
     private CompositeDisposable mCompositeDisposable;
     private N mNavigator;
     private AppDataManager dataManager;
@@ -29,12 +29,12 @@ public abstract class BaseViewModel<N> extends ViewModel {
         return mCompositeDisposable;
     }
 
-    public ObservableBoolean getIsLoading() {
+    public boolean isLoading() {
         return mIsLoading;
     }
 
     public void setIsLoading(boolean isLoading) {
-        mIsLoading.set(isLoading);
+        mIsLoading = isLoading;
     }
 
     public N getNavigator() {

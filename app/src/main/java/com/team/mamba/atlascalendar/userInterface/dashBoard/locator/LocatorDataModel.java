@@ -79,6 +79,7 @@ public class LocatorDataModel {
                 if (profile.getId().equals(savedUserId)) {
 
                     viewModel.setSelectedUserProfile(profile);
+                    viewModel.getNavigator().onSelectedUserProfileSaved();
                 }
 
                 adjustedProfileList.add(profile);
@@ -99,6 +100,12 @@ public class LocatorDataModel {
         }
     }
 
+
+    /**
+     * Retrieves all business profiles from the database
+     *
+     * @param userProfileList list of all user profiles
+     */
     private void requestBusinessProfiles(LocatorViewModel viewModel,List<UserProfile> userProfileList){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -143,7 +150,6 @@ public class LocatorDataModel {
                         viewModel.setEmployeeProfilesList(selectedProfilesList);
                         getFavoriteUsers(viewModel);
 
-
                     } else {
 
                         Logger.e(task.getException().getMessage());
@@ -155,7 +161,8 @@ public class LocatorDataModel {
 
 
     /**
-     * Retrieves the list of favorite users from the local Favorites Db
+     * Retrieves all lists of user profiles. This second query of user profiles
+     * is necessary to provide two separate lists of user profiles
      */
     private void getFavoriteUsers(LocatorViewModel viewModel){
 
@@ -194,6 +201,9 @@ public class LocatorDataModel {
 
     }
 
+    /**
+     * Retrieves the list of favorite users from the local Favorites Db
+     */
     private void requestFavoriteUsers(LocatorViewModel viewModel, List<UserProfile> userProfiles){
 
 
@@ -289,6 +299,68 @@ public class LocatorDataModel {
         }
 
         viewModel.getNavigator().updateFavoritesList();
+    }
+
+
+    /**
+     * Updates the isPrivacy field in the Users database
+     * @param privacyMode the user's privacy setting
+     */
+    public void setPrivacyMode(LocatorViewModel viewModel,boolean privacyMode){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = dataManager.getSharedPrefs().getUserId();
+
+        db.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .update("isPrivacyMode",privacyMode)
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        UserProfile profile = viewModel.getSelectedUserProfile();
+                        profile.setIsPrivacyMode(privacyMode);
+                        viewModel.getNavigator().startLocationService();
+
+                    } else {
+
+                        if (task.getException() != null) {
+
+                            Logger.e(task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * Updates the isVacation field in the Users database
+     * @param vacationMode the user's vacation setting
+     */
+    public void setVacationMode(LocatorViewModel viewModel,boolean vacationMode){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = dataManager.getSharedPrefs().getUserId();
+
+        db.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .update("isVacationMode",vacationMode)
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        UserProfile profile = viewModel.getSelectedUserProfile();
+                        profile.setIsVacationMode(vacationMode);
+                        viewModel.getNavigator().startLocationService();
+
+                    } else {
+
+                        if (task.getException() != null) {
+
+                            Logger.e(task.getException().getMessage());
+                        }
+                    }
+                });
     }
 
     private void onPause(LocatorViewModel viewModel){

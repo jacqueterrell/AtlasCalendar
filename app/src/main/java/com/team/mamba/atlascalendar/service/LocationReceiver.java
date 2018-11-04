@@ -37,10 +37,11 @@ public class LocationReceiver extends BroadcastReceiver {
     public void setAlarm(Context context){
 
         Calendar calendar = Calendar.getInstance();
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context,LocationReceiver.class);
         long interval = 1000 * 60 * 5; // 5 minutes in milliseconds
+
+        Intent intent = new Intent(context,LocationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,1,intent,0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
@@ -51,8 +52,8 @@ public class LocationReceiver extends BroadcastReceiver {
 
     public void cancelAlarm(Context context){
 
-        Intent intent = new Intent(context,CurrentLocationService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(context,1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(context,LocationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,1,intent,0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
@@ -113,9 +114,9 @@ public class LocationReceiver extends BroadcastReceiver {
                         if (task.isSuccessful()) {
 
                             Logger.i("successfully posted location");
-                            Toast.makeText(context, "Location updated"     , Toast.LENGTH_LONG).show();
-                            Vibrator v=(Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-                            v.vibrate(500);
+                           // Toast.makeText(context, "Location updated"     , Toast.LENGTH_LONG).show();
+//                            Vibrator v=(Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+//                            v.vibrate(500);
 
                         } else {
 

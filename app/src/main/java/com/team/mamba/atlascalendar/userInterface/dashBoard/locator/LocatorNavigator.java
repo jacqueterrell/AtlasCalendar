@@ -37,6 +37,10 @@ public interface LocatorNavigator {
 
     void showAddCalendarMessage();
 
+    void onSelectedUserProfileSaved();
+
+    void startLocationService();
+
     List<UserProfile> getPermProfileList();
 
 }

@@ -45,6 +45,8 @@ public class UserProfile {
     private double timestamp;
     private double dob;
     private String phone= "";
+    private boolean isVacationMode = true;
+    private boolean isPrivacyMode = true;
 
     @Exclude private int connectionType = 3;
     @Exclude private String shareNeeds = "...";
@@ -176,6 +178,21 @@ public class UserProfile {
         return workHistory;
     }
 
+    public boolean isIsVacationMode() {
+        return isVacationMode;
+    }
+
+    public void setIsVacationMode(boolean isVacationMode) {
+        this.isVacationMode = isVacationMode;
+    }
+
+    public boolean isIsPrivacyMode() {
+        return isPrivacyMode;
+    }
+
+    public void setIsPrivacyMode(boolean isPrivacyMode) {
+        this.isPrivacyMode = isPrivacyMode;
+    }
 
     @Exclude public void setFavorite(boolean favorite) {
         this.favorite = favorite;
