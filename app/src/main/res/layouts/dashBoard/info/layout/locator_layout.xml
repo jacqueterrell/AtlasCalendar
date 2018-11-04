@@ -73,12 +73,14 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
                     android:textSize="20sp" />
 
-                <ImageView
+                <ImageButton
                     style="@style/IconImageView"
                     android:layout_gravity="center"
-                    android:background="@color/transparent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_globe_solid"
-                    android:tint="@color/dark_green" />
+                    android:tint="@color/dark_green"
+                    android:onClick="@{()-> viewModel.onGlobalMapClicked()}"
+                    />
 
             </LinearLayout>
 

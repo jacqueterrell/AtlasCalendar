@@ -271,6 +271,28 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void onGlobalMapClicked() {
+
+        //todo show alert for empty list
+        List<UserProfile> profiles = viewModel.getFavoritesProfileList();
+
+        if (profiles.isEmpty()){
+
+            onContactMapClicked(viewModel.getSelectedUserProfile());
+
+        } else {
+
+            startActivity(GoogleMapsActivity.newIntent(getBaseActivity(),profiles));
+        }
+    }
+
+    @Override
+    public void onContactMapClicked(UserProfile userProfile) {
+
+        startActivity(GoogleMapsActivity.newIntent(getBaseActivity(),userProfile));
+    }
+
+    @Override
     public void handleError(String msg) {
 
         hideProgressSpinner();

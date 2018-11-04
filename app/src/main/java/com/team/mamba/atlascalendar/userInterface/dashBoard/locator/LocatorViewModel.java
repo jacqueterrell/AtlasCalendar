@@ -122,8 +122,12 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         getNavigator().onUsersCalendarClicked();
     }
 
+    public void onGlobalMapClicked() {
 
-    /********* Datamodel Calls********/
+        getNavigator().onGlobalMapClicked();
+    }
+
+        /********* Datamodel Calls********/
 
     public void requestContactsInfo(LocatorViewModel viewModel) {
 
