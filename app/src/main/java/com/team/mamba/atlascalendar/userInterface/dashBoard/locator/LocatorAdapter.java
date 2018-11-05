@@ -47,6 +47,13 @@ public class LocatorAdapter extends RecyclerView.Adapter<LocatorViewHolder>{
                 navigator.onCalendarRowClicked(profile);
             });
 
+            binding.ibGlobe.setOnClickListener(view -> {
+
+                UserProfile profile = userProfileList.get(getAdapterPosition());
+                navigator.onContactMapClicked(profile);
+
+            });
+
 
             binding.ibFavoriteNotSelected.setOnClickListener(v -> {
 

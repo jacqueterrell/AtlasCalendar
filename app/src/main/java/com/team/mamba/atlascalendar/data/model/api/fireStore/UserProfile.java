@@ -47,6 +47,8 @@ public class UserProfile {
     private String phone= "";
     private boolean isVacationMode = true;
     private boolean isPrivacyMode = true;
+    private String calendarConnection = "";
+
 
     @Exclude private int connectionType = 3;
     @Exclude private String shareNeeds = "...";
@@ -192,6 +194,14 @@ public class UserProfile {
 
     public void setIsPrivacyMode(boolean isPrivacyMode) {
         this.isPrivacyMode = isPrivacyMode;
+    }
+
+    public void setCalendarConnection(String calendarConnection) {
+        this.calendarConnection = calendarConnection;
+    }
+
+    public String getCalendarConnection() {
+        return calendarConnection;
     }
 
     @Exclude public void setFavorite(boolean favorite) {

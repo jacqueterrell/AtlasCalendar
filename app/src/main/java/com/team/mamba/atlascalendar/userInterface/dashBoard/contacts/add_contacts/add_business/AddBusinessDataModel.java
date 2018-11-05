@@ -167,9 +167,7 @@ public class AddBusinessDataModel {
 
         if (AddBusinessViewModel.isCalendarConnection()){
 
-            //todo add the business to the user's calendar contact
-            LocatorViewModel.setCalendarCompanyId(selectedProfile.getId());
-            viewModel.getNavigator().onCalendarConnectionSaved();
+            updateUsersCalendarContact(viewModel,selectedProfile);
 
         } else if (viewModel.getConnectionIdList().contains(selectedProfile.getId())) {//already a contact
 
@@ -180,6 +178,31 @@ public class AddBusinessDataModel {
                 checkBusinessCode(viewModel,selectedProfileList,code);
 
         }
+    }
+
+    private void updateUsersCalendarContact(AddBusinessViewModel viewModel,BusinessProfile selectedProfile){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = dataManager.getSharedPrefs().getUserId();
+
+        db.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .update("calendarConnection",selectedProfile.getId())
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        LocatorViewModel.wasUpdated = true;
+                        viewModel.getNavigator().onCalendarConnectionSaved();
+
+                    } else {
+
+                        if (task.getException() != null) {
+
+                            Logger.e(task.getException().getMessage());
+                        }
+                    }
+                });
     }
 
     private void checkBusinessCode(AddBusinessViewModel viewModel,List<BusinessProfile> selectedProfileList,String code){

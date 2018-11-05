@@ -44,20 +44,6 @@
         <item>Doctor of Dental Surgery (DDS)</item>
     </string-array>
 
-    <string-array name="week_day_labels">
-        <item>S</item>
-        <item>M</item>
-        <item>T</item>
-        <item>W</item>
-        <item>T</item>
-        <item>F</item>
-        <item>S</item>
-
-    </string-array>
-
-    <string name="send_announcement_alert_body">All of your business or organization\'s contacts will receive a notification informing
-    them of the new announcement.</string>
-
     <string name="describe_connections_info">Atlas uses the following designations to determine how much information
         you share with your connection. Atlas will only share your work information with the Business Contact, Colleague,
         New Acquaintance, and Client designations (similar to if you shared your business card). Should you have personal
@@ -87,6 +73,8 @@
     </string-array>
 
     <string name="first_name">What\'s your first name?</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB-HwUG6_6g2LFulw8smUCEakt0X5XeQEo</string>
 
     <string name="how_did_you_meet">How did you meet? \n please select one.</string>
     <string name="how_you_met_body">Write personal notes on your contacts and always rememberthe how and why of your meetings. Your personal notes are for your eyes only.</string>
@@ -128,6 +116,9 @@
 
     <string name="recent_activity">Recent Activity</string>
 
+    <string name="send_announcement_alert_body">All of your business or organization\'s contacts will receive a notification informing
+    them of the new announcement.</string>
+
     <string-array name="status_array">
         <item>New</item>
         <item>Qualified</item>
@@ -150,6 +141,16 @@
     <string name="verify">Verify</string>
     <string name="verify_age_body">To create an account on Atlas, you must be a minimum of 13 years old.</string>
     <string name="verify_age_title">Verify Your Age</string>
+
+    <string-array name="week_day_labels">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+    </string-array>
 
     <string name="what_is_next_step">What is the next step? \n Please select one.</string>
     <string name="what_is_the_opp">What is the opportunity? \n Please select one.</string>

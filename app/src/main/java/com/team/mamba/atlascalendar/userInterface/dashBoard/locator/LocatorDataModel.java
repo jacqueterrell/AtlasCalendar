@@ -1,5 +1,6 @@
 package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
+import android.text.TextUtils;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.data.AppDataManager;
@@ -79,6 +80,7 @@ public class LocatorDataModel {
                 if (profile.getId().equals(savedUserId)) {
 
                     viewModel.setSelectedUserProfile(profile);
+                    viewModel.setCalendarCompanyId(profile.getCalendarConnection());
                     viewModel.getNavigator().onSelectedUserProfileSaved();
                 }
 
@@ -88,7 +90,7 @@ public class LocatorDataModel {
 
         if (!dataManager.getSharedPrefs().isBusinessAccount()){
 
-            if (LocatorViewModel.getCalendarCompanyId().isEmpty()){
+            if (TextUtils.isEmpty(viewModel.getCalendarCompanyId())){
 
                 viewModel.getNavigator().showAddCalendarMessage();
 
@@ -109,7 +111,7 @@ public class LocatorDataModel {
     private void requestBusinessProfiles(LocatorViewModel viewModel,List<UserProfile> userProfileList){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String employerId = LocatorViewModel.getCalendarCompanyId();
+        String calendarCompanyId = viewModel.getCalendarCompanyId();
         List<UserProfile> selectedProfilesList = new ArrayList<>();
 
         List<String> connectionsIdList = new ArrayList<>();
@@ -124,8 +126,9 @@ public class LocatorDataModel {
 
                         for (BusinessProfile profile : businessProfiles){
 
-                            if (profile.getId().equals(employerId)){//retrieve the employers contacts
+                            if (profile.getId().equals(calendarCompanyId)){//retrieve the employers contacts
 
+                                viewModel.setCalendarContactProfile(profile);
                                 for (Map.Entry<String, String> entry : profile.getContacts().entrySet()){
 
                                     String contactId = entry.getKey();
@@ -138,6 +141,7 @@ public class LocatorDataModel {
 
                             for (String contactId : connectionsIdList){
 
+                                //todo check proper location code before adding contact
                                 if (profile.getId().equals(contactId)) {
 
                                     profile.setSearchable(true);
@@ -233,7 +237,6 @@ public class LocatorDataModel {
                     }
 
                     viewModel.setFavoritesProfileList(favoritesProfiles);
-                    viewModel.getEmployeeProfilesList();
                     viewModel.getNavigator().onEmployeeContactsReturned();
 
 
@@ -364,6 +367,7 @@ public class LocatorDataModel {
     }
 
     private void onPause(LocatorViewModel viewModel){
+
 
     }
 }

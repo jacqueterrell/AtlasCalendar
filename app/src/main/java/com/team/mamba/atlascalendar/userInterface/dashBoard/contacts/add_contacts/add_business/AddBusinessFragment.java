@@ -56,7 +56,7 @@ implements AddBusinessNavigator {
 
     @Override
     public View getProgressSpinner() {
-        return null;
+       return binding.progressSpinner;
     }
 
     @Override
@@ -86,7 +86,6 @@ implements AddBusinessNavigator {
     @Override
     public void onFinishButtonClicked() {
 
-        showProgressSpinner();
         String businessName = binding.etBusinessName.getText().toString();
         String code = binding.etIdCode.getText().toString();
 
@@ -98,6 +97,7 @@ implements AddBusinessNavigator {
 
         } else {
 
+            showProgressSpinner();
             viewModel.addBusinessRequest(getViewModel(),businessName,code);
 
         }

@@ -25,6 +25,10 @@ public interface LocatorNavigator {
 
     void onAddConnectionClicked();
 
+    void onGlobalMapClicked();
+
+    void onContactMapClicked(UserProfile profile);
+
     void addFavoriteUser(UserProfile userProfile);
 
     void removeFavoriteUser(UserProfile userProfile);

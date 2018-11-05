@@ -27,6 +27,7 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.BR;
 import com.team.mamba.atlascalendar.R;
@@ -34,6 +35,7 @@ import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.CurrentLocationService;
 import com.team.mamba.atlascalendar.service.MyFirebaseMessagingService;
+import com.team.mamba.atlascalendar.userInterface.AtlasApplication;
 import com.team.mamba.atlascalendar.userInterface.base.BaseFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivity;
 import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.DashBoardActivityNavigator;
@@ -148,18 +150,45 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(locatorAdapter);
 
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        final Calendar minimumYear = Calendar.getInstance();
-        minimumYear.add(Calendar.YEAR, -3);
+
+        binding.swipeContainer.setOnRefreshListener(() -> {
+
+            viewModel.requestContactsInfo(getViewModel());
+            viewModel.setIsLoading(true);
+        });
+
+        if (LocatorViewModel.wasUpdated){
+
+            viewModel.requestContactsInfo(getViewModel());
+            viewModel.setIsLoading(true);
+            showProgressSpinner();
+            LocatorViewModel.wasUpdated = false;
+
+        } else {
+
+            if (viewModel.getEmployeeProfilesList().isEmpty()){//fresh load
+
+                showProgressSpinner();
+                viewModel.requestContactsInfo(getViewModel());
+                viewModel.setIsLoading(true);
+
+            } else {//update the data without showing progress spinner
+
+                if (!dataManager.getSharedPrefs().isBusinessAccount()) {
+
+                    binding.tvEmployersName.setText(viewModel.getCalendarContactProfile().getName());
+                    binding.tvDrawerCompanyName.setText(viewModel.getCalendarContactProfile().getName());
+                }
+
+                List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
+                locatorAdapter.setFavoriteProfiles(favUserProfiles);
+                viewModel.requestContactsInfo(getViewModel());
+                viewModel.setIsLoading(true);
+            }
+        }
 
         setUpSearchView();
-        showProgressSpinner();
         setUpSwitchListeners();
-        viewModel.requestContactsInfo(getViewModel());
-        viewModel.setIsLoading(true);
 
         return binding.getRoot();
     }
@@ -271,10 +300,56 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void onGlobalMapClicked() {
+
+        List<UserProfile> profiles = viewModel.getFavoritesProfileList();
+
+        if (profiles.isEmpty()){
+
+            String title = "No contacts found";
+            String body = "Your favorites list is empty. Please add at least one contact as a favorite to see their location";
+            showAlert(title,body);
+
+        } else {
+
+            startActivity(GoogleMapsActivity.newIntent(getBaseActivity(),profiles));
+        }
+    }
+
+    @Override
+    public void onContactMapClicked(UserProfile userProfile) {
+
+        if (userProfile.getLastLocation().isEmpty()){
+
+            String title = "No location data found";
+            String body = "This contact has not added any location info";
+            showAlert(title,body);
+
+        } else if (userProfile.isIsPrivacyMode()){
+
+            String title = "Privacy Mode";
+            String body = "This contact is currently in privacy mode";
+            showAlert(title,body);
+
+        } else if (userProfile.isIsVacationMode()){
+
+            String title = "Vacation Mode";
+            String body = "This contact is currently in vacation mode";
+            showAlert(title,body);
+
+        } else {
+
+            startActivity(GoogleMapsActivity.newIntent(getBaseActivity(),userProfile));
+        }
+
+    }
+
+    @Override
     public void handleError(String msg) {
 
         hideProgressSpinner();
         viewModel.setIsLoading(false);
+        binding.swipeContainer.setRefreshing(false);
         showSnackbar(msg);
     }
 
@@ -284,6 +359,8 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
         binding.tvDrawerCompanyName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
         binding.layoutEmptyScreen.setVisibility(View.VISIBLE);
+        viewModel.setIsLoading(true);
+        binding.swipeContainer.setRefreshing(false);
     }
 
     @Override
@@ -298,12 +375,13 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         hideProgressSpinner();
         if (!dataManager.getSharedPrefs().isBusinessAccount()) {
 
-            binding.tvEmployersName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
-            binding.tvDrawerCompanyName.setText(viewModel.getSelectedUserProfile().getCurrentEmployer());
+            binding.tvEmployersName.setText(viewModel.getCalendarContactProfile().getName());
+            binding.tvDrawerCompanyName.setText(viewModel.getCalendarContactProfile().getName());
         }
 
         List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());
         locatorAdapter.setFavoriteProfiles(favUserProfiles);
+        binding.swipeContainer.setRefreshing(false);
     }
 
     @Override
@@ -417,7 +495,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
         setUpNewConnectionRequestBadge();
         setNotificationObservable();
 
-        if (!LocatorViewModel.getCalendarCompanyId().isEmpty()) {
+        if (!getViewModel().getCalendarCompanyId().isEmpty()) {
 
             binding.layoutEmptyScreen.setVisibility(View.GONE);
 
@@ -688,6 +766,11 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     private boolean isAccessLocationPermissonGranted() {
 
         if (sdk >= marshMallow) {
+
+            if (AtlasApplication.isAppInBackGround){
+
+                return false;
+            }
 
             if (ActivityCompat.checkSelfPermission(getBaseActivity(), permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {

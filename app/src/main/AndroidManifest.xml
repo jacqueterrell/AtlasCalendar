@@ -85,6 +85,9 @@
         <activity android:name=".userInterface.dashBoard.locator.calendarDayView.CalendarDayActivity"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".userInterface.dashBoard.locator.GoogleMapsActivity"
+            android:screenOrientation="portrait"
+            />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -109,7 +112,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyChplMH3NIv0mEn7DL6aLnz_OJ5safyObU"/>
+            android:value="@string/google_maps_key" />
+
 
         <service
             android:name="com.team.mamba.atlascalendar.service.MyFirebaseMessagingService">
