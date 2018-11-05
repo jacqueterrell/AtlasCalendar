@@ -11,11 +11,13 @@ import java.util.List;
 public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
     private LocatorDataModel dataModel;
-    private UserProfile selectedUserProfile;
-    private BusinessProfile selectedBusinessProfile;
-    private List<UserProfile> employeeProfilesList = new ArrayList<>();
-    private List<UserProfile> favoritesProfileList = new ArrayList<>();
-    private List<FavoriteUsersEntity> favoriteUsersEntityList = new ArrayList<>();
+    private static UserProfile selectedUserProfile;
+    private static BusinessProfile selectedBusinessProfile;
+    private static BusinessProfile calendarContactProfile;
+    private static List<UserProfile> employeeProfilesList = new ArrayList<>();
+    private static List<UserProfile> favoritesProfileList = new ArrayList<>();
+    private static List<FavoriteUsersEntity> favoriteUsersEntityList = new ArrayList<>();
+    public static boolean wasUpdated = false;
 
     private static String calendarCompanyId = "";
 
@@ -32,7 +34,7 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     }
 
     public void setSelectedUserProfile(UserProfile selectedUserProfile) {
-        this.selectedUserProfile = selectedUserProfile;
+        LocatorViewModel.selectedUserProfile = selectedUserProfile;
     }
 
     public BusinessProfile getSelectedBusinessProfile() {
@@ -41,7 +43,7 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
     public void setSelectedBusinessProfile(
             BusinessProfile selectedBusinessProfile) {
-        this.selectedBusinessProfile = selectedBusinessProfile;
+        LocatorViewModel.selectedBusinessProfile = selectedBusinessProfile;
     }
 
     public List<UserProfile> getEmployeeProfilesList() {
@@ -49,12 +51,12 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     }
 
     public void setEmployeeProfilesList(List<UserProfile> employeeProfilesList) {
-        this.employeeProfilesList = employeeProfilesList;
+        LocatorViewModel.employeeProfilesList = employeeProfilesList;
     }
 
 
     public void setFavoritesProfileList(List<UserProfile> favoritesProfileList) {
-        this.favoritesProfileList = favoritesProfileList;
+        LocatorViewModel.favoritesProfileList = favoritesProfileList;
     }
 
     public List<UserProfile> getFavoritesProfileList() {
@@ -63,21 +65,28 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     }
 
     public void setFavoriteUsersEntityList(List<FavoriteUsersEntity> favoriteUsersEntityList) {
-        this.favoriteUsersEntityList = favoriteUsersEntityList;
+        LocatorViewModel.favoriteUsersEntityList = favoriteUsersEntityList;
     }
 
     public List<FavoriteUsersEntity> getFavoriteUsersEntityList() {
         return favoriteUsersEntityList;
     }
 
-    //fixme remove in place of actual Firebase field
 
-    public static void setCalendarCompanyId(String calendarCompanyId) {
+    public void setCalendarCompanyId(String calendarCompanyId) {
         LocatorViewModel.calendarCompanyId = calendarCompanyId;
     }
 
-    public static String getCalendarCompanyId() {
+    public String getCalendarCompanyId() {
         return calendarCompanyId;
+    }
+
+    public void setCalendarContactProfile(BusinessProfile calendarContactProfile) {
+        LocatorViewModel.calendarContactProfile = calendarContactProfile;
+    }
+
+    public BusinessProfile getCalendarContactProfile() {
+        return calendarContactProfile;
     }
 
     /***************onclick listeners************/
