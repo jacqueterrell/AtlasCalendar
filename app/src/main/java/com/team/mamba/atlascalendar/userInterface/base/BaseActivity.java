@@ -32,6 +32,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
     protected int sdk = Build.VERSION.SDK_INT;
     protected int marshMallow = Build.VERSION_CODES.M;
     protected AppDataManager dataManager;
+    private static boolean appPaused = true;
 
     /**
      * Override for set binding variable
@@ -60,6 +61,17 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         return mViewDataBinding;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        appPaused = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appPaused = false;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -177,4 +189,7 @@ public abstract class BaseActivity <T extends ViewDataBinding, V extends BaseVie
         }
     }
 
+    public static boolean isAppPaused() {
+        return appPaused;
+    }
 }

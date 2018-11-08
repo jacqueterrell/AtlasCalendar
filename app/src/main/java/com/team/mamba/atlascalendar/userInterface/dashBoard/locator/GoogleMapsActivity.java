@@ -63,8 +63,16 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.google_map_layout);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        if (userProfile == null){
+
+            finish();
+
+        } else {
+
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+        }
 
     }
 
