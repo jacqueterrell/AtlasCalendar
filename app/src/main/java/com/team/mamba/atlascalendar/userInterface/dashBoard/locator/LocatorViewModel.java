@@ -2,6 +2,7 @@ package com.team.mamba.atlascalendar.userInterface.dashBoard.locator;
 
 import com.team.mamba.atlascalendar.data.local_database.favoriteUsers.FavoriteUsersEntity;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlascalendar.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.userInterface.base.BaseViewModel;
 
@@ -14,8 +15,10 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
     private static UserProfile selectedUserProfile;
     private static BusinessProfile selectedBusinessProfile;
     private static BusinessProfile calendarContactProfile;
+    private static List<UserProfile> allUserProfiles = new ArrayList<>();
     private static List<UserProfile> employeeProfilesList = new ArrayList<>();
     private static List<UserProfile> favoritesProfileList = new ArrayList<>();
+    private static List<UserConnections> needsApprovalConnections = new ArrayList<>();
     private static List<FavoriteUsersEntity> favoriteUsersEntityList = new ArrayList<>();
     public static boolean wasUpdated = false;
 
@@ -87,6 +90,22 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
 
     public BusinessProfile getCalendarContactProfile() {
         return calendarContactProfile;
+    }
+
+    public void setAllUserProfiles(List<UserProfile> allUserProfiles) {
+        LocatorViewModel.allUserProfiles = allUserProfiles;
+    }
+
+    public List<UserProfile> getAllUserProfiles() {
+        return allUserProfiles;
+    }
+
+    public void setNeedsApprovalConnections(List<UserConnections> needsApprovalConnections) {
+        LocatorViewModel.needsApprovalConnections = needsApprovalConnections;
+    }
+
+    public List<UserConnections> getNeedsApprovalConnections() {
+        return needsApprovalConnections;
     }
 
     /***************onclick listeners************/

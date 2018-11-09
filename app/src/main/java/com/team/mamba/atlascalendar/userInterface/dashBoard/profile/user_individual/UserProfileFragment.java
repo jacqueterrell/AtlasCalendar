@@ -83,7 +83,7 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
     @Override
     public View getProgressSpinner() {
-        return null;
+        return binding.progressSpinner;
     }
 
     @Override
@@ -104,7 +104,8 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
          super.onCreateView(inflater, container, savedInstanceState);
          binding = getViewDataBinding();
 
-                viewModel.updateUserDetails(getViewModel());
+         showProgressSpinner();
+         viewModel.getUserDetails(getViewModel());
 
          return binding.getRoot();
     }
@@ -304,8 +305,8 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
         UserProfile profile = viewModel.getUserProfile();
         binding.setProfile(profile);
-
         setUserDefaultValues();
+        hideProgressSpinner();
     }
 
 
@@ -480,7 +481,10 @@ public class UserProfileFragment extends BaseFragment<UserProfileLayoutBinding,U
 
 
     @Override
-    public void onConnectionTypeSaved() {
+    public void handleError(String errMsg) {
+
+        showSnackbar(errMsg);
+        hideProgressSpinner();
 
     }
 }

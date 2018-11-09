@@ -281,8 +281,6 @@
 
         </LinearLayout>
 
-
-
         <net.bohush.geometricprogressview.GeometricProgressView
             android:id="@+id/progress_spinner"
             android:layout_width="50dp"
@@ -296,6 +294,7 @@
             app:gp_number_of_angles="12"
             app:gp_type="triangle"
             tools:visibility="visible" />
+
         <LinearLayout
             android:id="@+id/layout_empty_screen"
             android:layout_width="match_parent"

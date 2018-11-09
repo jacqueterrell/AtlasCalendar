@@ -26,5 +26,5 @@ public interface UserProfileNavigator {
 
     String getImagePath();
 
-    void onConnectionTypeSaved();
+    void handleError(String errMsg);
 }
