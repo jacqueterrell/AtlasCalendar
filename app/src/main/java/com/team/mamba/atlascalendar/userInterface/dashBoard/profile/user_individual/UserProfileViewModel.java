@@ -112,9 +112,9 @@ public class UserProfileViewModel extends BaseViewModel<UserProfileNavigator> {
         dataModel.uploadImage(viewModel, profile);
     }
 
-    public void updateUserDetails(UserProfileViewModel viewModel) {
+    public void getUserDetails(UserProfileViewModel viewModel) {
 
-        dataModel.updateUserDetails(viewModel);
+        dataModel.getUserDetails(viewModel);
     }
 
     }

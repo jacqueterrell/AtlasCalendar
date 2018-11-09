@@ -30,6 +30,7 @@
         android:background="?attr/selectableItemBackground"
         android:layout_gravity="start"
         android:textAlignment="textStart"
+
         />
 
 </FrameLayout>

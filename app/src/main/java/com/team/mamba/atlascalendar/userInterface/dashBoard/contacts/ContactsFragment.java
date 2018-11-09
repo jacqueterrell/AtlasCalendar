@@ -144,7 +144,6 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         });
 
         checkForEmptyContactList();
-
         setUpSearchView();
         return binding.getRoot();
     }
@@ -209,8 +208,28 @@ public class ContactsFragment extends BaseFragment<ContactsLayoutBinding, Contac
         binding.tvUserName.setText(userName);
         binding.tvUserCode.setText(userCode);
 
-        if (!dataManager.getSharedPrefs().isBusinessAccount()){
+        if (!dataManager.getSharedPrefs().isBusinessAccount()){//sets cached data values
+
             onIndividualFilterClicked();
+
+            UserProfile profile = viewModel.getUserProfile();
+            String name = profile.getFirstName() + " " + profile.getLastName();
+            userCode = profile.getCode();
+            userName = name;
+            binding.tvUserCode.setText(profile.getCode());
+            binding.tvUserName.setText(name);
+
+            if (!profile.getImageUrl().replace(".", "").isEmpty()) {
+
+                Glide.with(getBaseActivity())
+                        .load(profile.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(binding.ivUserProfileImage);
+
+                binding.ivDefault.setVisibility(View.GONE);
+            }
+
+            setUpDirectoryBadge();
         }
         viewModel.requestContactsInfo(getViewModel());
     }

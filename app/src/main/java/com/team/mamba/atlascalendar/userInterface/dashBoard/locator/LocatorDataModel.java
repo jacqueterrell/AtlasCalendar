@@ -7,6 +7,7 @@ import com.team.mamba.atlascalendar.data.AppDataManager;
 
 import com.team.mamba.atlascalendar.data.local_database.favoriteUsers.FavoriteUsersEntity;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.BusinessProfile;
+import com.team.mamba.atlascalendar.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.utils.AppConstants;
 import java.util.ArrayList;
@@ -95,11 +96,12 @@ public class LocatorDataModel {
                 viewModel.getNavigator().showAddCalendarMessage();
 
             } else {
-
                 requestBusinessProfiles(viewModel,adjustedProfileList);
             }
 
         }
+
+        viewModel.setAllUserProfiles(adjustedProfileList);
     }
 
 
@@ -173,7 +175,6 @@ public class LocatorDataModel {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<UserProfile> adjustedProfileList = new ArrayList<>();
-        String savedUserId = dataManager.getSharedPrefs().getUserId();
 
         db.collection(AppConstants.USERS_COLLECTION)
                 .get()
@@ -237,11 +238,11 @@ public class LocatorDataModel {
                     }
 
                     viewModel.setFavoritesProfileList(favoritesProfiles);
-                    viewModel.getNavigator().onEmployeeContactsReturned();
-
+                    getConnectionRequests(viewModel);
 
                 },throwable -> {
 
+                    viewModel.getNavigator().handleError(throwable.getLocalizedMessage());
                     Logger.e(throwable.getLocalizedMessage());
                 }));
     }
@@ -330,6 +331,8 @@ public class LocatorDataModel {
                         if (task.getException() != null) {
 
                             Logger.e(task.getException().getMessage());
+                            viewModel.getNavigator().handleError(task.getException().getMessage());
+
                         }
                     }
                 });
@@ -360,14 +363,59 @@ public class LocatorDataModel {
 
                         if (task.getException() != null) {
 
+                            viewModel.getNavigator().handleError(task.getException().getMessage());
                             Logger.e(task.getException().getMessage());
                         }
                     }
                 });
     }
 
-    private void onPause(LocatorViewModel viewModel){
+
+    /**
+     * Retrieves all Connections, loops through them to see which ones have not been
+     * approved, and then finds the correlating user profile
+     *
+     */
+    public void getConnectionRequests(LocatorViewModel viewModel){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = dataManager.getSharedPrefs().getUserId();
+        List<UserConnections> approvalConnections = new ArrayList<>();
 
 
+        db.collection(AppConstants.CONNECTIONS_COLLECTION)
+                .whereEqualTo("consentingUserID", userId)
+                .get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()){
+
+                        List<UserConnections> connectionsList = task.getResult().toObjects(UserConnections.class);
+
+                        for (UserConnections connections : connectionsList){
+
+                            if (!connections.isConfirmed){//needs approval
+
+                                for (UserProfile profile : viewModel.getAllUserProfiles()){
+
+                                    if (profile.getId().equals(connections.getRequestingUserID())){
+
+                                        connections.setUserProfile(profile);
+                                        approvalConnections.add(connections);
+
+                                    }
+                                }
+
+                            }
+                        }
+
+                        viewModel.setNeedsApprovalConnections(approvalConnections);
+                        viewModel.getNavigator().onEmployeeContactsReturned();
+
+                    } else {
+
+                        viewModel.getNavigator().handleError(task.getException().getMessage());
+                    }
+                });
     }
 }

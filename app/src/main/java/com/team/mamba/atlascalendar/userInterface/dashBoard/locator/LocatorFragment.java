@@ -5,6 +5,7 @@ import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener;
 import com.orhanobut.logger.Logger;
 import com.team.mamba.atlascalendar.BR;
 import com.team.mamba.atlascalendar.R;
+import com.team.mamba.atlascalendar.data.model.api.fireStore.UserConnections;
 import com.team.mamba.atlascalendar.data.model.api.fireStore.UserProfile;
 import com.team.mamba.atlascalendar.databinding.LocatorLayoutBinding;
 import com.team.mamba.atlascalendar.service.CurrentLocationService;
@@ -42,7 +45,9 @@ import com.team.mamba.atlascalendar.userInterface.dashBoard._container_activity.
 import com.team.mamba.atlascalendar.userInterface.dashBoard.announcements.AnnouncementsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.ContactsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.add_business.AddBusinessFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.contacts.add_contacts.describe_connections.DescribeConnectionsFragment;
 import com.team.mamba.atlascalendar.userInterface.dashBoard.crm.main.CrmFragment;
+import com.team.mamba.atlascalendar.userInterface.dashBoard.locator.connectionsRequest.ConnectionsRequestFragment;
 import com.team.mamba.atlascalendar.userInterface.welcome._container_activity.WelcomeActivity;
 import com.team.mamba.atlascalendar.userInterface.welcome._viewPager.ViewPagerFragment;
 import com.team.mamba.atlascalendar.utils.AppConstants;
@@ -242,6 +247,22 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     }
 
     @Override
+    public void onConnectionRequestsClicked() {
+
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+
+            ConnectionsRequestFragment fragment = ConnectionsRequestFragment.newInstance(viewModel.getNeedsApprovalConnections());
+            ChangeFragments.addFragmentFadeIn(fragment, getBaseActivity().getSupportFragmentManager(), "ConnectionsFragment", null);
+
+        }, 400);
+    }
+
+
+
+    @Override
     public void onAccountManagementClicked() {
 
     }
@@ -273,7 +294,6 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
             FragmentManager manager = getBaseActivity().getSupportFragmentManager();
             UserProfile profile = viewModel.getSelectedUserProfile();
             String fullName = profile.getFirstName() + " " + profile.getLastName();
-            //ChangeFragments.addFragmentVertically(CalendarMonthActivity.newInstance(fullName), manager, "CalendarMonth", null);
             startActivity(CalendarMonthActivity.newIntent(getBaseActivity(),fullName));
 
         }, 200);
@@ -377,6 +397,7 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
 
             binding.tvEmployersName.setText(viewModel.getCalendarContactProfile().getName());
             binding.tvDrawerCompanyName.setText(viewModel.getCalendarContactProfile().getName());
+            binding.tvConnectionRequestCount.setText(String.valueOf(viewModel.getNeedsApprovalConnections().size()));
         }
 
         List<UserProfile> favUserProfiles = new ArrayList<>(viewModel.getFavoritesProfileList());

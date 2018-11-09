@@ -25,7 +25,7 @@ public class UserProfileDataModel {
 
 
 
-    public void updateUserDetails(UserProfileViewModel viewModel) {
+    public void getUserDetails(UserProfileViewModel viewModel) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = dataManager.getSharedPrefs().getUserId();
@@ -48,7 +48,7 @@ public class UserProfileDataModel {
                     } else {
 
                         Logger.e(task.getException().getMessage());
-                        task.getException().printStackTrace();
+                        viewModel.getNavigator().handleError(task.getException().getLocalizedMessage());
                     }
 
                 });

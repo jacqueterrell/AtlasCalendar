@@ -5,14 +5,10 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Handler;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentActivity;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -29,7 +25,6 @@ import com.team.mamba.atlascalendar.data.model.local.ContinentLocation;
 import com.team.mamba.atlascalendar.databinding.GoogleMapLayoutBinding;
 import com.team.mamba.atlascalendar.utils.CommonUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -64,7 +59,7 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.google_map_layout);
 
-        if (userProfile == null){
+        if (userProfile == null && userProfileList == null){
 
             finish();
 
@@ -221,7 +216,8 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
 
         try{
 
-            JSONObject jsonObject = new JSONObject(CommonUtils.loadJSONFromAsset(getApplicationContext(),"json/continents.json"));
+            JSONObject jsonObject = new JSONObject(CommonUtils.loadJSONFromAsset(getApplicationContext(),
+                    "continents.json"));
 
             for (LatLng location : locationList){
 
