@@ -155,6 +155,11 @@ public class LocatorViewModel extends BaseViewModel<LocatorNavigator> {
         getNavigator().onGlobalMapClicked();
     }
 
+    public void onConnectionRequestsClicked(){
+
+        getNavigator().onConnectionRequestsClicked();
+    }
+
         /********* Datamodel Calls********/
 
     public void requestContactsInfo(LocatorViewModel viewModel) {

@@ -25,6 +25,8 @@ public interface LocatorNavigator {
 
     void onAddConnectionClicked();
 
+    void onConnectionRequestsClicked();
+
     void onGlobalMapClicked();
 
     void onContactMapClicked(UserProfile profile);

@@ -59,7 +59,7 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.google_map_layout);
 
-        if (userProfile == null){
+        if (userProfile == null && userProfileList == null){
 
             finish();
 
