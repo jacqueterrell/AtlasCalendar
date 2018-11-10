@@ -69,7 +69,7 @@ android {
 
     signingConfigs {
         releaseConfig {
-            storeFile file("../signatures/atlas-store-key.jks")
+            storeFile file("../signatures/atlas-prod-key.jks")
             storePassword("android")
             keyAlias "atlas"
             keyPassword "android"
@@ -78,7 +78,7 @@ android {
             keyAlias 'atlas-debug'
             keyPassword 'android'
             storePassword 'android'
-            storeFile file('../signatures/atlas-development-key.jks')
+            storeFile file('../signatures/atlas-dev.jks')
         }
     }
 
