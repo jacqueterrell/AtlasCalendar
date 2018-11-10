@@ -74,11 +74,14 @@
                     android:textSize="20sp" />
 
                 <ImageButton
-                    style="@style/IconImageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_globe_solid"
                     android:tint="@color/dark_green"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
                     android:onClick="@{()-> viewModel.onGlobalMapClicked()}"
                     />
 

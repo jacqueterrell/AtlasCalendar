@@ -265,6 +265,15 @@ public class LocatorFragment extends BaseFragment<LocatorLayoutBinding, LocatorV
     @Override
     public void onAccountManagementClicked() {
 
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+
+            parentNavigator.openSettingsScreen();
+
+        }, 400);
+
     }
 
     @Override
